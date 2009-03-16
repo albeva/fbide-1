@@ -1,0 +1,59 @@
+<fbide version="0.5" type="ui-layout">
+    <menus>
+        <menu id="file">
+            <item id="new" />
+            <item id="open" />
+            <item id="save" />
+            <separator />
+            <item id="quit" />
+        </menu>
+        <menu id="edit">
+            <item id="undo" />
+            <item id="redo" />
+            <separator />
+            <item id="cut" />
+            <item id="copy" />
+            <item id="paste" />
+        </menu>
+        <menu id="view">
+            <menu id="toolbars" />
+            <item id="toolbars" />
+            <item id="fullscreen" />
+        </menu>
+        <menu id="search">
+            <item id="find" />
+            <item id="replace" />
+            <item id="goto" />
+        </menu>
+        <menu id="help">
+            <item id="about" />
+        </menu>
+    </menus>
+    <toolbars>
+        <!--
+            <toolbar
+                id="ID"
+                [show="yes|no" (default:yes)]
+            >
+        -->
+        <toolbar id="common" show="yes">
+            <item id="new" />
+            <item id="open" />
+            <item id="save" />
+        </toolbar>
+        <toolbar id="edit">
+            <item id="undo" />
+            <item id="redo" />
+            <separator />
+            <item id="cut" />
+            <item id="copy" />
+            <item id="paste" />
+            <menu id="view" />
+        </toolbar>
+        <toolbar id="search">
+            <item id="find" />
+            <item id="replace" />
+            <item id="goto" />
+        </toolbar>
+    </toolbars>
+</fbide>

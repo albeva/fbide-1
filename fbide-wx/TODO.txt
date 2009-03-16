@@ -1,0 +1,38 @@
+FBIde 0.5 todo list
+
+* Create error handling and logging system. Throwing exceptions ain't good
+  nor flexible enough. Utilize wxLog functionality ?
+  
+* Create code::blocks build configurations for Linux
+  - Done. But need to sort out build process. Using wx-config (cool thing!)
+    but on my machine DEBUG build is missing (get it?)
+  - Create Release configuration too
+
+* Create ANSI build mode for windows (linux too I guess? ... probably not)
+
+* On Linux for some reason toolbars seem to be in reverse order
+
+UiManager
+===========
+* RemoveToolBar and RemoveMenu methods - so plugins could unload
+* HideToolBar and HideMenu - would allow setting up different contexts (hide irrelevent stuff...)
+
+* SetArtProvider should 
+  a) send unregister event - so any plugin could catch and
+     clean up
+  b) if refresh the art
+  
+* ReloadUi method to relead all UI elements (language, gfx)
+
+* public string based event manager (delegates)
+
+* The current toolbar and menu handling logic is not very flexible and requires
+  lot of hackish code to easily associate toolbar to a checkable menu item
+  and allow the state to be in sync. To clean things up all base menus and 
+  toolbars will have fbide specific baseclass.
+  CUiMenu, CUiToolBar, (CUiMenuItem CUiToolbarItem - need these?)
+  
+* provide CUiStatusBar class for handling statusbar. Create CUiToolBarManager 
+  and CUiMenuManager classes to simplify UiManager?
+
+* Have global option "save state" or something. Where every file state (scroll position, foldings, cursor position, maybe some settings?) would be monitored.

@@ -1,0 +1,28 @@
+/* XPM */
+const char *redo[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 6 1",
+"  c black",
+". c #686868",
+"X c #45C837",
+"o c #7CD872",
+"O c gray75",
+"+ c #A0E399",
+/* pixels */
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOO OOOO",
+"OOOOOOOOOO.+ OOO",
+"OOOOOOOOOO ++ OO",
+"OOOOOO     +o+ O",
+"OOO.  +++++oooX ",
+"O. +++oo   ooX O",
+" ++ooX  OO oX OO",
+" +ooX OOOO X OOO",
+"O XX OOOOOO OOOO",
+"OO  OOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO"
+};

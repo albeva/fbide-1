@@ -1,0 +1,6 @@
+15 December 2008
+   released version 0.0.0 of App
+
+     Change log:
+        -Added: Autoversioning and Changelog plugin and enabled it for the project
+

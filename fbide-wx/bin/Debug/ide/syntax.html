@@ -1,0 +1,55 @@
+<html>
+	
+	<head>
+		<title>FBIde syntax highlighter</title>
+		<link rel="stylesheet" type="text/css" href="default.css" >
+	</head>
+	
+	<body>
+		<pre class="default">
+<span class="comment">' Created by Albert Varaksin</span>
+<span class="comment">' email: <span class="url">albeva@me.com</span></span>
+<span class="comment">' link : <span class="url">http://www.fbide.freebasic.net</span></span>
+<span class="comment">' numbers</span>
+<span class="label">test_numbers:</span>
+<span class="keyword one">var</span> id_number1 <span class="operator">=</span> <span class="number">10</span>
+<span class="keyword one">var</span> id_number2 <span class="operator">=</span> <span class="number">&amp;hFF</span>
+<span class="keyword one">var</span> id_number3 <span class="operator">=</span> <span class="number">&amp;o17</span>
+<span class="keyword one">var</span> id_number4 <span class="operator">=</span> <span class="number">&amp;b01110</span>
+
+<span class="comment">' strings</span>
+<span class="label">test_strings:</span>
+<span class="keyword one">var</span> id_str1 <span class="operator">=</span> <span class="string">"hello world"</span>
+<span class="keyword one">var</span> id_str2 <span class="operator">=</span> <span class="string"><span class="escape">!</span>"hello<span class="escape">\n</span>world"</span>
+
+<span class="comment">' operatotors</span>
+<span class="keyword one">var</span> nr <span class="operator">=</span> id_number1 <span class="operator">+</span> id_number2 <span class="operator">*</span> id_number3 <span class="operator">/</span> id_number4
+
+<span class="comment">' asm</span>
+<span class="keyword two">asm</span> <span class="asm"><span class="keyword one">mov</span> <span class="keyword two">eax</span><span class="operator">,</span> <span class="number">10</span></span>
+
+<span class="comment">/'
+ ' Asm multiblock
+ '/</span>
+<span class="label">test_assembly:</span>
+<span class="keyword one">var</span> asm_val <span class="operator">=</span> <span class="number">10</span>
+<span class="keyword two">asm</span><div class="asm">    <span class="keyword one">mov</span> <span class="keyword two">eax</span><span class="operator">,</span> <span class="operator">[</span>asm_val<span class="operator">]</span>
+    <span class="keyword one">add</span> <span class="keyword two">eax</span><span class="operator">,</span> <span class="number">5</span>
+    <span class="keyword one">mov</span> <span class="operator">[</span>asm_val<span class="operator">]</span><span class="operator">,</span> <span class="keyword two">eax</span>
+</div><span class="keyword two">End Asm</span>
+<span class="keyword two">print</span> asm_val
+
+<span class="label">test_preprocessor:</span>
+<span class="preprocessor"><span class="keyword one">#define</span> ONE <span class="number">1</span></span>
+
+<span class="comment">'' and multiline</span>
+<div class="preprocessor"><span class="keyword one">#macro</span> TEST()
+    <span class="keyword two">print</span> <span class="string">"TEST"</span>
+<span class="keyword one">#endmacro</span>
+</div>
+
+<span class="comment">'' wait for the keypress</span>
+<span class="keyword two">sleep</span>
+		</pre>
+	</body>
+</html>

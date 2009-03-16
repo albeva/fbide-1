@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ClassicTheme" />
+		<Option pch_mode="2" />
+		<Option default_target="Release" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Win32 Debug">
+				<Option platforms="Windows;" />
+				<Option output="$(#fbide.debug)/ide/plugins/ClassicTheme" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-D_DLL" />
+					<Add option="-D__WXDEBUG__" />
+					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
+					<Add directory="$(#wx)/include" />
+					<Add directory="$(#wx)/contrib/include" />
+					<Add directory="$(#fbide.sdk)" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
+					<Add directory="$(#wx)/include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-shared-libgcc" />
+					<Add library="libwxmsw28ud.a" />
+					<Add library="libfbide_debug.a" />
+					<Add library="libstdc++.a" />
+					<Add directory="$(#fbide.debug)" />
+					<Add directory="$(#wx)/lib/gcc_dll" />
+				</Linker>
+			</Target>
+			<Target title="Win32 Release">
+				<Option platforms="Windows;" />
+				<Option output="$(#fbide.release)/ide/plugins/ClassicTheme" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-D_DLL" />
+					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
+					<Add directory="$(#wx)/include" />
+					<Add directory="$(#wx)/contrib/include" />
+					<Add directory="$(#fbide.sdk)" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
+					<Add directory="$(#wx)/include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-shared-libgcc" />
+					<Add library="libwxmsw28u.a" />
+					<Add library="libfbide.a" />
+					<Add library="libstdc++.a" />
+					<Add directory="$(#fbide.release)" />
+					<Add directory="$(#wx)/lib/gcc_dll" />
+				</Linker>
+			</Target>
+			<Target title="Linux Debug">
+				<Option platforms="Unix;" />
+				<Option output="$(#fbide.debug)/ide/plugins/ClassicTheme" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="`wx-config --static=no --unicode=yes --debug=yes --cflags`" />
+					<Add option="-fPIC" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --static=no --unicode=yes --debug=yes --libs`" />
+					<Add library="$(#fbide.debug)/fbide_debug.so" />
+					<Add directory="$(#fbide.debug)" />
+					<Add directory="$(#wx)/lib/gcc_dll" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-include wx_pch.h" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-DWX_PRECOMP" />
+			<Add directory="$(#fbide.sdk)" />
+		</Compiler>
+		<Unit filename="main.cpp" />
+		<Unit filename="wx_pch.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

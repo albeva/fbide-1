@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SDK" />
+		<Option pch_mode="0" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Win32 Debug">
+				<Option platforms="Windows;" />
+				<Option output="$(#fbide.debug)\fbide_debug" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option="-D__WXDEBUG__" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-D_DLL" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
+					<Add directory="$(#wx)\include" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
+					<Add directory="$(#wx)\include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-shared-libgcc" />
+					<Add library="libwxmsw28ud.a" />
+					<Add library="libstdc++.a" />
+					<Add directory="$(#wx)\lib\gcc_dll" />
+				</Linker>
+			</Target>
+			<Target title="Win32 Release">
+				<Option platforms="Windows;" />
+				<Option output="$(#fbide.release)\fbide" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-pipe" />
+					<Add option="-mthreads" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-DWXUSINGDLL" />
+					<Add option="-D_DLL" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswu" />
+					<Add directory="$(#wx)\include" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)\lib\gcc_dll\mswu" />
+					<Add directory="$(#wx)\include" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-shared-libgcc" />
+					<Add library="libwxmsw28u.a" />
+					<Add library="libstdc++.a" />
+					<Add directory="$(#wx)\lib\gcc_dll" />
+				</Linker>
+			</Target>
+			<Target title="Linux Debug">
+				<Option platforms="Unix;" />
+				<Option output="$(#fbide.debug)\fbide_debug" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="`wx-config --static=no --unicode=yes --debug=yes --cflags`" />
+					<Add option="-fPIC" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --static=no --unicode=yes --debug=yes --libs`" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-include wx_pch.h" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-DWX_PRECOMP" />
+			<Add option="-DSCI_LEXER" />
+			<Add option="-DEXPORT_LIB" />
+			<Add option="-D__WX__" />
+			<Add option="-DWXMAKINGDLL_SCI" />
+			<Add option="-DwxUSE_AUI" />
+			<Add directory="include" />
+			<Add directory="..\sdk" />
+			<Add directory="$(#boost)" />
+			<Add directory="..\sdk\src\wxScintilla\scintilla\include" />
+			<Add directory="..\sdk\src\wxScintilla\scintilla\src" />
+		</Compiler>
+		<Unit filename="include\sdk\ArtProvider.h" />
+		<Unit filename="include\sdk\DocManager.h" />
+		<Unit filename="include\sdk\Document.h" />
+		<Unit filename="include\sdk\Editor.h" />
+		<Unit filename="include\sdk\Exception.h" />
+		<Unit filename="include\sdk\FastDelegate.h" />
+		<Unit filename="include\sdk\Manager.h" />
+		<Unit filename="include\sdk\MultiDelegate.h" />
+		<Unit filename="include\sdk\PluginArtProvider.h" />
+		<Unit filename="include\sdk\PluginManager.h" />
+		<Unit filename="include\sdk\Registry.h" />
+		<Unit filename="include\sdk\Singleton.h" />
+		<Unit filename="include\sdk\StyleInfo.h" />
+		<Unit filename="include\sdk\TypeManager.h" />
+		<Unit filename="include\sdk\UiManager.h" />
+		<Unit filename="include\sdk\UiToolDescriptor.h" />
+		<Unit filename="include\sdk\Variant.h" />
+		<Unit filename="include\sdk\sdk.h" />
+		<Unit filename="include\sdk\sdk_pch.h" />
+		<Unit filename="include\sdk\version.h" />
+		<Unit filename="include\wx\wxscintilla.h" />
+		<Unit filename="src\ArtProvider.cpp" />
+		<Unit filename="src\DocManager.cpp" />
+		<Unit filename="src\Document.cpp" />
+		<Unit filename="src\Editor.cpp" />
+		<Unit filename="src\Exception.cpp" />
+		<Unit filename="src\Manager.cpp" />
+		<Unit filename="src\PluginManager.cpp" />
+		<Unit filename="src\StyleInfo.cpp" />
+		<Unit filename="src\TypeManager.cpp" />
+		<Unit filename="src\UiManager.cpp" />
+		<Unit filename="src\wxScintilla\PlatWX.cpp" />
+		<Unit filename="src\wxScintilla\PlatWX.h" />
+		<Unit filename="src\wxScintilla\ScintillaWX.cpp" />
+		<Unit filename="src\wxScintilla\ScintillaWX.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\Accessor.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\KeyWords.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\Platform.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\PropSet.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\SString.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\SciLexer.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\Scintilla.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\ScintillaWidget.h" />
+		<Unit filename="src\wxScintilla\scintilla\include\WindowAccessor.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\AutoComplete.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\AutoComplete.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\CallTip.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\CallTip.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\CellBuffer.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\CellBuffer.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\CharClassify.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\CharClassify.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\CharacterSet.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\ContractionState.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\ContractionState.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\Decoration.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\Decoration.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\Document.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\Document.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\DocumentAccessor.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\DocumentAccessor.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\Editor.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\Editor.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\ExternalLexer.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\ExternalLexer.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\Indicator.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\Indicator.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\KeyMap.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\KeyMap.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\KeyWords.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\LineMarker.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\LineMarker.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\Partitioning.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\PositionCache.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\PositionCache.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\PropSet.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\RESearch.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\RESearch.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\RunStyles.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\RunStyles.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\SVector.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\ScintillaBase.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\ScintillaBase.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\SplitVector.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\Style.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\Style.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\StyleContext.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\StyleContext.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\UniConversion.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\UniConversion.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\ViewStyle.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\ViewStyle.h" />
+		<Unit filename="src\wxScintilla\scintilla\src\WindowAccessor.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\XPM.cxx" />
+		<Unit filename="src\wxScintilla\scintilla\src\XPM.h" />
+		<Unit filename="src\wxScintilla\wxscintilla.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<AutoVersioning>
+				<Scheme minor_max="100" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
+				<Settings autoincrement="1" date_declarations="1" do_auto_increment="1" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="include\sdk\version.h" />
+				<Changes_Log show_changes_editor="1" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
+			</AutoVersioning>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,47 @@
+New syntax highlighter should:
+
+- highlight the last word in the file!
+- labels, line numbers (floating point included!)
+- highlight ASM blocks
+  * Highlight asm keywords, comments, operators
+    preprocessor, labels
+  * one liners
+    asm mov eax, [function]
+  * line continuations with _
+  * multiline
+    asm
+		mov eax, [function]
+    end asm
+- preprocessor blocks
+  * '$ and #
+  * just set different background color. keep highlighting
+  * macro blocks
+  * line continuations with _
+  * highlight preprocessor commands
+- number formats
+  * 12345, 0.1234, .34234
+  * &h0123456789abcdef
+  * &o01234567
+  * &b01
+- operators
+- variables starting with $
+- variables starting with # (not first on the line)
+- strings escape if ! is prepended. Allow """" for adding
+  quots. Highligh escape codes?
+  * !"hello\nWorld"
+  * !"c:\\path\\numbers" - would not escape \b but \\
+  * "hello ""Rick"""
+- comments
+  * single line '
+  * multiline /' ... '/ 
+    multiline can be nested!
+  * REM
+  * highlight emails and urls
+- try highlight keyword pairs END is one such
+  * "end if", "end function"
+- do not highlight keywords in TYPE defination ?
+  * type test
+        print as string
+    end type
+
+  

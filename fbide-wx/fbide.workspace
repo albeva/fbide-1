@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="App\App.cbp" active="1">
+			<Depends filename="sdk\sdk.cbp" />
+			<Depends filename="Plugins\FBIdePlugin\FBIdePlugin.cbp" />
+			<Depends filename="Plugins\TangoTheme\TangoTheme.cbp" />
+			<Depends filename="Plugins\ClassicTheme\ClassicTheme.cbp" />
+			<Depends filename="Plugins\Project\Project.cbp" />
+		</Project>
+		<Project filename="sdk\sdk.cbp" />
+		<Project filename="Plugins\FBIdePlugin\FBIdePlugin.cbp">
+			<Depends filename="sdk\sdk.cbp" />
+		</Project>
+		<Project filename="Plugins\TangoTheme\TangoTheme.cbp">
+			<Depends filename="sdk\sdk.cbp" />
+		</Project>
+		<Project filename="Plugins\ClassicTheme\ClassicTheme.cbp">
+			<Depends filename="sdk\sdk.cbp" />
+		</Project>
+		<Project filename="Plugins\Project\Project.cbp" />
+		<Project filename="..\testing_cpp\test\test.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>
