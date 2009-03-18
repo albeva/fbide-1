@@ -183,6 +183,7 @@ class CMultiDelegate < R (  ) >
     typedef Delegate0<R> type;
     typedef CMultiDelegateBase<type> parent;
     public :
+        typedef type Signature;
         void operator () ()
         {
             DLG_CALL_START
@@ -204,6 +205,7 @@ class CMultiDelegate < R ( P1 ) >
     typedef Delegate1<P1, R> type;
     typedef CMultiDelegateBase<type> parent;
     public :
+        typedef type Signature;
         void operator () (P1 p1)
         {
             DLG_CALL_START
@@ -225,6 +227,7 @@ class CMultiDelegate < R ( P1, P2 ) >
     typedef Delegate2<P1, P2, R> type;
     typedef CMultiDelegateBase<type> parent;
     public :
+        typedef type Signature;
         void operator () (P1 p1, P2 p2)
         {
             DLG_CALL_START
@@ -246,6 +249,7 @@ class CMultiDelegate < R ( P1, P2, P3 ) >
     typedef Delegate3<P1, P2, P3, R> type;
     typedef CMultiDelegateBase<type> parent;
     public :
+        typedef type Signature;
         void operator () (P1 p1, P2 p2, P3 p3)
         {
             DLG_CALL_START
@@ -267,6 +271,7 @@ class CMultiDelegate < R ( P1, P2, P3, P4 ) >
     typedef Delegate4<P1, P2, P3, P4, R> type;
     typedef CMultiDelegateBase<type> parent;
     public :
+        typedef type Signature;
         void operator () (P1 p1, P2 p2, P3 p3, P4 p4)
         {
             DLG_CALL_START
@@ -288,11 +293,35 @@ class CMultiDelegate < R ( P1, P2, P3, P4, P5 ) >
     typedef Delegate5<P1, P2, P3, P4, P5, R> type;
     typedef CMultiDelegateBase<type> parent;
     public :
+        typedef type Signature;
         void operator () (P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)
         {
             DLG_CALL_START
             {
                 (*dg)(p1, p2, p3, p4, p5);
+            }
+            DLG_CALL_END
+        }
+};
+
+
+/**
+ * N=6
+ * R (P1, P2, P3, P4, P5, P6);
+ */
+template<typename R, class P1, class P2, class P3, class P4, class P5, class P6>
+class CMultiDelegate < R ( P1, P2, P3, P4, P5, P6 ) >
+: public CMultiDelegateBase<Delegate6<P1, P2, P3, P4, P5, P6, R> >
+{
+    typedef Delegate6<P1, P2, P3, P4, P5, P6, R> type;
+    typedef CMultiDelegateBase<type> parent;
+    public :
+        typedef type Signature;
+        void operator () (P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)
+        {
+            DLG_CALL_START
+            {
+                (*dg)(p1, p2, p3, p4, p5, p6);
             }
             DLG_CALL_END
         }

@@ -21,6 +21,7 @@
 #include "../wx_pch.h"
 #include <wx/clipbrd.h>
 #include <wx/dir.h>
+//#include <wx/windowlist.h>
 
 #include "App.h"
 #include "Frame.h"
@@ -67,9 +68,37 @@ bool CApp::OnInit()
         // registry
         CRegistry         & reg = mgr.GetReg();
 
-        // Load logger
-        wxLog * logger = new wxLogWindow (frame, _T("FBIde log"));
+        // Load logger and set better font (courier new)
+        wxLogWindow * logger = new wxLogWindow (frame, _T("FBIde log"));
         wxLog::SetLogLevel(wxLOG_Info);
+        wxFrame * fr = logger->GetFrame();
+        wxWindowList & wdg = fr->GetChildren();
+        wxWindowList::iterator iter;
+        for (iter = wdg.begin(); iter != wdg.end(); ++iter)
+        {
+            wxWindow * wnd = *iter;
+            if (wnd->GetName() == _T("text"))
+            {
+                if(wxTextCtrl * tctrl = dynamic_cast<wxTextCtrl *>(wnd))
+                {
+                    tctrl->SetFont(wxFont(
+                        12,
+                        wxFONTFAMILY_MODERN,
+                        wxFONTSTYLE_NORMAL,
+                        wxFONTWEIGHT_NORMAL,
+                        false,
+                        _T("Courier New")
+                    ));
+                    break;
+                }
+            }
+            // wxMessageBox(wnd->GetName());
+        }
+
+
+
+
+
         wxLog::SetActiveTarget(logger);
         wxLogMessage(_T("LOG level restriction in place. Max wxLOG_Info!"));
 
@@ -144,6 +173,9 @@ bool CApp::OnInit()
             dir.GetAllFiles(dir.GetName(), &files, _T("*.bas"));
             GET_DOCMGR()->Open(files);
         }
+
+        // modification margin plugin
+        pm->LoadPlugin(_T("ModMargin"));
 
         return true;
     }

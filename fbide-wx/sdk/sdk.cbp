@@ -113,6 +113,9 @@
 		<Unit filename="include\sdk\DocManager.h" />
 		<Unit filename="include\sdk\Document.h" />
 		<Unit filename="include\sdk\Editor.h" />
+		<Unit filename="include\sdk\EditorEvent.h" />
+		<Unit filename="include\sdk\EditorManager.h" />
+		<Unit filename="include\sdk\EventMap.h" />
 		<Unit filename="include\sdk\Exception.h" />
 		<Unit filename="include\sdk\FastDelegate.h" />
 		<Unit filename="include\sdk\Manager.h" />
@@ -134,6 +137,7 @@
 		<Unit filename="src\DocManager.cpp" />
 		<Unit filename="src\Document.cpp" />
 		<Unit filename="src\Editor.cpp" />
+		<Unit filename="src\EditorManager.cpp" />
 		<Unit filename="src\Exception.cpp" />
 		<Unit filename="src\Manager.cpp" />
 		<Unit filename="src\PluginManager.cpp" />

@@ -21,6 +21,7 @@
 #ifndef EDITOR_H_INCLUDED
 #define EDITOR_H_INCLUDED
 
+#include "sdk/EventMap.h"
 
 namespace fb
 {
@@ -30,12 +31,14 @@ namespace fb
      */
     class CStyleInfo;
     class CStyleParser;
+    class CEditorEvent;
 
 
     /**
      * Base class for the editor
      */
-    class DLLIMPORT CEditor : public wxScintilla
+    class DLLIMPORT CEditor : public wxScintilla,
+        public CEventMap<int, void (CEditor &, CEditorEvent &)>
     {
         public :
 
@@ -95,7 +98,6 @@ namespace fb
              * Get is ready state?
              */
             bool GetReady ();
-
 
             /**
              * Setup the editor. Load general config

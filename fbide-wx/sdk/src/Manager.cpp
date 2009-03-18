@@ -24,6 +24,7 @@
 #include "sdk/TypeManager.h"
 #include "sdk/DocManager.h"
 #include "sdk/PluginManager.h"
+#include "sdk/EditorManager.h"
 #include "sdk/StyleInfo.h"
 
 #include <wx/gdicmn.h>
@@ -81,7 +82,7 @@ CManager::~CManager ()
     if (m_data->m_docManager != 0L)     delete m_data->m_docManager;
     CUiManager::Free();
     if (m_data->m_typeManager != 0L)    delete m_data->m_typeManager;
-    return;
+    CEditorManager::Free();
 }
 
 
@@ -229,6 +230,15 @@ CPluginManager * CManager::GetPluginManager ()
 {
     if (m_data->m_pluginManager == 0L) m_data->m_pluginManager = new CPluginManager;
     return m_data->m_pluginManager;
+}
+
+
+/**
+ * Return editor manager
+ */
+CEditorManager  * CManager::GetEditorManager ()
+{
+    return CEditorManager::Get();
 }
 
 

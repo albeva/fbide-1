@@ -28,6 +28,7 @@
 #define GET_PLUGINMGR() fb::CManager::Get()->GetPluginManager()
 #define GET_LANG()      fb::CManager::Get()->GetLang()
 #define GET_REG()       fb::CManager::Get()->GetReg()
+#define GET_EDITORMGR() fb::CManager::Get()->GetEditorManager()
 
 #include "sdk/Registry.h"
 
@@ -42,6 +43,7 @@ namespace fb
     class CDocManager;
     class CPluginManager;
     class CStyleParser;
+    class CEditorManager;
 
 
     /**
@@ -72,11 +74,13 @@ namespace fb
             wxFrame * GetFrame ();
 
             // managers
-            CUiManager * GetUiManager();
-            CTypeManager * GetTypeManager ();
-            CDocManager * GetDocManager ();
-            CPluginManager * GetPluginManager ();
-            CStyleParser * GetStyleParser (const wxString & name);
+            CUiManager      * GetUiManager();
+            CTypeManager    * GetTypeManager ();
+            CDocManager     * GetDocManager ();
+            CPluginManager  * GetPluginManager ();
+            CStyleParser    * GetStyleParser (const wxString & name);
+            CEditorManager  * GetEditorManager ();
+
             void SetStyleParser (const wxString & name, CStyleParser * parser);
 
             // config and lang related
