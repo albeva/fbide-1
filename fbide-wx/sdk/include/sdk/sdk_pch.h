@@ -46,6 +46,7 @@
 #include "sdk/sdk.h"
 #include "sdk/Exception.h"
 #include "sdk/MultiDelegate.h"
+#include "sdk/Log.h"
 
 namespace fb
 {

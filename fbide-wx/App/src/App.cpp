@@ -146,9 +146,6 @@ bool CApp::OnInit()
         }
         */
 
-        // modification margin plugin
-        pm->LoadPlugin(_T("ModMargin"));
-
         return true;
     }
     FBIDE_CATCH();

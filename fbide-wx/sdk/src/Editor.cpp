@@ -25,6 +25,8 @@
 #include "sdk/EditorEvent.h"
 #include "sdk/EditorManager.h"
 
+#include "EditorModMargin.h"
+
 #include <stdlib.h>
 
 // #include "sdk/LexFreeBasic.hxx"
@@ -42,19 +44,18 @@ enum
 };
 
 
-/*
- * Simplified logging macros
- */
-#define LOG_MSG(_msg)           wxLogMessage(_T("%s\t\t\t(line: %d)"), _T(_msg), (int)__LINE__);
-#define LOG_INT(_v)             wxLogMessage(_T("%s = %d\t\t\t(line: %d)"), _T(#_v), (int)_v, (int)__LINE__);
-#define LOG_MSG_INT(_msg, _v)   wxLogMessage(_T("%s %s = %d\t\t\t(line: %d)"), _T(_msg), _T(#_v), (int)_v, (int)__LINE__);
-
-
 /**
  * Private data implementation for the CEditor
  */
 struct CEditor::CData : public wxEvtHandler
 {
+
+    // action states for modification margin
+    enum
+    {
+        MOD_MARGIN_MODIFY = 1,
+        MOD_MARGIN_UNDO_REDO
+    };
 
 
     // simple constructor
@@ -62,10 +63,19 @@ struct CEditor::CData : public wxEvtHandler
         : m_parent(parent),
           m_dynamicLineNumberWidth(false),
           m_changeMargin(false),
-          m_commitChanges(false),
           m_width3(0), m_width4(0), m_width5(0),
-          m_width6(0), m_width7(0)
-    {}
+          m_width6(0), m_width7(0),
+          m_modMarginState(0),
+          m_modMargin(0)
+    {
+        m_modMargin = new CEditorModMargin(*m_parent);
+    }
+
+
+    ~CData ()
+    {
+        delete m_modMargin;
+    }
 
 
     // On key down
@@ -81,29 +91,67 @@ struct CEditor::CData : public wxEvtHandler
         if (!m_ready) return;
 
         // edit flags
-        int editFlags = wxSCI_MOD_INSERTTEXT | wxSCI_MOD_DELETETEXT;
-        int mod = event.GetModificationType();
+        static const int editFlags = wxSCI_MOD_INSERTTEXT | wxSCI_MOD_DELETETEXT;
+        static const int undoRedoFlags = wxSCI_PERFORMED_UNDO | wxSCI_PERFORMED_REDO;
+
+        int mod     = event.GetModificationType();
+        int line    = m_parent->LineFromPosition(event.GetPosition());
+        int lines   = event.GetLinesAdded();
+
+        // insert or edit text
+        if ( mod & editFlags )
+        {
+            // performed by user
+            if ( mod & wxSCI_PERFORMED_USER )
+            {
+                // this is a beginning of the new action
+                // save the previous one.
+                if ( mod & wxSTI_STARTACTION )
+                {
+                    m_modMargin->SubmitChanges();
+                    m_modMargin->FlushChangeIgnore();
+                    m_modMargin->Flush();
+                }
+
+                // mark line as modified
+                m_modMargin->Modify( line, lines );
+                m_modMarginState = MOD_MARGIN_MODIFY;
+            }
+            // performed undo or redo action
+            else if ( mod & undoRedoFlags )
+            {
+
+                // modification to submit ?
+                if ( m_modMarginState == MOD_MARGIN_MODIFY )
+                {
+                    m_modMargin->SubmitChanges();
+                    m_modMargin->FlushChangeIgnore();
+                    m_modMargin->Flush();
+                }
+
+                m_modMarginState = MOD_MARGIN_UNDO_REDO;
+                m_modMargin->UndoRedo( line, lines );
+                if ( mod & wxSCI_LASTSTEPINUNDOREDO )
+                {
+                    if ( mod & wxSCI_PERFORMED_UNDO )
+                    {
+                        m_modMargin->SubmitUndo();
+                    }
+                    else
+                    {
+                        m_modMargin->SubmitRedo();
+                        m_modMargin->FlushChangeIgnore();
+                        m_modMargin->SetChangeIgnore();
+                    }
+                    m_modMargin->Flush();
+                    m_modMarginState = 0;
+                }
+            }
+        }
+
 
         // event object
-        // int lineStart = m_parent->LineFromPosition(event.GetPosition());
-        // CEditorEvent evt((CEditorEvent::Type)0, lineStart, 0);
 
-        // insert text
-        /*if (mod & wxSCI_MOD_INSERTTEXT && mod & wxSCI_PERFORMED_USER)
-        {
-            evt.type = CEditorEvent::TYPE_TEXT_INSERT;
-            m_parent->GetEventMap(CEditorEvent::TYPE_TEXT_INSERT)(
-                *m_parent, evt
-            );
-        }
-        // delete text
-        else if (mod & wxSCI_MOD_DELETETEXT && mod & wxSCI_PERFORMED_USER)
-        {
-            evt.type = CEditorEvent::TYPE_TEXT_DELETE;
-            m_parent->GetEventMap(CEditorEvent::TYPE_TEXT_DELETE)(
-                *m_parent, evt
-            );
-        }*/
         bool add = false;
         #define EVT_INFO(_id) if (mod & _id) { LOG_MSG(#_id); add = true; }
         EVT_INFO(wxSCI_MOD_INSERTTEXT)
@@ -125,11 +173,11 @@ struct CEditor::CData : public wxEvtHandler
         if (add)
         {
             EVT_INFO(wxSCI_PERFORMED_USER)
-            int lineStart = m_parent->LineFromPosition(event.GetPosition());
-            LOG_INT(lineStart);
+            LOG_INT(line);
             LOG_MSG("--------------------");
         }
         #undef EVT_INFO
+
     }
 
 
@@ -247,15 +295,15 @@ struct CEditor::CData : public wxEvtHandler
     bool        m_dynamicLineNumberWidth;
     bool        m_changeMargin;
 
-    bool        m_commitChanges;
-
     int         m_width3;
     int         m_width4;
     int         m_width5;
     int         m_width6;
     int         m_width7;
+    int         m_modMarginState;
 
     // CChangeHistory m_changes;
+    CEditorModMargin * m_modMargin;
 
     DECLARE_EVENT_TABLE();
 };
@@ -486,8 +534,21 @@ void CEditor::Setup (CStyleParser * styles)
     // Show modification margin
     if (reg["editor.showChangeMargin"].AsBool(true))
     {
-        CStyleInfo info = styles->GetStyle(_T(".edit-margin"));
+        const CStyleInfo & info = styles->GetStyle(_T(".edit-margin"));
         m_data->m_changeMargin = true;
+
+        SetMarginWidth(MARGIN_CHANGE, 4);
+        SetMarginType(MARGIN_CHANGE,  wxSCI_MARGIN_SYMBOL);
+        SetMarginWidth(MARGIN_CHANGE, 4);
+        SetMarginMask(MARGIN_CHANGE, (1 << CEditorModMargin::MARKER_SAVED) | (1 << CEditorModMargin::MARKER_EDITED) );
+
+        // edited marker
+        MarkerDefine(CEditorModMargin::MARKER_EDITED, wxSCI_MARK_FULLRECT);
+        MarkerSetBackground(CEditorModMargin::MARKER_EDITED, info.bg);
+
+        // saved marker
+        MarkerDefine(CEditorModMargin::MARKER_SAVED, wxSCI_MARK_FULLRECT);
+        MarkerSetBackground(CEditorModMargin::MARKER_SAVED, info.fg);
     }
 
     // process TAB key manually to allow
