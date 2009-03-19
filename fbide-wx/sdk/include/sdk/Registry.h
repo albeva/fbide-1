@@ -27,18 +27,23 @@ namespace fb
 {
 
     /**
+     * Hash to hold the registry
+     */
+    WX_DECLARE_STRING_HASH_MAP( CVariant, CRegistryHashMap );
+
+    /**
      * Simple registry class
      */
-    class CRegistry : public std::map<wxString, CVariant>
+    class CRegistry : public CRegistryHashMap
     {
         public :
-            CVariant & operator [] (const char * c_ch)
+            inline CVariant & operator [] (const char * c_ch)
             {
-                return std::map<wxString, CVariant>::operator[](wxString(c_ch, wxConvUTF8));
+                return CRegistryHashMap::operator[](wxString(c_ch, wxConvUTF8));
             }
-            CVariant & operator [] (const wxChar * c_wch)
+            inline CVariant & operator [] (const wxChar * c_wch)
             {
-                return std::map<wxString, CVariant>::operator[](c_wch);
+                return CRegistryHashMap::operator[](c_wch);
             }
     };
 
