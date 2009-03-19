@@ -255,7 +255,10 @@ Ui::Ui ()
     frame->PushEventHandler (this);
 
     // Create Ui stuff
-    m_aui       = new wxAuiManager (frame);
+    m_aui       = new wxAuiManager (
+        frame,
+        wxAUI_MGR_LIVE_RESIZE | wxAUI_MGR_DEFAULT
+    );
     m_menuBar   = new wxMenuBar ();
     m_statusBar = new wxStatusBar (frame);
 
