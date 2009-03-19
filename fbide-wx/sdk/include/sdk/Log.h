@@ -22,36 +22,36 @@
 #define LOG_H_INCLUDED
 
 // Log simple message
-static inline void fbLogMsg(const wxString & msg, int line)
+static inline void fbLogMsg(const wxString & msg)
 {
-    wxLogMessage(_T("%s\t\t\t(line: %d)"), msg.c_str(), line);
+    wxLogMessage(_T("%s"), msg.c_str());
 }
-static inline void fbLogMsg(const char * msg, int line)
+static inline void fbLogMsg(const char * msg)
 {
-    fbLogMsg(wxString(msg, wxConvUTF8), line);
+    fbLogMsg(wxString(msg, wxConvUTF8));
 }
-#define LOG_MSG(_msg) fbLogMsg(_msg, __LINE__);
+#define LOG_MSG(_msg) fbLogMsg(_msg);
 
 // log integer
 #define LOG_INT(_v) \
-    wxLogMessage(_T("%s = %d\t\t\t(line: %d)"), _T(#_v), (int)_v, (int)__LINE__);
+    wxLogMessage(_T("%s = %d"), _T(#_v), (int)_v);
 
 // log message and an integer
-static inline void fbLogMsg(const wxString & msg, const wxString & var, int value, int line)
+static inline void fbLogMsg(const wxString & msg, const wxString & var, int value)
 {
     // wxLogMessage(_T("%s\t\t\t(line: %d)"), msg.c_str(), line);
-    wxLogMessage(_T("%s %s = %d\t\t\t(line: %d)"), msg.c_str(), var.c_str(), value, line);
+    wxLogMessage(_T("%s %s = %d"), msg.c_str(), var.c_str(), value);
 }
-static inline void fbLogMsg(const char * msg, const wxString & var, int value, int line)
+static inline void fbLogMsg(const char * msg, const wxString & var, int value)
 {
-    fbLogMsg(wxString(msg, wxConvUTF8), var, value, line);
+    fbLogMsg(wxString(msg, wxConvUTF8), var, value);
 }
-#define LOG_MSG_INT(_msg, _v) fbLogMsg(_msg, _T(#_v), (int)_v, __LINE__);
+#define LOG_MSG_INT(_msg, _v) fbLogMsg(_msg, _T(#_v), (int)_v);
 
 // log binary number
 #define LOG_BIN(_n) \
     wxString s; for (int i = (sizeof(_n) * 8)-1; i >= 0 ; i--) \
         s << (_n & (1 << i) ? _T("1") : _T("0")); \
-    wxLogMessage(_T("%s = %s\t\t(line: %d)"), _T(#_n), s.c_str(), (int)__LINE__);
+    wxLogMessage(_T("%s = %s"), _T(#_n), s.c_str());
 
 #endif // LOG_H_INCLUDED

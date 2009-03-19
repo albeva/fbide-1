@@ -110,6 +110,7 @@
 			<Add directory="..\sdk\src\wxScintilla\scintilla\src" />
 		</Compiler>
 		<Unit filename="include\sdk\ArtProvider.h" />
+		<Unit filename="include\sdk\Defaults.h" />
 		<Unit filename="include\sdk\DocManager.h" />
 		<Unit filename="include\sdk\Document.h" />
 		<Unit filename="include\sdk\Editor.h" />
@@ -118,6 +119,7 @@
 		<Unit filename="include\sdk\EventMap.h" />
 		<Unit filename="include\sdk\Exception.h" />
 		<Unit filename="include\sdk\FastDelegate.h" />
+		<Unit filename="include\sdk\Log.h" />
 		<Unit filename="include\sdk\Manager.h" />
 		<Unit filename="include\sdk\MultiDelegate.h" />
 		<Unit filename="include\sdk\PluginArtProvider.h" />
@@ -138,6 +140,8 @@
 		<Unit filename="src\Document.cpp" />
 		<Unit filename="src\Editor.cpp" />
 		<Unit filename="src\EditorManager.cpp" />
+		<Unit filename="src\EditorModMargin.cpp" />
+		<Unit filename="src\EditorModMargin.h" />
 		<Unit filename="src\Exception.cpp" />
 		<Unit filename="src\Manager.cpp" />
 		<Unit filename="src\PluginManager.cpp" />

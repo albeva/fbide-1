@@ -7,7 +7,6 @@
 			<Depends filename="Plugins\TangoTheme\TangoTheme.cbp" />
 			<Depends filename="Plugins\ClassicTheme\ClassicTheme.cbp" />
 			<Depends filename="Plugins\Project\Project.cbp" />
-			<Depends filename="Plugins\ModMargin\ModMargin.cbp" />
 			<Depends filename="Plugins\Log\LogPlugin.cbp" />
 		</Project>
 		<Project filename="sdk\sdk.cbp" />
@@ -23,5 +22,6 @@
 		<Project filename="Plugins\Project\Project.cbp" />
 		<Project filename="Plugins\ModMargin\ModMargin.cbp" />
 		<Project filename="Plugins\Log\LogPlugin.cbp" />
+		<Project filename="..\..\..\std_set_test\std_set_test.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

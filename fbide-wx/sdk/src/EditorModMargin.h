@@ -51,9 +51,6 @@ namespace fb
         // Modify line
         void Modify ( unsigned startLine, int lines );
 
-        // Submit current changes
-        void SubmitChanges ();
-
         // push undo / redo line
         void UndoRedo ( unsigned int startLine, int lines );
 
@@ -66,12 +63,9 @@ namespace fb
         // Flush the line cache
         void Flush ();
 
-        // Copy current lines to change ignore list
-        // ( undo action continuation )
-        void SetChangeIgnore ();
+        // Get number of lines
+        unsigned GetPendingCount ();
 
-        // Flush the ignore list
-        void FlushChangeIgnore ();
 
         private :
 
@@ -81,8 +75,11 @@ namespace fb
             // Push value to stack
             void Push(unsigned line, unsigned flags);
 
+            // Set current position to a value
+            void Set(unsigned line, unsigned flags);
+
             // Pop value from stack
-            unsigned Pop ( unsigned line );
+            unsigned Undo ( unsigned line );
 
             // Redo the line
             unsigned Redo ( unsigned line );
@@ -97,7 +94,7 @@ namespace fb
             typedef std::vector<IntVector>      LinesVector;
 
             CEditor       & m_editor;
-            IntSet          m_pending, m_ignore;
+            IntSet          m_pending, m_undo;
             LinesVector     m_lines;
     };
 

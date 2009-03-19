@@ -91,8 +91,12 @@ struct CEditor::CData : public wxEvtHandler
         if (!m_ready) return;
 
         // edit flags
-        static const int editFlags = wxSCI_MOD_INSERTTEXT | wxSCI_MOD_DELETETEXT;
-        static const int undoRedoFlags = wxSCI_PERFORMED_UNDO | wxSCI_PERFORMED_REDO;
+        enum
+        {
+            editFlags      = wxSCI_MOD_INSERTTEXT | wxSCI_MOD_DELETETEXT,
+            beforeEditFlags= wxSCI_MOD_BEFOREDELETE | wxSCI_MOD_BEFOREINSERT,
+            undoRedoFlags  = wxSCI_PERFORMED_UNDO | wxSCI_PERFORMED_REDO
+        };
 
         int mod     = event.GetModificationType();
         int line    = m_parent->LineFromPosition(event.GetPosition());
@@ -108,8 +112,7 @@ struct CEditor::CData : public wxEvtHandler
                 // save the previous one.
                 if ( mod & wxSTI_STARTACTION )
                 {
-                    m_modMargin->SubmitChanges();
-                    m_modMargin->FlushChangeIgnore();
+                    // m_modMargin->SubmitChanges();
                     m_modMargin->Flush();
                 }
 
@@ -121,16 +124,13 @@ struct CEditor::CData : public wxEvtHandler
             else if ( mod & undoRedoFlags )
             {
 
-                // modification to submit ?
                 if ( m_modMarginState == MOD_MARGIN_MODIFY )
                 {
-                    m_modMargin->SubmitChanges();
-                    m_modMargin->FlushChangeIgnore();
                     m_modMargin->Flush();
                 }
 
-                m_modMarginState = MOD_MARGIN_UNDO_REDO;
                 m_modMargin->UndoRedo( line, lines );
+                m_modMarginState == MOD_MARGIN_UNDO_REDO;
                 if ( mod & wxSCI_LASTSTEPINUNDOREDO )
                 {
                     if ( mod & wxSCI_PERFORMED_UNDO )
@@ -140,43 +140,62 @@ struct CEditor::CData : public wxEvtHandler
                     else
                     {
                         m_modMargin->SubmitRedo();
-                        m_modMargin->FlushChangeIgnore();
-                        m_modMargin->SetChangeIgnore();
                     }
                     m_modMargin->Flush();
                     m_modMarginState = 0;
                 }
             }
         }
+        // before edit
+        /*
+        else if ( mod & beforeEditFlags )
+        {
+            // start undo / redo
+            if ( mod & undoRedoFlags )
+            {
+                if ( m_modMarginState == 0 )
+                {
+                    // m_modMargin->Flush();
+                }
+                m_modMarginState = MOD_MARGIN_UNDO_REDO;
+            }
+        }
+        */
 
 
         // event object
+        bool show = false;
 
-        bool add = false;
-        #define EVT_INFO(_id) if (mod & _id) { LOG_MSG(#_id); add = true; }
-        EVT_INFO(wxSCI_MOD_INSERTTEXT)
-        EVT_INFO(wxSCI_MOD_DELETETEXT)
-        EVT_INFO(wxSCI_PERFORMED_UNDO)
-        EVT_INFO(wxSCI_PERFORMED_REDO)
-        EVT_INFO(wxSCI_MULTISTEPUNDOREDO)
-        EVT_INFO(wxSCI_LASTSTEPINUNDOREDO)
-        EVT_INFO(wxSCI_MOD_BEFOREINSERT)
-        EVT_INFO(wxSCI_MOD_BEFOREDELETE)
-        EVT_INFO(wxSCI_MULTILINEUNDOREDO)
-        EVT_INFO(wxSTI_STARTACTION)
-        // EVT_INFO(wxSCI_MOD_CHANGEMARKER)
-        // EVT_INFO(wxSCI_MOD_CHANGESTYLE)
-        // EVT_INFO(wxSCI_MOD_CHANGEFOLD)
-        // EVT_INFO(wxSTI_MOD_CHANGEINDICATOR)
-        // EVT_INFO(wxSTI_MOD_CHANGELINESTATE)
-        // EVT_INFO(wxSCI_MODEVENTMASKALL)
-        if (add)
+        //show = true;
+        if ( show )
         {
-            EVT_INFO(wxSCI_PERFORMED_USER)
-            LOG_INT(line);
-            LOG_MSG("--------------------");
+            bool add = false;
+            #define EVT_INFO(_id) if (mod & _id) { LOG_MSG(#_id); add = true; }
+            EVT_INFO(wxSCI_MOD_INSERTTEXT)
+            EVT_INFO(wxSCI_MOD_DELETETEXT)
+            EVT_INFO(wxSCI_PERFORMED_UNDO)
+            EVT_INFO(wxSCI_PERFORMED_REDO)
+            EVT_INFO(wxSCI_MULTISTEPUNDOREDO)
+            EVT_INFO(wxSCI_LASTSTEPINUNDOREDO)
+            EVT_INFO(wxSCI_MOD_BEFOREINSERT)
+            EVT_INFO(wxSCI_MOD_BEFOREDELETE)
+            EVT_INFO(wxSCI_MULTILINEUNDOREDO)
+            EVT_INFO(wxSTI_STARTACTION)
+            // EVT_INFO(wxSCI_MOD_CHANGEMARKER)
+            // EVT_INFO(wxSCI_MOD_CHANGESTYLE)
+            // EVT_INFO(wxSCI_MOD_CHANGEFOLD)
+            // EVT_INFO(wxSTI_MOD_CHANGEINDICATOR)
+            // EVT_INFO(wxSTI_MOD_CHANGELINESTATE)
+            // EVT_INFO(wxSCI_MODEVENTMASKALL)
+            if (add)
+            {
+                EVT_INFO(wxSCI_PERFORMED_USER)
+                LOG_INT(line);
+                LOG_INT(lines);
+                LOG_MSG("--------------------");
+            }
+            #undef EVT_INFO
         }
-        #undef EVT_INFO
 
     }
 
