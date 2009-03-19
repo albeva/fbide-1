@@ -8,6 +8,7 @@
 			<Depends filename="Plugins\ClassicTheme\ClassicTheme.cbp" />
 			<Depends filename="Plugins\Project\Project.cbp" />
 			<Depends filename="Plugins\ModMargin\ModMargin.cbp" />
+			<Depends filename="Plugins\Log\LogPlugin.cbp" />
 		</Project>
 		<Project filename="sdk\sdk.cbp" />
 		<Project filename="Plugins\FBIdePlugin\FBIdePlugin.cbp">
@@ -21,5 +22,6 @@
 		</Project>
 		<Project filename="Plugins\Project\Project.cbp" />
 		<Project filename="Plugins\ModMargin\ModMargin.cbp" />
+		<Project filename="Plugins\Log\LogPlugin.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

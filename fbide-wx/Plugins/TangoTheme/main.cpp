@@ -38,6 +38,7 @@ namespace XPM {
     #include "xpm/xpm_tango/search.xpm"
     #include "xpm/xpm_tango/srchrep.xpm"
     #include "xpm/xpm_tango/xpm_goto.xpm"
+    #include "xpm/xpm_tango/screen.xpm"
     #include "xpm/xpm_tango/about.xpm"
     #include "xpm/xpm_tango/empty.xpm"
 }
@@ -67,6 +68,7 @@ class TangoThemeProvider : public IArtProvider
             m_bitmaps[_T("replace")]   = new wxBitmap (XPM::srchrep);
             m_bitmaps[_T("goto")]      = new wxBitmap (XPM::xpm_goto);
             m_bitmaps[_T("about")]     = new wxBitmap (XPM::about);
+            m_bitmaps[_T("log")]       = new wxBitmap (XPM::screen);
             m_bitmaps[_T("icon.empty")]= new wxBitmap (XPM::empty);
             for (CBitmapMap::iterator iter = m_bitmaps.begin(); iter != m_bitmaps.end(); iter++)
             {

@@ -79,7 +79,6 @@ class ModMarginPlugin : public CPluginBase
             editor.MarkerDefine(MARKER_SAVED, wxSCI_MARK_FULLRECT);
             editor.MarkerSetBackground(MARKER_SAVED, info.fg);
 
-
             // insert text event
             editor.Bind (
                 CEditorEvent::TYPE_TEXT_INSERT,
@@ -121,6 +120,9 @@ namespace
 {
     CPluginProvider<ModMarginPlugin, PLUGINTYPE_TOOL> plugin (_T("ModMargin"));
 }
+
+
+
 
 
 #if 0
@@ -392,10 +394,7 @@ namespace
         LinesVector m_lines;
         IntVector   m_pending;
     };
-#endif
 
-
-#if 0
     // Manage change margin
     void updateChangeMargin (wxScintillaEvent & event)
     {
@@ -456,10 +455,11 @@ namespace
         }
 
     }
-#endif
+
 
     /*
     MARKER_SAVED    = 0,
     MARKER_EDITED   = 1,
     MARKER_FLAGS    = (1 << MARKER_SAVED) | (1 << MARKER_EDITED),
     */
+#endif

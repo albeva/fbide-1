@@ -40,6 +40,7 @@
             <item id="new" />
             <item id="open" />
             <item id="save" />
+            <!-- item id="log" / -->
         </toolbar>
         <toolbar id="edit">
             <item id="undo" />

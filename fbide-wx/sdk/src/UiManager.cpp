@@ -27,6 +27,7 @@
 #include "sdk/Document.h"
 #include "sdk/DocManager.h"
 
+#define AUI_USE_PERSPECTIVES
 
 using namespace fb;
 
@@ -316,11 +317,13 @@ Ui::Ui ()
         wxAuiPaneInfo()
         .Name(_T("fbUiLogsArea"))
         .Bottom()
+        .CaptionVisible(false)
         .PaneBorder(false)
+        .MinSize(100, 50)
+        .BestSize(200, 300)
         .Hide()
     );
     m_paneNotebooks[_T("logs")] = nb;
-
 
 
     // Refresh title
@@ -940,8 +943,34 @@ void Ui::AddMenuItem (const wxString & name, wxMenu * parent)
 // Load the UI (finalize loading process)
 void Ui::Load ()
 {
+    CRegistry & reg = GET_REG();
+    wxFrame & frame = *GET_MGR()->GetFrame();
+
+    // Load previous window size and position
+    frame.SetSize(
+        reg["ui.window.rect.x"].AsInt(wxDefaultCoord),
+        reg["ui.window.rect.y"].AsInt(wxDefaultCoord),
+        reg["ui.window.rect.width"].AsInt(300),
+        reg["ui.window.rect.height"].AsInt(200)
+    );
+
+    // Set minimum size
+    frame.SetMinSize(wxSize(
+        reg["ui.window.min.width"].AsInt(300),
+        reg["ui.window.min.height"].AsInt(200)
+    ));
+
+    // load AUI perspective
+    #ifdef AUI_USE_PERSPECTIVES
+        if (m_aui != 0L)
+        {
+            m_aui->LoadPerspective(reg["ui.perspective"].AsString());
+        }
+    #endif
+    // update aui layout
     m_aui->Update();
-    GET_MGR()->GetFrame()->Show();
+    // show the main window
+    frame.Show();
 }
 
 
@@ -949,10 +978,18 @@ void Ui::Load ()
 // to be removed
 void Ui::Unload ()
 {
+    wxFrame & frame = *GET_MGR()->GetFrame();
+    CRegistry & reg = GET_REG();
     CManager::Get()->GetDocManager()->CloseAll();
     #ifdef AUI_USE_PERSPECTIVES
-        if (m_aui != 0L) GET_REG()[_T("ui.perspective")] = m_aui->SavePerspective();
+        if (m_aui != 0L) reg["ui.perspective"] = m_aui->SavePerspective();
     #endif
+    // save window size and position
+    wxRect r = frame.GetScreenRect();
+    reg["ui.window.rect.x"] = r.x;
+    reg["ui.window.rect.y"] = r.y;
+    reg["ui.window.rect.width"] = r.width;
+    reg["ui.window.rect.height"] = r.height;
 }
 
 

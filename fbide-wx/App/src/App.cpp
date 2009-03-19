@@ -42,8 +42,8 @@ using namespace fb;
  * Register Application class with WX
  * and trigger loading
  */
-IMPLEMENT_APP(CApp);
 DECLARE_APP(CApp);
+IMPLEMENT_APP(CApp);
 
 #include "sdk/Registry.h"
 
@@ -67,41 +67,6 @@ bool CApp::OnInit()
 
         // registry
         CRegistry         & reg = mgr.GetReg();
-
-        // Load logger and set better font (courier new)
-        wxLogWindow * logger = new wxLogWindow (frame, _T("FBIde log"));
-        wxLog::SetLogLevel(wxLOG_Info);
-        wxFrame * fr = logger->GetFrame();
-        wxWindowList & wdg = fr->GetChildren();
-        wxWindowList::iterator iter;
-        for (iter = wdg.begin(); iter != wdg.end(); ++iter)
-        {
-            wxWindow * wnd = *iter;
-            if (wnd->GetName() == _T("text"))
-            {
-                if(wxTextCtrl * tctrl = dynamic_cast<wxTextCtrl *>(wnd))
-                {
-                    tctrl->SetFont(wxFont(
-                        12,
-                        wxFONTFAMILY_MODERN,
-                        wxFONTSTYLE_NORMAL,
-                        wxFONTWEIGHT_NORMAL,
-                        false,
-                        _T("Courier New")
-                    ));
-                    break;
-                }
-            }
-            // wxMessageBox(wnd->GetName());
-        }
-
-
-
-
-
-        wxLog::SetActiveTarget(logger);
-        wxLogMessage(_T("LOG level restriction in place. Max wxLOG_Info!"));
-
 
 
         // Set base configuration
@@ -136,6 +101,8 @@ bool CApp::OnInit()
         mgr.RegisterId(_T("replace"),   wxID_REPLACE);
         mgr.RegisterId(_T("goto"),      wxNewId());
         mgr.RegisterId(_T("about"),     wxID_ABOUT);
+        // mgr.RegisterId(_T("log"),       wxNewId());
+
 
         // Initalize docManager. Must be called after wxFrame has been assigned to uiManager
         GET_DOCMGR();
@@ -145,6 +112,9 @@ bool CApp::OnInit()
 
         // experimental plugins
         pm->LoadPlugin(_T("FBIdePlugin"));
+
+        // Load LogPlugin
+        pm->LoadPlugin(_T("LogPlugin"));
 
         // Load Skin plugin
         pm->LoadPlugin(reg["ui.plugin.theme"].AsString("TangoTheme"));
@@ -166,6 +136,7 @@ bool CApp::OnInit()
         ui.Load();
 
         // open files in sample/ directory
+        /*
         wxDir dir (reg["dir.base"].AsString() + _T("samples/"));
         if (dir.IsOpened() && dir.HasFiles(_T("*.bas")))
         {
@@ -173,6 +144,7 @@ bool CApp::OnInit()
             dir.GetAllFiles(dir.GetName(), &files, _T("*.bas"));
             GET_DOCMGR()->Open(files);
         }
+        */
 
         // modification margin plugin
         pm->LoadPlugin(_T("ModMargin"));
@@ -183,6 +155,19 @@ bool CApp::OnInit()
     return false;
 }
 
+
+/**
+ * Make Log window visible
+ */
+/*
+void CApp::ShowLog (wxCommandEvent &)
+{
+    if (wxLogWindow * log = dynamic_cast<wxLogWindow *>(wxLog::GetActiveTarget()))
+    {
+        log->Show();
+    }
+}
+*/
 
 
 /**
