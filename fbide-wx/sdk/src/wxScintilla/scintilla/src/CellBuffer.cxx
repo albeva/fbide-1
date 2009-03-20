@@ -15,7 +15,7 @@
 #include "Scintilla.h"
 #include "SplitVector.h"
 #include "Partitioning.h"
-#include "RunStyles.h" 
+#include "RunStyles.h"
 #include "CellBuffer.h"
 
 #ifdef SCI_NAMESPACE
@@ -127,86 +127,86 @@ void MarkerHandleSet::CombineWith(MarkerHandleSet *other) {
 	other->root = 0;
 }
 
-LineChanges::LineChanges() : collecting(0), edition(0) { 
-} 
- 
-LineChanges::~LineChanges() { 
-} 
- 
-void LineChanges::AdvanceEdition() { 
-    edition = (edition + 1) % 0x40000000; 
-} 
- 
-int LineChanges::GetEdition() const { 
-    return edition; 
-} 
- 
-char *LineChanges::PersistantForm() const { 
-    if (collecting) 
-        return state.PersistantForm(); 
-    else 
-        return 0; 
-} 
- 
-void LineChanges::SetChanges(const char *changesState) { 
-    if (collecting && changesState) { 
-        state.FromPersistant(changesState); 
-        AdvanceEdition(); 
-    } 
-} 
- 
-void LineChanges::InsertText(int line, int edition, bool undoing) { 
-    if (collecting && !undoing) { 
-        int position = line; 
-        int fillLength = 1; 
-        if (state.FillRange(position, edition, fillLength)) { 
-            if (fillLength > 0) { 
-                AdvanceEdition(); 
-            } 
-        } 
-    } 
-} 
- 
+LineChanges::LineChanges() : collecting(0), edition(0) {
+}
+
+LineChanges::~LineChanges() {
+}
+
+void LineChanges::AdvanceEdition() {
+    edition = (edition + 1) % 0x40000000;
+}
+
+int LineChanges::GetEdition() const {
+    return edition;
+}
+
+char *LineChanges::PersistantForm() const {
+    if (collecting)
+        return state.PersistantForm();
+    else
+        return 0;
+}
+
+void LineChanges::SetChanges(const char *changesState) {
+    if (collecting && changesState) {
+        state.FromPersistant(changesState);
+        AdvanceEdition();
+    }
+}
+
+void LineChanges::InsertText(int line, int edition, bool undoing) {
+    if (collecting && !undoing) {
+        int position = line;
+        int fillLength = 1;
+        if (state.FillRange(position, edition, fillLength)) {
+            if (fillLength > 0) {
+                AdvanceEdition();
+            }
+        }
+    }
+}
+
 void LineChanges::InsertLine(int line, int edition, bool undoing) {
-    if (collecting && !undoing) { 
-        state.InsertSpace(line, 1); 
-        int linePosition = line; 
-        int fillLength = 1; 
+    if (collecting && !undoing) {
+        state.InsertSpace(line, 1);
+        int linePosition = line;
+        int fillLength = 1;
         if (state.FillRange(linePosition, edition, fillLength))
-            AdvanceEdition(); 
-    } 
-} 
- 
-void LineChanges::RemoveLine(int line, bool undoing) { 
-    if (collecting && !undoing) { 
-        state.DeleteRange(line, 1); 
-        AdvanceEdition(); 
-    } 
-} 
- 
-void LineChanges::EnableChangeCollection(bool collecting_, int lines) { 
-    collecting = collecting_; 
-    if (collecting) { 
-        state.InsertSpace(0, lines); 
-    } 
-} 
- 
-void LineChanges::ClearChanged() { 
-    if (collecting) { 
-        int position = 0; 
-        int length = state.Length(); 
-        if (state.FillRange(position, 0, length)) 
-            AdvanceEdition(); 
-    } 
-} 
- 
-int LineChanges::GetChanged(int line) const { 
-    if (collecting) { 
-        return state.ValueAt(line); 
-    } 
-    return 0; 
-} 
- 
+            AdvanceEdition();
+    }
+}
+
+void LineChanges::RemoveLine(int line, bool undoing) {
+    if (collecting && !undoing) {
+        state.DeleteRange(line, 1);
+        AdvanceEdition();
+    }
+}
+
+void LineChanges::EnableChangeCollection(bool collecting_, int lines) {
+    collecting = collecting_;
+    if (collecting) {
+        state.InsertSpace(0, lines);
+    }
+}
+
+void LineChanges::ClearChanged() {
+    if (collecting) {
+        int position = 0;
+        int length = state.Length();
+        if (state.FillRange(position, 0, length))
+            AdvanceEdition();
+    }
+}
+
+int LineChanges::GetChanged(int line) const {
+    if (collecting) {
+        return state.ValueAt(line);
+    }
+    return 0;
+}
+
 LineVector::LineVector() : starts(256) {
 	handleCurrent = 1;
 
@@ -263,9 +263,9 @@ int LineVector::GetLevel(int line) {
 	}
 }
 
-void LineVector::InsertText(int line, int delta, int edition, bool undoing) { 
+void LineVector::InsertText(int line, int delta, int edition, bool undoing) {
 	starts.InsertText(line, delta);
-    changes.InsertText(line, edition, undoing); 
+    changes.InsertText(line, edition, undoing);
 }
 
 void LineVector::InsertLine(int line, int position, int edition, bool undoing) {
@@ -287,7 +287,7 @@ void LineVector::SetLineStart(int line, int position) {
 	starts.SetPartitionStartPosition(line, position);
 }
 
-void LineVector::RemoveLine(int line, bool undoing) { 
+void LineVector::RemoveLine(int line, bool undoing) {
 	starts.RemovePartition(line);
 	// Retain the markers from the deleted line by oring them into the previous line
 	if (markers.Length()) {
@@ -296,7 +296,7 @@ void LineVector::RemoveLine(int line, bool undoing) {
 		}
 		markers.Delete(line);
 	}
-    changes.RemoveLine(line, undoing); 
+    changes.RemoveLine(line, undoing);
 	if (levels.Length()) {
 		// Move up following lines but merge header flag from this line
 		// to line before to avoid a temporary disappearence causing expansion.
@@ -387,35 +387,35 @@ int LineVector::LineFromHandle(int markerHandle) {
 	return -1;
 }
 
-void LineVector::EnableChangeCollection(bool changesCollecting_) { 
-    DeleteChangeCollection(); 
-    changes.EnableChangeCollection(changesCollecting_, Lines()); 
-} 
- 
-void LineVector::DeleteChangeCollection() { 
-    changes.ClearChanged(); 
-} 
- 
-int LineVector::GetChanged(int line) const { 
-    return changes.GetChanged(line); 
-} 
- 
-int LineVector::GetChangesEdition() const { 
-    return changes.GetEdition(); 
-} 
- 
-void LineVector::SetSavePoint() { 
-    changes.AdvanceEdition(); 
-} 
- 
-char *LineVector::PersistantForm() const { 
-    return changes.PersistantForm(); 
-} 
- 
-void LineVector::SetChanges(const char *changesState) { 
-    changes.SetChanges(changesState); 
-} 
- 
+void LineVector::EnableChangeCollection(bool changesCollecting_) {
+    DeleteChangeCollection();
+    changes.EnableChangeCollection(changesCollecting_, Lines());
+}
+
+void LineVector::DeleteChangeCollection() {
+    changes.ClearChanged();
+}
+
+int LineVector::GetChanged(int line) const {
+    return changes.GetChanged(line);
+}
+
+int LineVector::GetChangesEdition() const {
+    return changes.GetEdition();
+}
+
+void LineVector::SetSavePoint() {
+    changes.AdvanceEdition();
+}
+
+char *LineVector::PersistantForm() const {
+    return changes.PersistantForm();
+}
+
+void LineVector::SetChanges(const char *changesState) {
+    changes.SetChanges(changesState);
+}
+
 Action::Action() {
 	at = startAction;
 	position = 0;
@@ -484,15 +484,15 @@ UndoHistory::UndoHistory() {
 	currentAction = 0;
 	undoSequenceDepth = 0;
 	savePoint = 0;
-    savePointEffective = 0; 
+    savePointEffective = 0;
 
-    changeActions = 0; 
+    changeActions = 0;
 
 	actions[currentAction].Create(startAction);
 }
 
 UndoHistory::~UndoHistory() {
-    DeleteChangeHistory(); 
+    DeleteChangeHistory();
 	delete []actions;
 	actions = 0;
 }
@@ -503,18 +503,18 @@ void UndoHistory::EnsureUndoRoom() {
 	if (currentAction >= (lenActions - 2)) {
 		// Run out of undo nodes so extend the array
 		int lenActionsNew = lenActions * 2;
- 
-        if (changeActions) { 
-            int **changeActionsNew = new int *[lenActionsNew]; 
-            if (!changeActionsNew) 
-                return; 
-            for (int i=0;i<lenActionsNew;i++) { 
-                changeActionsNew[i] = (i < lenActions) ? changeActions[i] : 0; 
-            } 
-            delete []changeActions; 
-            changeActions = changeActionsNew; 
-        } 
- 
+
+        if (changeActions) {
+            int **changeActionsNew = new int *[lenActionsNew];
+            if (!changeActionsNew)
+                return;
+            for (int i=0;i<lenActionsNew;i++) {
+                changeActionsNew[i] = (i < lenActions) ? changeActions[i] : 0;
+            }
+            delete []changeActions;
+            changeActions = changeActionsNew;
+        }
+
 		Action *actionsNew = new Action[lenActionsNew];
 		if (!actionsNew)
 			return;
@@ -527,13 +527,13 @@ void UndoHistory::EnsureUndoRoom() {
 }
 
 void UndoHistory::AppendAction(actionType at, int position, char *data, int lengthData,
-    bool &startSequence, char *persistantChanges) { 
+    bool &startSequence, char *persistantChanges) {
 	EnsureUndoRoom();
 	//Platform::DebugPrintf("%% %d action %d %d %d\n", at, position, lengthData, currentAction);
 	//Platform::DebugPrintf("^ %d action %d %d\n", actions[currentAction - 1].at,
 	//	actions[currentAction - 1].position, actions[currentAction - 1].lenData);
 	if (currentAction < savePoint) {
-        savePointEffective = currentAction; 
+        savePointEffective = currentAction;
 		savePoint = -1;
 	}
 	int oldCurrentAction = currentAction;
@@ -582,12 +582,12 @@ void UndoHistory::AppendAction(actionType at, int position, char *data, int leng
 	}
 	startSequence = oldCurrentAction != currentAction;
 	actions[currentAction].Create(at, position, data, lengthData);
- 
-    if (changeActions) { 
-        delete []changeActions[currentAction]; 
-        changeActions[currentAction] = (int *)persistantChanges; 
-    } 
- 
+
+    if (changeActions) {
+        delete []changeActions[currentAction];
+        changeActions[currentAction] = (int *)persistantChanges;
+    }
+
 	currentAction++;
 	actions[currentAction].Create(startAction);
 	maxAction = currentAction;
@@ -631,45 +631,45 @@ void UndoHistory::DeleteUndoHistory() {
 	currentAction = 0;
 	actions[currentAction].Create(startAction);
 	savePoint = 0;
-    savePointEffective = 0; 
+    savePointEffective = 0;
 }
 
-void UndoHistory::DeleteChangeHistory() { 
-    if (changeActions) { 
-        for (int i=0;i<lenActions;i++) { 
-            delete []changeActions[i]; 
-        } 
-        delete []changeActions; 
-        changeActions = 0; 
-    } 
-} 
- 
-void UndoHistory::EnableChangeHistory(bool enable) { 
-    if (enable) { 
-        if (!changeActions) { 
-            changeActions = new int *[lenActions]; 
-            for (int i=0;i<lenActions;i++) { 
-                changeActions[i] = 0; 
-            } 
-        } 
-    } else { 
-        DeleteChangeHistory(); 
-    } 
+void UndoHistory::DeleteChangeHistory() {
+    if (changeActions) {
+        for (int i=0;i<lenActions;i++) {
+            delete []changeActions[i];
+        }
+        delete []changeActions;
+        changeActions = 0;
+    }
+}
+
+void UndoHistory::EnableChangeHistory(bool enable) {
+    if (enable) {
+        if (!changeActions) {
+            changeActions = new int *[lenActions];
+            for (int i=0;i<lenActions;i++) {
+                changeActions[i] = 0;
+            }
+        }
+    } else {
+        DeleteChangeHistory();
+    }
 }
 
 void UndoHistory::SetSavePoint() {
 	savePoint = currentAction;
-    savePointEffective = currentAction; 
+    savePointEffective = currentAction;
 }
 
 bool UndoHistory::IsSavePoint() const {
 	return savePoint == currentAction;
 }
 
-bool UndoHistory::BeforeSavePointEffective(int action) const { 
-    return action <= savePointEffective; 
-} 
- 
+bool UndoHistory::BeforeSavePointEffective(int action) const {
+    return action <= savePointEffective;
+}
+
 bool UndoHistory::CanUndo() const {
 	return (currentAction > 0) && (maxAction > 0);
 }
@@ -695,10 +695,10 @@ void UndoHistory::CompletedUndoStep() {
 	currentAction--;
 }
 
-char *UndoHistory::GetChangesStep() const { 
-    return changeActions ? (char *)changeActions[currentAction] : 0; 
-} 
- 
+char *UndoHistory::GetChangesStep() const {
+    return changeActions ? (char *)changeActions[currentAction] : 0;
+}
+
 bool UndoHistory::CanRedo() const {
 	return maxAction > currentAction;
 }
@@ -724,10 +724,10 @@ void UndoHistory::CompletedRedoStep() {
 	currentAction++;
 }
 
-int UndoHistory::Edition() const { 
-    return currentAction; 
-} 
- 
+int UndoHistory::Edition() const {
+    return currentAction;
+}
+
 CellBuffer::CellBuffer() {
 	readOnly = false;
 	collectingUndo = true;
@@ -750,7 +750,7 @@ void CellBuffer::GetCharRange(char *buffer, int position, int lengthRetrieve) {
 		                      lengthRetrieve, substance.Length());
 		return;
 	}
-	
+
 	for (int i=0; i<lengthRetrieve; i++) {
 		*buffer++ = substance.ValueAt(position + i);
 	}
@@ -760,7 +760,7 @@ char CellBuffer::StyleAt(int position) {
 	return style.ValueAt(position);
 }
 
-const char *CellBuffer::BufferPointer() { 
+const char *CellBuffer::BufferPointer() {
 	return substance.BufferPointer();
 }
 
@@ -776,11 +776,11 @@ const char *CellBuffer::InsertString(int position, const char *s, int insertLeng
 			for (int i = 0; i < insertLength; i++) {
 				data[i] = s[i];
 			}
-            char *persistantForm = lv.PersistantForm(); 
-            uh.AppendAction(insertAction, position, data, insertLength, startSequence, persistantForm); 
+            char *persistantForm = lv.PersistantForm();
+            uh.AppendAction(insertAction, position, data, insertLength, startSequence, persistantForm);
 		}
 
-        BasicInsertString(position, s, insertLength, false); 
+        BasicInsertString(position, s, insertLength, false);
 	}
 	return data;
 }
@@ -823,11 +823,11 @@ const char *CellBuffer::DeleteChars(int position, int deleteLength, bool &startS
 			for (int i = 0; i < deleteLength; i++) {
 				data[i] = substance.ValueAt(position + i);
 			}
-            char *persistantForm = lv.PersistantForm(); 
-            uh.AppendAction(removeAction, position, data, deleteLength, startSequence, persistantForm); 
+            char *persistantForm = lv.PersistantForm();
+            uh.AppendAction(removeAction, position, data, deleteLength, startSequence, persistantForm);
 		}
 
-        BasicDeleteChars(position, deleteLength, false); 
+        BasicDeleteChars(position, deleteLength, false);
 	}
 	return data;
 }
@@ -864,7 +864,7 @@ void CellBuffer::SetReadOnly(bool set) {
 
 void CellBuffer::SetSavePoint() {
 	uh.SetSavePoint();
-    lv.SetSavePoint(); 
+    lv.SetSavePoint();
 }
 
 bool CellBuffer::IsSavePoint() {
@@ -904,20 +904,20 @@ int CellBuffer::LineFromHandle(int markerHandle) {
 	return lv.LineFromHandle(markerHandle);
 }
 
-int CellBuffer::GetChanged(int line) const { 
-    int changed = lv.GetChanged(line); 
-    if (changed == 0) 
-        return 0; 
-    else if (uh.BeforeSavePointEffective(changed)) 
-        return 2; 
-    else 
-        return 1; 
-} 
- 
-int CellBuffer::GetChangesEdition() const { 
-    return lv.GetChangesEdition(); 
-} 
- 
+int CellBuffer::GetChanged(int line) const {
+    int changed = lv.GetChanged(line);
+    if (changed == 0)
+        return 0;
+    else if (uh.BeforeSavePointEffective(changed))
+        return 2;
+    else
+        return 1;
+}
+
+int CellBuffer::GetChangesEdition() const {
+    return lv.GetChangesEdition();
+}
+
 // Without undo
 
 void CellBuffer::InsertLine(int line, int position, int edition, bool undoing) {
@@ -928,14 +928,14 @@ void CellBuffer::InsertLine(int line, int position, int edition, bool undoing) {
 	}
 }
 
-void CellBuffer::RemoveLine(int line, bool undoing) { 
-    lv.RemoveLine(line, undoing); 
+void CellBuffer::RemoveLine(int line, bool undoing) {
+    lv.RemoveLine(line, undoing);
 	if (lineStates.Length() > line) {
 		lineStates.Delete(line);
 	}
 }
 
-void CellBuffer::BasicInsertString(int position, const char *s, int insertLength, bool undoing) { 
+void CellBuffer::BasicInsertString(int position, const char *s, int insertLength, bool undoing) {
 	if (insertLength == 0)
 		return;
 	PLATFORM_ASSERT(insertLength > 0);
@@ -945,7 +945,7 @@ void CellBuffer::BasicInsertString(int position, const char *s, int insertLength
 
 	int lineInsert = lv.LineFromPosition(position) + 1;
 	// Point all the lines after the insertion point further along in the buffer
-    lv.InsertText(lineInsert-1, insertLength, uh.Edition(), undoing); 
+    lv.InsertText(lineInsert-1, insertLength, uh.Edition(), undoing);
 	char chPrev = substance.ValueAt(position - 1);
 	char chAfter = substance.ValueAt(position + insertLength);
 	if (chPrev == '\r' && chAfter == '\n') {
@@ -974,12 +974,12 @@ void CellBuffer::BasicInsertString(int position, const char *s, int insertLength
 	if (chAfter == '\n') {
 		if (ch == '\r') {
 			// End of line already in buffer so drop the newly created one
-            RemoveLine(lineInsert - 1, undoing); 
+            RemoveLine(lineInsert - 1, undoing);
 		}
 	}
 }
 
-void CellBuffer::BasicDeleteChars(int position, int deleteLength, bool undoing) { 
+void CellBuffer::BasicDeleteChars(int position, int deleteLength, bool undoing) {
 	if (deleteLength == 0)
 		return;
 
@@ -992,7 +992,7 @@ void CellBuffer::BasicDeleteChars(int position, int deleteLength, bool undoing) 
 		// to work out which lines have been removed
 
 		int lineRemove = lv.LineFromPosition(position) + 1;
-        lv.InsertText(lineRemove-1, - (deleteLength), uh.Edition(), undoing); 
+        lv.InsertText(lineRemove-1, - (deleteLength), uh.Edition(), undoing);
 		char chPrev = substance.ValueAt(position - 1);
 		char chBefore = chPrev;
 		char chNext = substance.ValueAt(position);
@@ -1009,13 +1009,13 @@ void CellBuffer::BasicDeleteChars(int position, int deleteLength, bool undoing) 
 			chNext = substance.ValueAt(position + i + 1);
 			if (ch == '\r') {
 				if (chNext != '\n') {
-                    RemoveLine(lineRemove, undoing); 
+                    RemoveLine(lineRemove, undoing);
 				}
 			} else if (ch == '\n') {
 				if (ignoreNL) {
 					ignoreNL = false; 	// Further \n are real deletions
 				} else {
-                    RemoveLine(lineRemove, undoing); 
+                    RemoveLine(lineRemove, undoing);
 				}
 			}
 
@@ -1026,7 +1026,7 @@ void CellBuffer::BasicDeleteChars(int position, int deleteLength, bool undoing) 
 		char chAfter = substance.ValueAt(position + deleteLength);
 		if (chBefore == '\r' && chAfter == '\n') {
 			// Using lineRemove-1 as cr ended line before start of deletion
-            RemoveLine(lineRemove - 1, undoing); 
+            RemoveLine(lineRemove - 1, undoing);
 			lv.SetLineStart(lineRemove - 1, position + 1);
 		}
 	}
@@ -1052,19 +1052,19 @@ void CellBuffer::EndUndoAction() {
 	uh.EndUndoAction();
 }
 
-void CellBuffer::DeleteUndoHistory(bool collectChangeHistory) { 
+void CellBuffer::DeleteUndoHistory(bool collectChangeHistory) {
 	uh.DeleteUndoHistory();
-    uh.EnableChangeHistory(collectChangeHistory); 
-    lv.EnableChangeCollection(collectChangeHistory); 
+    uh.EnableChangeHistory(collectChangeHistory);
+    lv.EnableChangeCollection(collectChangeHistory);
 }
 
 bool CellBuffer::SetChangeCollection(bool collectChange) {
 	uh.EnableChangeHistory(collectChange);
-	lv.EnableChangeCollection(collectChange); 
+	lv.EnableChangeCollection(collectChange);
 	return collectChange;
 }
 
-void CellBuffer::DeleteChangeCollection() { 
+void CellBuffer::DeleteChangeCollection() {
     uh.DeleteChangeHistory();
     lv.DeleteChangeCollection();
 }
@@ -1083,13 +1083,13 @@ const Action &CellBuffer::GetUndoStep() const {
 }
 
 void CellBuffer::PerformUndoStep() {
-    const char *changesState = uh.GetChangesStep(); 
-    lv.SetChanges(changesState); 
+    const char *changesState = uh.GetChangesStep();
+    lv.SetChanges(changesState);
 	const Action &actionStep = uh.GetUndoStep();
 	if (actionStep.at == insertAction) {
-        BasicDeleteChars(actionStep.position, actionStep.lenData, true); 
+        BasicDeleteChars(actionStep.position, actionStep.lenData, true);
 	} else if (actionStep.at == removeAction) {
-        BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData, true); 
+        BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData, true);
 	}
 	uh.CompletedUndoStep();
 }
@@ -1109,14 +1109,14 @@ const Action &CellBuffer::GetRedoStep() const {
 void CellBuffer::PerformRedoStep() {
 	const Action &actionStep = uh.GetRedoStep();
 	if (actionStep.at == insertAction) {
-        BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData, false); 
+        BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData, false);
 	} else if (actionStep.at == removeAction) {
-        BasicDeleteChars(actionStep.position, actionStep.lenData, false); 
+        BasicDeleteChars(actionStep.position, actionStep.lenData, false);
 	}
 	uh.CompletedRedoStep();
-    if (IsSavePoint()) { 
-        lv.SetSavePoint(); 
-    } 
+    if (IsSavePoint()) {
+        lv.SetSavePoint();
+    }
 }
 
 int CellBuffer::SetLineState(int line, int state) {

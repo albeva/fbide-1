@@ -341,10 +341,10 @@ unsigned CEditorModMargin::Redo ( unsigned line )
 /**
  * Modify line
  */
-void CEditorModMargin::Modify ( unsigned line, int modified )
+void CEditorModMargin::Modify ( unsigned int startLine, int modified )
 {
-    int endLine = line + ( modified > 0 ? modified : 0 );
-    for ( ; line <= endLine; line++ )
+    int endLine = startLine + ( modified > 0 ? modified : 0 );
+    for (int line = startLine; line <= endLine; line++ )
     {
         if ( m_pending.insert(line).second )
         {
@@ -354,6 +354,96 @@ void CEditorModMargin::Modify ( unsigned line, int modified )
             Set ( line, FLAG_EDITED );
         }
     }
+
+    if ( modified < 0 )
+    {
+        modified = -modified;
+        for ( int line = startLine + 1; line <= startLine + modified; line++ )
+        {
+            if ( m_undo.insert(line).second )
+            {
+                LOG(LOG_MSG_INT("-- Modify ( delete ):", line));
+                // Push( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+                int nextMarker = m_editor.MarkerGet( line + modified );
+                Push( line, nextMarker & MARKER_FLAGS );
+                Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+
+                /*
+                Push( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+
+                int m = m_editor.MarkerGet( line + modified );
+                // SetMarker( line + modified, m );
+                Set ( line, m );
+                */
+            }
+        }
+    }
+}
+
+
+
+/**
+ * Undo the lines
+ */
+void CEditorModMargin::Undo ( unsigned int startLine, int modified )
+{
+    int endLine = startLine + ( modified > 0 ? modified : 0 );
+    for (int line = startLine; line <= endLine; line++ )
+    {
+        if ( m_pending.insert(line).second )
+        {
+            LOG(LOG_MSG_INT("-- Undo:", line));
+            Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+            SetMarker( line, Undo( line ) );
+        }
+    }
+
+    if ( modified < 0 )
+    {
+        modified = -modified;
+        for ( int line = startLine + 1; line <= startLine + modified; line++ )
+        {
+            if ( m_undo.insert(line).second )
+            {
+                LOG(LOG_MSG_INT("-- Undo ( delete ):", line));
+                //Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+                Undo( line );
+            }
+        }
+    }
+}
+
+
+
+/**
+ * Redo the lines
+ */
+void CEditorModMargin::Redo ( unsigned int startLine, int modified )
+{
+    int endLine = startLine + ( modified > 0 ? modified : 0 );
+    for (int line = startLine; line <= endLine; line++ )
+    {
+        if ( m_pending.insert(line).second )
+        {
+            LOG(LOG_MSG_INT("-- Redo:", line));
+            //Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+            SetMarker( line, Redo( line ) );
+        }
+    }
+
+    if ( modified < 0 )
+    {
+        modified = -modified;
+        for ( int line = startLine + 1; line <= startLine + modified; line++ )
+        {
+            if ( m_undo.insert(line).second )
+            {
+                LOG(LOG_MSG_INT("-- Redo ( delete ):", line));
+                //Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
+                Redo( line );
+            }
+        }
+    }
 }
 
 
@@ -361,6 +451,7 @@ void CEditorModMargin::Modify ( unsigned line, int modified )
 /**
  * Add undo / redo line
  */
+/*
 void CEditorModMargin::UndoRedo ( unsigned int startLine, int modified )
 {
     // add unique lines
@@ -377,12 +468,14 @@ void CEditorModMargin::UndoRedo ( unsigned int startLine, int modified )
             m_undo.insert( startLine + modified );
     }
 }
+*/
 
 
 
 /**
  * Submit Undo action
  */
+/*
 void CEditorModMargin::SubmitUndo ()
 {
     IntSet::iterator iter = m_pending.begin();
@@ -390,6 +483,7 @@ void CEditorModMargin::SubmitUndo ()
     {
         int line = *iter;
         LOG(LOG_MSG_INT("-- SubmitUndo:", line));
+        Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
         SetMarker( line, Undo( line ) );
     }
 
@@ -401,12 +495,14 @@ void CEditorModMargin::SubmitUndo ()
         Undo( line );
     }
 }
+*/
 
 
 
 /**
  * Submit REDO action
  */
+/*
 void CEditorModMargin::SubmitRedo ()
 {
     IntSet::iterator iter = m_pending.begin();
@@ -417,7 +513,7 @@ void CEditorModMargin::SubmitRedo ()
         SetMarker( line, Redo( line ) );
     }
 }
-
+*/
 
 
 /**

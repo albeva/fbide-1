@@ -52,7 +52,10 @@ namespace fb
         void Modify ( unsigned startLine, int lines );
 
         // push undo / redo line
-        void UndoRedo ( unsigned int startLine, int lines );
+        void Undo ( unsigned int startLine, int lines );
+
+        // Redo
+        void Redo ( unsigned int startLine, int lines );
 
         // Submit Undo action
         void SubmitUndo ();

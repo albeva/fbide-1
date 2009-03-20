@@ -123,50 +123,33 @@ struct CEditor::CData : public wxEvtHandler
             // performed undo or redo action
             else if ( mod & undoRedoFlags )
             {
-
-                if ( m_modMarginState == MOD_MARGIN_MODIFY )
+                // First step undo / redo
+                if ( m_modMarginState != MOD_MARGIN_UNDO_REDO )
                 {
+                    // flush any existing lines
                     m_modMargin->Flush();
                 }
+                m_modMarginState = MOD_MARGIN_UNDO_REDO;
 
-                m_modMargin->UndoRedo( line, lines );
-                m_modMarginState == MOD_MARGIN_UNDO_REDO;
+                // perform undo or redo
+                if ( mod & wxSCI_PERFORMED_UNDO )
+                    m_modMargin->Undo ( line, lines );
+                else
+                    m_modMargin->Redo ( line, lines );
+
+                // the last step
                 if ( mod & wxSCI_LASTSTEPINUNDOREDO )
                 {
-                    if ( mod & wxSCI_PERFORMED_UNDO )
-                    {
-                        m_modMargin->SubmitUndo();
-                    }
-                    else
-                    {
-                        m_modMargin->SubmitRedo();
-                    }
-                    m_modMargin->Flush();
                     m_modMarginState = 0;
                 }
             }
         }
-        // before edit
-        /*
-        else if ( mod & beforeEditFlags )
-        {
-            // start undo / redo
-            if ( mod & undoRedoFlags )
-            {
-                if ( m_modMarginState == 0 )
-                {
-                    // m_modMargin->Flush();
-                }
-                m_modMarginState = MOD_MARGIN_UNDO_REDO;
-            }
-        }
-        */
 
 
         // event object
         bool show = false;
 
-        //show = true;
+        // show = true;
         if ( show )
         {
             bool add = false;
