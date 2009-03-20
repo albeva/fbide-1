@@ -37,21 +37,18 @@ static inline void UNSET_FLAG (unsigned & value, unsigned flag)
 { value &= (~flag); }
 
 
-// Number of elements allocaed per block.
-enum {
-    STATES_IN_CELL  = sizeof(unsigned) * 8
-};
-
-
-// help struct
-struct LineStateInfo
-{
-    unsigned short counter;
-    unsigned short savepos;
-};
+// get cell offset
+#define GET_OFFSET(_cell)   (((_cell) % STATES_IN_CELL) * BITS_PER_STATE)
+// get cell index
+#define GET_INDEX(_cell)    (((_cell) / STATES_IN_CELL) + 1)
+// get the state
+#define GET_STATE(_val, _offset) (((_val) >> (_offset)) & MARKER_FLAGS)
+// Calculate the new state
+#define MAKE_STATE(_val, _offset, _marker) \
+    (((_val) & (~(MARKER_FLAGS << (_offset)))) | ((_marker) & MARKER_FLAGS) << (_offset))
 
 // show logs
-#define SHOW_LOG
+// #define SHOW_LOG
 
 // wrapper macro
 #ifdef SHOW_LOG
@@ -67,6 +64,38 @@ struct LineStateInfo
 CEditorModMargin::CEditorModMargin ( CEditor & editor )
     : m_editor ( editor )
 {
+    {/*
+    Push(1, FLAG_NONE);
+    Push(1, FLAG_EDITED);
+    Push(1, FLAG_EDITED);
+    Push(1, FLAG_EDITED);
+    Push(1, FLAG_SAVED);
+    Push(1, FLAG_EDITED);
+    Push(1, FLAG_EDITED);
+    Push(1, FLAG_SAVED);
+    Push(1, FLAG_EDITED);
+
+    while ( m_lines[1][0] != -1 )
+    {
+        int p = Undo( 1 );
+        if ( p == FLAG_NONE )
+        {
+            LOG_MSG("FLAG_NONE");
+        }
+        else if ( p == FLAG_SAVED )
+        {
+            LOG_MSG("FLAG_SAVED");
+        }
+        else if ( p == FLAG_EDITED )
+        {
+            LOG_MSG("FLAG_EDITED");
+        }
+        else
+        {
+            LOG_MSG_INT("Wrong!!!", p);
+        }
+    }
+    */}
 }
 
 
@@ -96,43 +125,26 @@ void CEditorModMargin::Push(unsigned line, unsigned marker)
     // get the cell or add a new entry
     if (mod.size() < (size_t)2)
     {
+        mod.push_back(-1);
         mod.push_back(0);
-        mod.push_back(0);
-        // init save position to the end
-        LineStateInfo & info = (LineStateInfo &)mod[0];
-        info.savepos = -1;
     }
 
     // get cell number
-    LineStateInfo & info = (LineStateInfo &)mod[0];
-    int cell = info.counter++;
+    int cell = ++mod[0];
     LOG(LOG_MSG_INT("    ", cell));
-
-    // set saved marker then set the save position
-    // and set marker to EDITED
-    if (marker == FLAG_SAVED)
-    {
-        info.savepos = cell;
-        marker = FLAG_EDITED;
-    }
-    else
-    {
-        // if state is pushed "before" save point
-        if (cell <= info.savepos) info.savepos = -1;
-    }
+    LOG(LOG_MSG_INT("    ", mod[0]));
 
     // get vector index and bit offset
-    int offset = (cell % STATES_IN_CELL);
-    int index  = (cell / STATES_IN_CELL) + 1;
+    int offset = GET_OFFSET(cell);
+    int index  = GET_INDEX(cell);
+    LOG(LOG_MSG_INT("    ", offset));
+    LOG(LOG_MSG_INT("    ", index));
 
     // expand array if needed
     if ((int)mod.size() <= index) mod.push_back(0);
 
-    // mark the bit
-    if ( marker == FLAG_EDITED )
-        SET_FLAG(mod[index], 1 << offset);
-    else
-        UNSET_FLAG(mod[index], 1 << offset);
+    // mark the cell
+    mod[index] = MAKE_STATE(mod[index], offset, marker);
 
     LOG(LOG_MSG("}"));
 }
@@ -140,87 +152,17 @@ void CEditorModMargin::Push(unsigned line, unsigned marker)
 
 
 /**
- * Set value of the current position
+ * Get top value ( current )
  */
-void CEditorModMargin::Set(unsigned line, unsigned marker)
+unsigned CEditorModMargin::Top ( unsigned line )
 {
     #ifdef SHOW_LOG
-        if ( marker == FLAG_SAVED ) { LOG_MSG("Set ( FLAG_SAVED ) {"); }
-        else if ( marker == FLAG_EDITED ) { LOG_MSG("Set ( FLAG_EDITED ) {"); }
-        else { LOG_MSG("Set ( FLAG_NONE ) {"); }
-        LOG_MSG_INT("    ", line);
-        LOG_MSG_INT("    ", marker);
-    #endif
-
-
-    // Ensure that vector is big enough
-    if (line >= m_lines.size())
-    {
-        for (size_t s = m_lines.size(); s <= line; s++)
-            m_lines.push_back(IntVector());
-    }
-
-    // get modification info
-    IntVector & mod = m_lines[line];
-
-    // get the cell or add a new entry
-    if (mod.size() < (size_t)2)
-    {
-        mod.push_back(0);
-        mod.push_back(0);
-        // init save position to the end
-        LineStateInfo & info = (LineStateInfo &)mod[0];
-        info.savepos = -1;
-    }
-
-    // get cell number
-    LineStateInfo & info = (LineStateInfo &)mod[0];
-    int cell = info.counter;
-    LOG(LOG_MSG_INT("    ", cell));
-
-    // set saved marker then set the save position
-    // and set marker to EDITED
-    if (marker == FLAG_SAVED)
-    {
-        info.savepos = cell;
-        marker = FLAG_EDITED;
-    }
-    else
-    {
-        // if state is pushed "before" save point
-        if (cell <= info.savepos) info.savepos = -1;
-    }
-
-    // get vector index and bit offset
-    int offset = (cell % STATES_IN_CELL);
-    int index  = (cell / STATES_IN_CELL) + 1;
-
-    // expand array if needed
-    if ((int)mod.size() <= index) mod.push_back(0);
-
-    // mark the bit
-    if ( marker == FLAG_EDITED )
-        SET_FLAG(mod[index], 1 << offset);
-    else
-        UNSET_FLAG(mod[index], 1 << offset);
-
-    LOG(LOG_MSG("}"));
-}
-
-
-
-/**
- * Pop topmost and check next value
- */
-unsigned CEditorModMargin::Undo (unsigned line)
-{
-    #ifdef SHOW_LOG
-        LOG_MSG("Undo {");
+        LOG_MSG("Top {");
         LOG_MSG_INT("    ", line);
     #endif
 
     // no state here
-    if ((int)m_lines.size() <= line)
+    if (m_lines.size() <= line)
     {
         LOG(LOG_MSG("} = FLAG_NONE (m_lines.size() <= line)"));
         return FLAG_NONE;
@@ -236,42 +178,92 @@ unsigned CEditorModMargin::Undo (unsigned line)
         return FLAG_NONE;
     }
 
-    // get line info
-    LineStateInfo & info = (LineStateInfo &)mod[0];
-
     // no states ?
-    if (info.counter == 0)
+    if (mod[0] == (unsigned)-1)
     {
-        LOG(LOG_MSG("} = FLAG_NONE (info.counter)"));
+        LOG(LOG_MSG("} = FLAG_NONE (mod[0] == -1)"));
         return FLAG_NONE;
     }
 
     // get cell
-    int cell = --info.counter;
+    int cell = mod[0];
     LOG(LOG_MSG_INT("    ", cell));
-
-    // is it a save cell ?
-    if ( cell == info.savepos )
-    {
-        LOG(LOG_MSG("} FLAG_SAVED = (cell == info.savepos)"));
-        return FLAG_SAVED;
-    }
+    LOG(LOG_MSG_INT("    ", mod[0]));
 
     // get vector index and bit offset
-    int offset = (cell % STATES_IN_CELL);
-    int index  = (cell / STATES_IN_CELL) + 1;
+    int offset = GET_OFFSET(cell);
+    int index  = GET_INDEX(cell);
+    LOG(LOG_MSG_INT("    ", offset));
+    LOG(LOG_MSG_INT("    ", index));
 
-    // edited ?
+    // Get cell state
     #ifdef SHOW_LOG
-        if (mod[index] & (1 << offset))
-        {
-            LOG_MSG("} = FLAG_EDITED");
-            return FLAG_EDITED;
-        }
-        LOG_MSG("} = FLAG_NONE");
-        return FLAG_NONE;
+        unsigned f = GET_STATE(mod[index], offset);
+        if (f == FLAG_NONE) { LOG_MSG("} = FLAG_NONE"); }
+        else if ( f == FLAG_EDITED) { LOG_MSG("} = FLAG_EDITED"); }
+        else if ( f == FLAG_SAVED) { LOG_MSG("} = FLAG_SAVED"); }
+        return f;
     #else
-        return mod[index] & (1 << offset) ? FLAG_EDITED : FLAG_NONE;
+        return GET_STATE(mod[index], offset);
+    #endif
+}
+
+
+
+/**
+ * Pop topmost and check next value
+ */
+unsigned CEditorModMargin::Undo (unsigned line)
+{
+    #ifdef SHOW_LOG
+        LOG_MSG("Undo {");
+        LOG_MSG_INT("    ", line);
+    #endif
+
+    // no state here
+    if (m_lines.size() <= line)
+    {
+        LOG(LOG_MSG("} = FLAG_NONE (m_lines.size() <= line)"));
+        return FLAG_NONE;
+    }
+
+    // get mod
+    IntVector & mod = m_lines[line];
+
+    // if it's too small?
+    if (mod.size() < 2)
+    {
+        LOG(LOG_MSG("} = FLAG_NONE (mod.size() < 2)"));
+        return FLAG_NONE;
+    }
+
+    // no states ?
+    if (--mod[0] == (unsigned)-1)
+    {
+        LOG(LOG_MSG("} = FLAG_NONE (mod[0] < 0)"));
+        return FLAG_NONE;
+    }
+
+    // get cell
+    int cell = mod[0];
+    LOG(LOG_MSG_INT("    ", cell));
+    LOG(LOG_MSG_INT("    ", mod[0]));
+
+    // get vector index and bit offset
+    int offset = GET_OFFSET(cell);
+    int index  = GET_INDEX(cell);
+    LOG(LOG_MSG_INT("    ", offset));
+    LOG(LOG_MSG_INT("    ", index));
+
+    // Get cell state
+    #ifdef SHOW_LOG
+        unsigned f = GET_STATE(mod[index], offset);
+        if (f == FLAG_NONE) { LOG_MSG("} = FLAG_NONE"); }
+        else if ( f == FLAG_EDITED) { LOG_MSG("} = FLAG_EDITED"); }
+        else if ( f == FLAG_SAVED) { LOG_MSG("} = FLAG_SAVED"); }
+        return f;
+    #else
+        return GET_STATE(mod[index], offset);
     #endif
 }
 
@@ -288,7 +280,7 @@ unsigned CEditorModMargin::Redo ( unsigned line )
     #endif
 
     // no state here
-    if ((int)m_lines.size() <= line)
+    if (m_lines.size() <= line)
     {
         LOG(LOG_MSG("} = FLAG_NONE (m_lines.size() <= line)"));
         return FLAG_NONE;
@@ -304,35 +296,25 @@ unsigned CEditorModMargin::Redo ( unsigned line )
         return FLAG_NONE;
     }
 
-    // get line info
-    LineStateInfo & info = (LineStateInfo &)mod[0];
-
     // get cell
-    int cell = ++info.counter;
+    int cell = ++mod[0];
     LOG(LOG_MSG_INT("    ", cell));
 
-    // is it a save cell ?
-    if ( cell == info.savepos )
-    {
-        LOG(LOG_MSG("} = FLAG_SAVED (info.savepos)"));
-        return FLAG_SAVED;
-    }
-
     // get vector index and bit offset
-    int offset = (cell % STATES_IN_CELL);
-    int index  = (cell / STATES_IN_CELL) + 1;
+    int offset = GET_OFFSET(cell);
+    int index  = GET_INDEX(cell);
+    LOG(LOG_MSG_INT("    ", offset));
+    LOG(LOG_MSG_INT("    ", index));
 
-    // edited ?
+    // Get cell state
     #ifdef SHOW_LOG
-        if (mod[index] & (1 << offset))
-        {
-            LOG_MSG("} = FLAG_EDITED");
-            return FLAG_EDITED;
-        }
-        LOG_MSG("} = FLAG_NONE");
-        return FLAG_NONE;
+        unsigned f = GET_STATE(mod[index], offset);
+        if (f == FLAG_NONE) { LOG_MSG("} = FLAG_NONE"); }
+        else if ( f == FLAG_EDITED) { LOG_MSG("} = FLAG_EDITED"); }
+        else if ( f == FLAG_SAVED) { LOG_MSG("} = FLAG_SAVED"); }
+        return f;
     #else
-        return mod[index] & (1 << offset) ? FLAG_EDITED : FLAG_NONE;
+        return GET_STATE(mod[index], offset);
     #endif
 }
 
@@ -341,7 +323,7 @@ unsigned CEditorModMargin::Redo ( unsigned line )
 /**
  * Modify line
  */
-void CEditorModMargin::Modify ( unsigned int startLine, int modified )
+void CEditorModMargin::Modify ( unsigned int startLine, int modified, int markers )
 {
     int endLine = startLine + ( modified > 0 ? modified : 0 );
     for (int line = startLine; line <= endLine; line++ )
@@ -349,33 +331,90 @@ void CEditorModMargin::Modify ( unsigned int startLine, int modified )
         if ( m_pending.insert(line).second )
         {
             LOG(LOG_MSG_INT("-- Modify:", line));
-            Push( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-            SetMarker( line, FLAG_EDITED );
-            Set ( line, FLAG_EDITED );
+            Push( line, markers );
+            SetMarker( line, markers );
         }
     }
 
     if ( modified < 0 )
     {
         modified = -modified;
-        for ( int line = startLine + 1; line <= startLine + modified; line++ )
+        for (unsigned line = startLine + 1; line <= startLine + modified; line++ )
         {
-            if ( m_undo.insert(line).second )
+            if ( m_undoredo.insert(line).second )
             {
                 LOG(LOG_MSG_INT("-- Modify ( delete ):", line));
-                // Push( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-                int nextMarker = m_editor.MarkerGet( line + modified );
-                Push( line, nextMarker & MARKER_FLAGS );
-                Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-
-                /*
-                Push( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-
-                int m = m_editor.MarkerGet( line + modified );
-                // SetMarker( line + modified, m );
-                Set ( line, m );
-                */
+                Push( line, Top( line + modified ) );
             }
+        }
+    }
+}
+
+
+
+/**
+ * Set all modified lines
+ */
+void CEditorModMargin::SetSavePos (  )
+{
+    for ( unsigned line = 0; line < m_lines.size(); line++ )
+    {
+        IntVector & mod = m_lines[line];
+        if ( mod.size() < 2 ) continue;
+
+        // only redo
+        if ( mod[0] == -1 )
+        {
+            for ( unsigned i = 1; i < mod.size(); i++ )
+                mod[i] = FULL_EDITED_FLAG;
+            continue;
+        }
+
+        // get cell nr
+        int cell = mod[0];
+
+        // index and offset of the cell
+        int offset = GET_OFFSET(cell);
+        int index  = GET_INDEX(cell);
+
+        // mark all REDO as edited
+        for ( unsigned i = index + 1; i < mod.size(); i++  )
+            mod[i] = FULL_EDITED_FLAG;
+        if ( offset < ( CELL_SIZE - BITS_PER_STATE ) )
+        {
+            // OK
+            mod[index] &= ((unsigned)-1) >> ((CELL_SIZE - offset)-2);
+            mod[index] |= ( FULL_EDITED_FLAG << (offset+2) );
+        }
+
+        // find any previous SAVE position
+        for ( unsigned i = 0; i < index; i++ )
+        {
+            for ( unsigned x = 0; x < CELL_SIZE; x += BITS_PER_STATE )
+            {
+                if ( GET_STATE(mod[i], x) == FLAG_SAVED )
+                {
+                    mod[i] = MAKE_STATE(mod[i], x, MARKER_EDITED);
+                }
+            }
+        }
+        for ( unsigned x = 0; x < offset; x += BITS_PER_STATE )
+        {
+            if ( GET_STATE(mod[index], x) == FLAG_SAVED )
+            {
+                // mod[index] &= ~(MARKER_FLAGS << offset);
+                // mod[index] |= (MARKER_EDITED & MARKER_FLAGS) << offset;
+                mod[index] = MAKE_STATE(mod[index], x, MARKER_EDITED);
+            }
+        }
+
+
+
+        // mark current state as edited
+        if ( GET_STATE(mod[index], offset) == FLAG_EDITED )
+        {
+            Push ( line, FLAG_SAVED );
+            SetMarker ( line, FLAG_SAVED );
         }
     }
 }
@@ -385,28 +424,25 @@ void CEditorModMargin::Modify ( unsigned int startLine, int modified )
 /**
  * Undo the lines
  */
-void CEditorModMargin::Undo ( unsigned int startLine, int modified )
+void CEditorModMargin::Undo ( unsigned startLine, int modified )
 {
-    int endLine = startLine + ( modified > 0 ? modified : 0 );
-    for (int line = startLine; line <= endLine; line++ )
+    unsigned endLine = startLine + (unsigned)( modified > 0 ? modified : 0 );
+    for (unsigned line = startLine; line <= endLine; line++ )
     {
         if ( m_pending.insert(line).second )
         {
             LOG(LOG_MSG_INT("-- Undo:", line));
-            Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-            SetMarker( line, Undo( line ) );
+            m_lineMarkers.push_back( LineMarker( line, Undo( line ) ) );
         }
     }
-
     if ( modified < 0 )
     {
         modified = -modified;
-        for ( int line = startLine + 1; line <= startLine + modified; line++ )
+        for ( unsigned line = startLine + 1; line <= startLine + modified; line++ )
         {
-            if ( m_undo.insert(line).second )
+            if ( m_undoredo.insert(line).second )
             {
                 LOG(LOG_MSG_INT("-- Undo ( delete ):", line));
-                //Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
                 Undo( line );
             }
         }
@@ -418,28 +454,25 @@ void CEditorModMargin::Undo ( unsigned int startLine, int modified )
 /**
  * Redo the lines
  */
-void CEditorModMargin::Redo ( unsigned int startLine, int modified )
+void CEditorModMargin::Redo ( unsigned startLine, int modified )
 {
-    int endLine = startLine + ( modified > 0 ? modified : 0 );
-    for (int line = startLine; line <= endLine; line++ )
+    unsigned endLine = startLine + (unsigned)( modified > 0 ? modified : 0 );
+    for (unsigned line = startLine; line <= endLine; line++ )
     {
         if ( m_pending.insert(line).second )
         {
             LOG(LOG_MSG_INT("-- Redo:", line));
-            //Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-            SetMarker( line, Redo( line ) );
+            m_lineMarkers.push_back( LineMarker( line, Redo( line ) ) );
         }
     }
-
     if ( modified < 0 )
     {
         modified = -modified;
-        for ( int line = startLine + 1; line <= startLine + modified; line++ )
+        for ( unsigned line = startLine + 1; line <= startLine + modified; line++ )
         {
-            if ( m_undo.insert(line).second )
+            if ( m_undoredo.insert(line).second )
             {
                 LOG(LOG_MSG_INT("-- Redo ( delete ):", line));
-                //Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
                 Redo( line );
             }
         }
@@ -449,71 +482,17 @@ void CEditorModMargin::Redo ( unsigned int startLine, int modified )
 
 
 /**
- * Add undo / redo line
+ * Apply markers in the linemarkers array
  */
-/*
-void CEditorModMargin::UndoRedo ( unsigned int startLine, int modified )
+void CEditorModMargin::ApplyMarkers ()
 {
-    // add unique lines
-    m_pending.insert ( startLine );
-    if ( modified > 0 )
+    MarkerVector::iterator iter = m_lineMarkers.begin();
+    for ( ; iter != m_lineMarkers.end(); iter++ )
     {
-        for ( ; modified; modified-- )
-            m_pending.insert( startLine + modified );
-    }
-    else if ( modified < 0 )
-    {
-        modified = -modified;
-        for ( ; modified; modified-- )
-            m_undo.insert( startLine + modified );
+        SetMarker( iter->first, iter->second );
     }
 }
-*/
 
-
-
-/**
- * Submit Undo action
- */
-/*
-void CEditorModMargin::SubmitUndo ()
-{
-    IntSet::iterator iter = m_pending.begin();
-    for ( ; iter != m_pending.end(); iter++ )
-    {
-        int line = *iter;
-        LOG(LOG_MSG_INT("-- SubmitUndo:", line));
-        Set ( line, m_editor.MarkerGet( line ) & MARKER_FLAGS );
-        SetMarker( line, Undo( line ) );
-    }
-
-    iter = m_undo.begin();
-    for ( ; iter != m_undo.end(); iter++ )
-    {
-        int line = *iter;
-        LOG(LOG_MSG_INT("-- SubmitUndo:", line));
-        Undo( line );
-    }
-}
-*/
-
-
-
-/**
- * Submit REDO action
- */
-/*
-void CEditorModMargin::SubmitRedo ()
-{
-    IntSet::iterator iter = m_pending.begin();
-    for ( ; iter != m_pending.end(); iter++ )
-    {
-        int line = *iter;
-        LOG(LOG_MSG_INT("-- SubmitRedo:", line));
-        SetMarker( line, Redo( line ) );
-    }
-}
-*/
 
 
 /**
@@ -523,17 +502,8 @@ void CEditorModMargin::Flush ()
 {
     LOG(LOG_MSG("-- Flush"));
     m_pending.clear();
-    m_undo.clear();
-}
-
-
-
-/**
- * Get count of pending lines
- */
-unsigned CEditorModMargin::GetPendingCount ()
-{
-    return m_pending.size();
+    m_undoredo.clear();
+    m_lineMarkers.clear();
 }
 
 

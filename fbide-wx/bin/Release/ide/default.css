@@ -5,7 +5,7 @@
  */
 .default {
 	color			: black;
-	background      : none;
+	background      : white;
 	font-size		: 12px;
 	font-family		: "Courier New";
 	font-style		: normal;
@@ -13,10 +13,51 @@
 	text-decoration	: normal;
 }
 
+
+/**
+ * Highlight linenumbers
+ */
+.line-margin {
+	color			: white;
+	background      : lightgray;
+}
+
+/**
+ * caret
+ */
+.caret {
+    color           : black;
+    width           : 2px;      /* max 3px ? */
+    background      : black;
+    opacity         : 15;
+}
+
+
+/**
+ * Define code folding styles
+ */
+.fold-margin {
+    width           : 12px;
+    color           : gray;
+    background      : white;
+}
+
+
+/**
+ * Style editing margin
+ */
+.edit-margin {
+    width           : 4px;
+    color           : #04FF50;
+    background      : #FFE604;
+}
+
+
 /**
  * Highlight non keyword identifiers
  */
 .identifier {
+    background      : none;
 }
 
 /**
@@ -47,6 +88,7 @@
  */
 .string {
 	color			: red;
+	background      : none;
 }
 /**
  * highlight legal escapes
@@ -60,6 +102,7 @@
  */
 .number {
 	color			: blue;
+	background      : none;
 }
 
 /**
@@ -68,6 +111,7 @@
 .operator {
 	color			: #0080C0;
 	font-weight		: bold;
+	background      : none;
 }
 
 /**
@@ -99,12 +143,14 @@
 	font-weight		: bold;
 	color			: #0BAF4F;
 }
+/*
 .preprocessor .keyword.one {
 	color			: #0BAF4F;
 }
 .preprocessor .keyword.two {
-	color			: black;
+	color			: #0BAF4F;
 }
+*/
 
 
 /**
@@ -112,6 +158,7 @@
  */
 .keyword {
 	font-weight		: bold;
+	background      : none;
 }
 .keyword.one {
 	color			: blue;

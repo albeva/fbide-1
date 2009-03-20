@@ -43,31 +43,36 @@ namespace fb
             FLAG_SAVED      = 1 << MARKER_SAVED,
             FLAG_EDITED     = 1 << MARKER_EDITED,
             MARKER_FLAGS    = FLAG_SAVED | FLAG_EDITED,
+            FULL_EDITED_FLAG= 0xAAAAAAAA,
+
+            BITS_PER_STATE  = 2,
+            CELL_SIZE       = ( sizeof(unsigned) * 8 ),
+            STATES_IN_CELL  = CELL_SIZE / BITS_PER_STATE,
         };
 
         // construct
         CEditorModMargin ( CEditor & editor );
 
         // Modify line
-        void Modify ( unsigned startLine, int lines );
+        void Modify ( unsigned startLine, int lines, int markers );
 
-        // push undo / redo line
+        // submit modified
+        void SubmitModify ();
+
+        // Undo action
         void Undo ( unsigned int startLine, int lines );
 
-        // Redo
+        // Redo action
         void Redo ( unsigned int startLine, int lines );
 
-        // Submit Undo action
-        void SubmitUndo ();
+        // Apply Undo / Redo
+        void ApplyMarkers ();
 
-        // Submit Redo action
-        void SubmitRedo ();
+        // Push this state to all modified lines
+        void SetSavePos ( );
 
         // Flush the line cache
         void Flush ();
-
-        // Get number of lines
-        unsigned GetPendingCount ();
 
 
         private :
@@ -80,6 +85,9 @@ namespace fb
 
             // Set current position to a value
             void Set(unsigned line, unsigned flags);
+
+            // get current value
+            unsigned Top ( unsigned line );
 
             // Pop value from stack
             unsigned Undo ( unsigned line );
@@ -96,9 +104,16 @@ namespace fb
             // the lines vector
             typedef std::vector<IntVector>      LinesVector;
 
+            // The line marker
+            typedef std::pair<unsigned, unsigned>   LineMarker;
+
+            // line markers
+            typedef std::vector< LineMarker >   MarkerVector;
+
             CEditor       & m_editor;
-            IntSet          m_pending, m_undo;
+            IntSet          m_pending, m_undoredo;
             LinesVector     m_lines;
+            MarkerVector    m_lineMarkers;
     };
 
 }

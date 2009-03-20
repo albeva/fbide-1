@@ -50,8 +50,8 @@ static inline void fbLogMsg(const char * msg, const wxString & var, int value)
 
 // log binary number
 #define LOG_BIN(_n) \
-    wxString s; for (int i = (sizeof(_n) * 8)-1; i >= 0 ; i--) \
+    { wxString s; for (int i = (sizeof(_n) * 8)-1; i >= 0 ; i--) \
         s << (_n & (1 << i) ? _T("1") : _T("0")); \
-    wxLogMessage(_T("%s = %s"), _T(#_n), s.c_str());
+    wxLogMessage(_T("%s = %s"), _T(#_n), s.c_str()); }
 
 #endif // LOG_H_INCLUDED

@@ -113,11 +113,12 @@ struct CEditor::CData : public wxEvtHandler
                 if ( mod & wxSTI_STARTACTION )
                 {
                     // m_modMargin->SubmitChanges();
+                    // m_modMargin->SubmitModify ();
                     m_modMargin->Flush();
                 }
 
                 // mark line as modified
-                m_modMargin->Modify( line, lines );
+                m_modMargin->Modify( line, lines, CEditorModMargin::FLAG_EDITED );
                 m_modMarginState = MOD_MARGIN_MODIFY;
             }
             // performed undo or redo action
@@ -128,8 +129,10 @@ struct CEditor::CData : public wxEvtHandler
                 {
                     // flush any existing lines
                     m_modMargin->Flush();
+
+                    // set state
+                    m_modMarginState = MOD_MARGIN_UNDO_REDO;
                 }
-                m_modMarginState = MOD_MARGIN_UNDO_REDO;
 
                 // perform undo or redo
                 if ( mod & wxSCI_PERFORMED_UNDO )
@@ -140,6 +143,7 @@ struct CEditor::CData : public wxEvtHandler
                 // the last step
                 if ( mod & wxSCI_LASTSTEPINUNDOREDO )
                 {
+                    m_modMargin->ApplyMarkers();
                     m_modMarginState = 0;
                 }
             }
@@ -582,29 +586,7 @@ void CEditor::SetStyle (int nr, const CStyleInfo & styleInfo)
 void CEditor::SaveFile (const wxString & file)
 {
     wxScintilla::SaveFile(file);
-
-    // update lines
-    /*for (int line = 0; line < GetLineCount(); line++)
-    {
-        if (MarkerGet(line) & (1 << MARKER_EDITED))
-        {
-            // all lines uniqe no need to check...
-            m_data->m_changes.AddPendingLine(line);
-            // remove modified markers and set saved
-            // MarkerDelete(line, MARKER_EDITED);
-            // MarkerAdd(line, MARKER_SAVED);
-        }
-    }*/
-
-    // commit edit changed...
-    /*
-    m_data->m_changes.SetAllAndCurrentTo (
-        this,
-        (1 << MARKER_EDITED),
-        (1 << MARKER_SAVED)
-    );
-    */
-    // m_data->m_changes.ChangeCurrent(this, (1 << MARKER_EDITED));
+    m_data->m_modMargin->SetSavePos (  );
 }
 
 
