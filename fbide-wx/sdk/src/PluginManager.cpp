@@ -144,6 +144,15 @@ CPluginManager::CPluginManager () : m_data(new CData())
  */
 CPluginManager::~CPluginManager ()
 {
+    UnloadAll ();
+}
+
+
+/**
+ * Unload all plugins
+ */
+void CPluginManager::UnloadAll ()
+{
     typedef CData::CPluginRegistry::iterator Iterator;
     for (Iterator iter = m_data->m_providers.begin();
          iter != m_data->m_providers.end();
@@ -151,6 +160,24 @@ CPluginManager::~CPluginManager ()
     {
         CPluginProviderBase * provider = iter->second;
         Unload(provider->GetName(), true);
+    }
+}
+
+
+/**
+ * Notify all plugins about pending shutdown
+ *
+ * NB! This shoudl be called:
+ *     - when fbide closes ( doen )
+ *     - when plugin is about to be unloaded at runtime
+ *       ensure that this is called only once!
+ */
+void CPluginManager::NotifyUnload ()
+{
+    CData::CPluginRegistry::iterator iter = m_data->m_providers.begin();
+    for ( ; iter != m_data->m_providers.end(); iter++ )
+    {
+        iter->second->GetPlugin()->NotifyExit();
     }
 }
 

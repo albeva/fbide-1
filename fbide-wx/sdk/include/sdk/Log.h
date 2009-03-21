@@ -54,4 +54,19 @@ static inline void fbLogMsg(const char * msg, const wxString & var, int value)
         s << (_n & (1 << i) ? _T("1") : _T("0")); \
     wxLogMessage(_T("%s = %s"), _T(#_n), s.c_str()); }
 
+static inline void fbLogMsg(const wxString & msg, const wxString & var, const wxString & value)
+{
+    // wxLogMessage(_T("%s\t\t\t(line: %d)"), msg.c_str(), line);
+    wxLogMessage(_T("%s %s = %s"), msg.c_str(), var.c_str(), value.c_str());
+}
+static inline void fbLogMsg(const char * msg, const wxString & var, const wxString & value)
+{
+    fbLogMsg(wxString(msg, wxConvUTF8), var, value);
+}
+// log binary number
+#define LOG_MSG_BIN(_msg, _n) \
+    { wxString s; for (int i = (sizeof(_n) * 8)-1; i >= 0 ; i--) \
+        s << (_n & (1 << i) ? _T("1") : _T("0")); \
+    fbLogMsg(_msg, _T(#_n), s.c_str()); }
+
 #endif // LOG_H_INCLUDED

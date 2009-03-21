@@ -48,7 +48,7 @@ static inline void UNSET_FLAG (unsigned & value, unsigned flag)
     (((_val) & (~(MARKER_FLAGS << (_offset)))) | ((_marker) & MARKER_FLAGS) << (_offset))
 
 // show logs
-#define SHOW_LOG
+// #define SHOW_LOG
 
 // wrapper macro
 #ifdef SHOW_LOG
@@ -471,42 +471,48 @@ void CEditorModMargin::Redo ( unsigned startLine, int modified )
  */
 void CEditorModMargin::SetSavePos (  )
 {
-    /*
+    LOG(LOG_MSG("SetSavePos:"));
     for ( unsigned line = 0; line < m_lines.size(); line++ )
     {
+        LOG(LOG_MSG_INT(" - ", line));
         IntVector & mod = m_lines[line];
         if ( mod.size() < 2 ) continue;
 
         // only redo
-        if ( mod[0] == -1 )
+        if ( mod[0] == (unsigned)-1 )
         {
             for ( unsigned i = 1; i < mod.size(); i++ )
                 mod[i] = FULL_EDITED_FLAG;
             continue;
         }
 
+
         // get cell nr
-        int cell = mod[0];
+        unsigned cell = mod[0];
 
         // index and offset of the cell
-        int offset = GET_OFFSET(cell);
-        int index  = GET_INDEX(cell);
-        LOG_INT(index);
-        LOG_INT(offset);
-        LOG_BIN(mod[index]);
+        unsigned offset = GET_OFFSET(cell);
+        unsigned index  = GET_INDEX(cell);
+        LOG(LOG_INT(index));
+        LOG(LOG_INT(offset));
+        LOG(LOG_MSG_BIN("    - Before:", mod[index]));
 
         // mark all REDO as edited
         for ( unsigned i = index + 1; i < mod.size(); i++  )
+        {
             mod[i] = FULL_EDITED_FLAG;
+        }
         if ( offset < ( CELL_SIZE - BITS_PER_STATE ) )
         {
-            // OK
-            mod[index] &= ((unsigned)-1) >> ((CELL_SIZE - offset)-2);
-            mod[index] |= ( FULL_EDITED_FLAG << (offset+2) );
+            unsigned clearMask = ((unsigned)-1) >> ((CELL_SIZE - offset) - 2);
+            unsigned editMask = ( FULL_EDITED_FLAG << (offset+2) );
+            mod[index] &= clearMask;
+            mod[index] |= editMask;
         }
 
+
         // find any previous SAVE position
-        for ( unsigned i = 0; i < index; i++ )
+        for ( unsigned i = 1; i < index; i++ )
         {
             for ( unsigned x = 0; x < CELL_SIZE; x += BITS_PER_STATE )
             {
@@ -516,30 +522,23 @@ void CEditorModMargin::SetSavePos (  )
                 }
             }
         }
-        for ( unsigned x = 0; x < (offset); x += BITS_PER_STATE )
+        for ( unsigned x = 0; x < offset; x += BITS_PER_STATE )
         {
+            LOG(LOG_MSG_INT("    - ", x));
             if ( GET_STATE(mod[index], x) == FLAG_SAVED )
             {
                 mod[index] = MAKE_STATE(mod[index], x, FLAG_EDITED);
             }
         }
 
-
-
         // mark current state as edited
         if ( GET_STATE(mod[index], offset) != FLAG_NONE )
         {
-            mod[index] = MAKE_STATE(mod[index], offset, FLAG_EDITED);
-            Push ( line, FLAG_SAVED );
+            mod[index] = MAKE_STATE(mod[index], offset, FLAG_SAVED);
             SetMarker ( line, FLAG_SAVED );
         }
-        else
-        {
-            // Push ( line, FLAG_NONE );
-        }
-        LOG_BIN(mod[index]);
+        LOG(LOG_MSG_BIN("    - After:", mod[index]));
     }
-    */
 }
 
 

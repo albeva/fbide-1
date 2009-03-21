@@ -1,10 +1,10 @@
-ones
-twofour
-onefours
-one
-twofour
-one
-ones
-twofour
-one
-two
+        one
+        two
+        three
+        four
+        five
+        six
+        seven
+        eight
+        nine
+        ten

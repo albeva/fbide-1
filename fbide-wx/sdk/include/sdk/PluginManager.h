@@ -82,6 +82,9 @@ namespace fb
             // Call on attach
             virtual bool Attach () = 0;
 
+            // notify unload
+            virtual void NotifyExit () {}
+
             // And when detached
             virtual bool Detach (bool force) { return true; };
 
@@ -186,6 +189,12 @@ namespace fb
             // Unload the plugin.
             bool Unload (CPluginBase * plugin, bool force);
             bool Unload (const wxString & name, bool force);
+
+            // Unload all plugins
+            void UnloadAll ();
+
+            // send unload notification
+            void NotifyUnload ();
 
         private :
             friend class CManager;

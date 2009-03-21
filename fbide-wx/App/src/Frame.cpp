@@ -24,6 +24,7 @@
 #include "sdk/Manager.h"
 #include "sdk/UiManager.h"
 #include "sdk/TypeManager.h"
+#include "sdk/PluginManager.h"
 
 using namespace fb;
 
@@ -66,7 +67,8 @@ void CFrame::OnClose(wxCloseEvent &event)
     int answer = wxMessageBox (_T("Quit FBIde?"), _T("Exit FBIde"), wxYES_NO | wxICON_QUESTION);
     if (answer != wxYES) return;
     */
-    CManager::Get()->GetUiManager()->Unload();
+    GET_PLUGINMGR()->NotifyUnload();
+    GET_UIMGR()->Unload();
     Destroy();
 }
 
