@@ -1,12 +1,3 @@
-hello
-
-
-
-four
-    one
-
-    twofour
-one
 ones
 twofour
 onefours
@@ -17,10 +8,3 @@ ones
 twofour
 one
 two
-ones
-d
-twoss
-three
-four
-three
-foursss

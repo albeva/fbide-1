@@ -331,10 +331,13 @@ unsigned CEditorModMargin::Redo ( unsigned line )
  */
 void CEditorModMargin::Modify ( unsigned int startLine, int modified, int markers )
 {
+    LOG(LOG_MSG("Modify:"));
+    LOG(LOG_MSG_INT(" - ", startLine));
+    LOG(LOG_MSG_INT(" - ", modified));
     // lines added
     if ( modified > 0 )
     {
-        int lastLine = m_lines.size();
+        unsigned lastLine = m_lines.size();
         if ( lastLine > 1 )
         {
             lastLine--;
@@ -349,13 +352,9 @@ void CEditorModMargin::Modify ( unsigned int startLine, int modified, int marker
     {
         unsigned deleted = -modified;
         int lastLine = m_lines.size();
-        if ( lastLine >  deleted )
+        for (unsigned line = startLine + 1; line < lastLine; line ++ )
         {
-            lastLine -= deleted;
-            for (unsigned line = startLine + 1; line < lastLine; line ++ )
-            {
-                Push( line, Top( line + deleted ) );
-            }
+            Push( line, Top( line + deleted ) );
         }
     }
     // current lines
@@ -374,10 +373,105 @@ void CEditorModMargin::Modify ( unsigned int startLine, int modified, int marker
 
 
 /**
+ * Undo the lines
+ */
+void CEditorModMargin::Undo ( unsigned startLine, int modified )
+{
+    LOG(LOG_MSG("Undo:"));
+    LOG(LOG_MSG_INT(" - ", startLine));
+    LOG(LOG_MSG_INT(" - ", modified));
+
+    // lines added or removed ?
+    if ( modified != 0 )
+    {
+        // Undo lines after the delete / insert block
+        unsigned touched = modified > 0 ? modified : -modified;
+        unsigned linesTotal = m_lines.size();
+        for ( unsigned line = startLine + touched + 1; line < linesTotal; line++ )
+        {
+            Undo( line );
+        }
+
+        // undo the lines in place of deleted
+        if ( modified < 0 )
+        {
+            for ( unsigned line = 1; line <= touched; line++ )
+            {
+                Undo( line + startLine );
+            }
+        }
+        // lines inserted.
+        else
+        {
+            for ( unsigned line = startLine + 1; line <= startLine + touched; line++ )
+            {
+                m_lineMarkers.push_back( LineMarker( line, Undo( line ) ) );
+            }
+        }
+    }
+
+    // Undo the line
+    if ( m_pending.insert( startLine ).second )
+    {
+        m_lineMarkers.push_back( LineMarker( startLine, Undo( startLine ) ) );
+    }
+}
+
+
+
+/**
+ * Redo the lines
+ */
+void CEditorModMargin::Redo ( unsigned startLine, int modified )
+{
+    LOG(LOG_MSG("Redo:"));
+    LOG(LOG_MSG_INT(" - ", startLine));
+    LOG(LOG_MSG_INT(" - ", modified));
+
+    // lines added or removed ?
+    if ( modified != 0 )
+    {
+        // Redo lines after the delete / insert block
+        unsigned touched = modified > 0 ? modified : -modified;
+        unsigned linesTotal = m_lines.size();
+        for ( unsigned line = startLine + touched + 1; line < linesTotal; line++ )
+        {
+            Redo( line );
+        }
+
+        // Redo the lines in place of deleted
+        if ( modified < 0 )
+        {
+            for ( unsigned line = 1; line <= touched; line++ )
+            {
+                Redo( line + startLine );
+            }
+        }
+        // Redo lines inserted.
+        else
+        {
+            for ( unsigned line = startLine + 1; line <= startLine + touched; line++ )
+            {
+                m_lineMarkers.push_back( LineMarker( line, Redo( line ) ) );
+            }
+        }
+    }
+
+    // Redo the line
+    if ( m_pending.insert( startLine ).second )
+    {
+        m_lineMarkers.push_back( LineMarker( startLine, Redo( startLine ) ) );
+    }
+}
+
+
+
+/**
  * Set all modified lines
  */
 void CEditorModMargin::SetSavePos (  )
 {
+    /*
     for ( unsigned line = 0; line < m_lines.size(); line++ )
     {
         IntVector & mod = m_lines[line];
@@ -445,86 +539,7 @@ void CEditorModMargin::SetSavePos (  )
         }
         LOG_BIN(mod[index]);
     }
-}
-
-
-
-/**
- * Undo the lines
- */
-void CEditorModMargin::Undo ( unsigned startLine, int modified )
-{
-    // lines added or removed ?
-    if ( modified != 0 )
-    {
-        int deleted = modified > 0 ? modified : -modified;
-        int lastLine = m_lines.size();
-        if ( lastLine > deleted )
-        {
-            lastLine -= deleted;
-            for (unsigned line = startLine + 1; line < lastLine; line++ )
-            {
-                Undo( line + deleted );
-            }
-        }
-
-        if ( modified < 0 )
-        {
-            for ( int line = 1; line <= deleted; line++ )
-            {
-                Undo( line + startLine );
-            }
-        }
-    }
-    // current lines
-    int endLine = startLine + ( modified > 0 ? modified : 0 );
-    for (int line = startLine; line <= endLine; line++ )
-    {
-        if ( m_pending.insert(line).second )
-        {
-            m_lineMarkers.push_back( LineMarker( line, Undo( line ) ) );
-        }
-    }
-}
-
-
-
-/**
- * Redo the lines
- */
-void CEditorModMargin::Redo ( unsigned startLine, int modified )
-{
-    // lines added or removed ?
-    if ( modified != 0 )
-    {
-        int deleted = modified > 0 ? modified : -modified;
-        int lastLine = m_lines.size();
-        if ( lastLine > deleted )
-        {
-            lastLine -= deleted;
-            for (unsigned line = startLine + 1; line < lastLine; line++ )
-            {
-                Redo( line + deleted );
-            }
-        }
-
-        if ( modified < 0 )
-        {
-            for ( int line = 1; line <= deleted; line++ )
-            {
-                Redo( line + startLine );
-            }
-        }
-    }
-    // current lines
-    int endLine = startLine + ( modified > 0 ? modified : 0 );
-    for (int line = startLine; line <= endLine; line++ )
-    {
-        if ( m_pending.insert(line).second )
-        {
-            m_lineMarkers.push_back( LineMarker( line, Redo( line ) ) );
-        }
-    }
+    */
 }
 
 
