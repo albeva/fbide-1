@@ -48,7 +48,7 @@ static inline void UNSET_FLAG (unsigned & value, unsigned flag)
     (((_val) & (~(MARKER_FLAGS << (_offset)))) | ((_marker) & MARKER_FLAGS) << (_offset))
 
 // show logs
-// #define SHOW_LOG
+#define SHOW_LOG
 
 // wrapper macro
 #ifdef SHOW_LOG

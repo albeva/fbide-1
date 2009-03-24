@@ -153,7 +153,7 @@ struct CEditor::CData : public wxEvtHandler
         // event object
         bool show = false;
 
-        // show = true;
+        show = true;
         if ( show )
         {
             bool add = false;
