@@ -4,16 +4,12 @@
 </head>
 <body>
 <tt>
-Build started on: <u>21-03-2009 at 20:14.04</u><br />
-Build ended on: <u>21-03-2009 at 20:14.08</u><p />
+Build started on: <u>27-03-2009 at 20:24.18</u><br />
+Build ended on: <u>27-03-2009 at 20:24.21</u><p />
 <b>-------------- Build: Win32 Release in SDK ---------------</b><br />
-mingw32-g++.exe -Wall -Winvalid-pch -include wx_pch.h -DwxUSE_UNICODE -DWX_PRECOMP -DSCI_LEXER -DEXPORT_LIB -D__WX__ -DWXMAKINGDLL_SCI -DwxUSE_AUI  -fexpensive-optimizations -O3 -pipe -mthreads -D__GNUWIN32__ -D__WXMSW__ -DWXUSINGDLL -D_DLL    -Iinclude -I..\sdk -IC:\dev\boost_1_38_0 -I..\sdk\src\wxScintilla\scintilla\include -I..\sdk\src\wxScintilla\scintilla\src -IC:\dev\wx2.8.10\lib\gcc_dll\mswu -IC:\dev\wx2.8.10\include  -c C:\dev\fbide\trunk\fbide-wx\sdk\src\Editor.cpp -o obj\Release\src\Editor.o<br />
 mingw32-g++.exe -Wall -Winvalid-pch -include wx_pch.h -DwxUSE_UNICODE -DWX_PRECOMP -DSCI_LEXER -DEXPORT_LIB -D__WX__ -DWXMAKINGDLL_SCI -DwxUSE_AUI  -fexpensive-optimizations -O3 -pipe -mthreads -D__GNUWIN32__ -D__WXMSW__ -DWXUSINGDLL -D_DLL    -Iinclude -I..\sdk -IC:\dev\boost_1_38_0 -I..\sdk\src\wxScintilla\scintilla\include -I..\sdk\src\wxScintilla\scintilla\src -IC:\dev\wx2.8.10\lib\gcc_dll\mswu -IC:\dev\wx2.8.10\include  -c C:\dev\fbide\trunk\fbide-wx\sdk\src\EditorModMargin.cpp -o obj\Release\src\EditorModMargin.o<br />
-C:\dev\fbide\trunk\fbide-wx\sdk\src\Editor.cpp: In member function 'bool fb::CEditor::Create(wxWindow*, wxWindowID, const wxPoint&, const wxSize&, long int, const wxString&)':<br />
-<font color="#0000ff">C:\dev\fbide\trunk\fbide-wx\sdk\src\Editor.cpp:377: warning: no return statement in function returning non-void</font><br />
 C:\dev\fbide\trunk\fbide-wx\sdk\src\EditorModMargin.cpp: In member function 'void fb::CEditorModMargin::Modify(unsigned int, int, int)':<br />
 <font color="#0000ff">C:\dev\fbide\trunk\fbide-wx\sdk\src\EditorModMargin.cpp:355: warning: comparison between signed and unsigned integer expressions</font><br />
-<font color="#0000ff">C:\dev\fbide\trunk\fbide-wx\sdk\src\Editor.cpp:377: warning: control reaches end of non-void function</font><br />
 mingw32-g++.exe -shared -Wl,--output-def=C:\dev\fbide\trunk\fbide-wx\bin\release\libfbide.def -Wl,--out-implib=C:\dev\fbide\trunk\fbide-wx\bin\release\libfbide.a -Wl,--dll -LC:\dev\wx2.8.10\lib\gcc_dll  obj\Release\src\ArtProvider.o obj\Release\src\DocManager.o obj\Release\src\Document.o obj\Release\src\Editor.o obj\Release\src\EditorManager.o obj\Release\src\EditorModMargin.o obj\Release\src\Exception.o obj\Release\src\Manager.o obj\Release\src\PluginManager.o obj\Release\src\StyleInfo.o obj\Release\src\TypeManager.o obj\Release\src\UiManager.o obj\Release\src\wxScintilla\PlatWX.o obj\Release\src\wxScintilla\ScintillaWX.o obj\Release\src\wxScintilla\scintilla\src\AutoComplete.o obj\Release\src\wxScintilla\scintilla\src\CallTip.o obj\Release\src\wxScintilla\scintilla\src\CellBuffer.o obj\Release\src\wxScintilla\scintilla\src\CharClassify.o obj\Release\src\wxScintilla\scintilla\src\ContractionState.o obj\Release\src\wxScintilla\scintilla\src\Decoration.o obj\Release\src\wxScintilla\scintilla\src\Document.o obj\Release\src\wxScintilla\scintilla\src\DocumentAccessor.o obj\Release\src\wxScintilla\scintilla\src\Editor.o obj\Release\src\wxScintilla\scintilla\src\ExternalLexer.o obj\Release\src\wxScintilla\scintilla\src\Indicator.o obj\Release\src\wxScintilla\scintilla\src\KeyMap.o obj\Release\src\wxScintilla\scintilla\src\KeyWords.o obj\Release\src\wxScintilla\scintilla\src\LineMarker.o obj\Release\src\wxScintilla\scintilla\src\PositionCache.o obj\Release\src\wxScintilla\scintilla\src\PropSet.o obj\Release\src\wxScintilla\scintilla\src\RESearch.o obj\Release\src\wxScintilla\scintilla\src\RunStyles.o obj\Release\src\wxScintilla\scintilla\src\ScintillaBase.o obj\Release\src\wxScintilla\scintilla\src\Style.o obj\Release\src\wxScintilla\scintilla\src\StyleContext.o obj\Release\src\wxScintilla\scintilla\src\UniConversion.o obj\Release\src\wxScintilla\scintilla\src\ViewStyle.o obj\Release\src\wxScintilla\scintilla\src\WindowAccessor.o obj\Release\src\wxScintilla\scintilla\src\XPM.o obj\Release\src\wxScintilla\wxscintilla.o   -o C:\dev\fbide\trunk\fbide-wx\bin\release\fbide.dll -s -shared-libgcc  -lwxmsw28u -lstdc++<br />
 <font color="#0000ff">c:/dev/mingw/bin/../lib/gcc/mingw32/4.3.3/../../../../mingw32/bin/ld.exe: warning: auto-importing has been activated without --enable-auto-import specified on the command line.</font><br />
 This should work unless it involves constant data structures referencing symbols from auto-imported DLLs.<br />
@@ -62,7 +58,7 @@ Target is up to date.<br />
 <b>-------------- Build: Win32 Release in App ---------------</b><br />
 Target is up to date.<br />
 <font color="#0000ff">Process terminated with status 0 (0 minutes, 3 seconds)</font><br />
-<font color="#0000ff">0 errors, 4 warnings</font><br />
+<font color="#0000ff">0 errors, 2 warnings</font><br />
 </tt>
 </body>
 </html>

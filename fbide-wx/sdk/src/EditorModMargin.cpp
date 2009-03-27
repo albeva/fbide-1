@@ -331,9 +331,9 @@ unsigned CEditorModMargin::Redo ( unsigned line )
  */
 void CEditorModMargin::Modify ( unsigned int startLine, int modified, int markers )
 {
-    LOG(LOG_MSG("Modify:"));
-    LOG(LOG_MSG_INT(" - ", startLine));
-    LOG(LOG_MSG_INT(" - ", modified));
+    LOG(LOG_MSG("-- Modify:"));
+    LOG(LOG_MSG_INT("   - ", startLine));
+    LOG(LOG_MSG_INT("   - ", modified));
     // lines added
     if ( modified > 0 )
     {
@@ -377,9 +377,9 @@ void CEditorModMargin::Modify ( unsigned int startLine, int modified, int marker
  */
 void CEditorModMargin::Undo ( unsigned startLine, int modified )
 {
-    LOG(LOG_MSG("Undo:"));
-    LOG(LOG_MSG_INT(" - ", startLine));
-    LOG(LOG_MSG_INT(" - ", modified));
+    LOG(LOG_MSG("-- Undo:"));
+    LOG(LOG_MSG_INT("   - ", startLine));
+    LOG(LOG_MSG_INT("   - ", modified));
 
     // lines added or removed ?
     if ( modified != 0 )
@@ -424,9 +424,9 @@ void CEditorModMargin::Undo ( unsigned startLine, int modified )
  */
 void CEditorModMargin::Redo ( unsigned startLine, int modified )
 {
-    LOG(LOG_MSG("Redo:"));
-    LOG(LOG_MSG_INT(" - ", startLine));
-    LOG(LOG_MSG_INT(" - ", modified));
+    LOG(LOG_MSG("-- Redo:"));
+    LOG(LOG_MSG_INT("   - ", startLine));
+    LOG(LOG_MSG_INT("   - ", modified));
 
     // lines added or removed ?
     if ( modified != 0 )
