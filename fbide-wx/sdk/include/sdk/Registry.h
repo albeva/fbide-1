@@ -37,6 +37,7 @@ namespace fb
     class CRegistry : public CRegistryHashMap
     {
         public :
+            /*
             inline CVariant & operator [] (const char * c_ch)
             {
                 return CRegistryHashMap::operator[](wxString(c_ch, wxConvUTF8));
@@ -44,7 +45,7 @@ namespace fb
             inline CVariant & operator [] (const wxChar * c_wch)
             {
                 return CRegistryHashMap::operator[](c_wch);
-            }
+            }*/
     };
 
 }

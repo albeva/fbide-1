@@ -338,6 +338,8 @@ Ui::Ui ()
 // Final clean up
 Ui::~Ui ()
 {
+
+
     for (UiToolMap::iterator iter = m_uiToolDescMap.begin(); iter != m_uiToolDescMap.end(); iter++)
     {
         delete iter->second;
@@ -348,6 +350,9 @@ Ui::~Ui ()
         delete *iter;
         iter = m_toolbarCheckFixs.erase(iter);
     }
+
+    // GET_MGR()->GetFrame()->SetNextHandler(NULL);
+    //
 }
 
 
@@ -982,6 +987,9 @@ void Ui::Load ()
 void Ui::Unload ()
 {
     wxFrame & frame = *GET_MGR()->GetFrame();
+
+    frame.RemoveEventHandler (this);
+
     CRegistry & reg = GET_REG();
     CManager::Get()->GetDocManager()->CloseAll();
     #ifdef AUI_USE_PERSPECTIVES

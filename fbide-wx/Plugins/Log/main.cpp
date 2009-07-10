@@ -38,7 +38,7 @@ using namespace fb;
  */
 struct LogThread
     : public wxThread,
-      public wxLogPassThrough
+      public wxLog
 {
     LogThread ( wxTextCtrl * tctrl, wxButton * logStopBtn )
         :   m_tctrl( tctrl ), m_logStopBtn( logStopBtn )
@@ -126,8 +126,7 @@ struct LogThread
 
 struct LogPlugin
     :   public CPluginBase,
-        public wxEvtHandler/*,
-        public wxLogPassThrough*/
+        public wxEvtHandler
 {
     // Attach plugin
     bool Attach ()
@@ -186,7 +185,7 @@ struct LogPlugin
         ui.AddPane(_T("Log"), panel, _T("logs"));
 
         // connect clear event
-        panel->SetNextHandler(this);
+        panel->wxEvtHandler::SetNextHandler(dynamic_cast<wxEvtHandler *>(this));
         Connect(
             ID_LOG_CLEAR,
             wxEVT_COMMAND_BUTTON_CLICKED,

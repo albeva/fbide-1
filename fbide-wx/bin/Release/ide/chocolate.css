@@ -1,0 +1,150 @@
+/*
+ * Created for FBIDE by Conexion
+ * Conexion@gmail.com
+ * Last Updated 01/05/09 
+ * 
+ *
+ * Default styles are applied
+ * to all elements that explicitly
+ * do not specify a style
+ */
+
+.default {
+	color				: #EEDDAA;
+	background      	: #332322;
+	font-size			: 14px;
+	font-family			: "Courier New";
+	font-style			: normal;
+	font-weight			: normal;
+	text-decoration		: normal;
+}
+
+
+/**
+ * Highlight linenumbers
+ */
+.linenumbers {
+	color			: #BBAAB0;
+	background      	: #2A1C17;
+	font-size		: 8px;
+	font-family		: "Courier New";
+}
+
+
+/**
+ * Highlight non keyword identifiers
+ */
+.identifier {
+	background      	: none;
+}
+
+/**
+ * Highlight comments.
+ */
+.comment {
+	color			: #F0FFFF;
+	font-style		: italic;
+	background		: #302020;
+}
+/**
+ * link or email inside the comment
+ */
+.comment .url {
+	font-weight		: bold;
+}
+
+/**
+ * highlight labels
+ */
+.label {
+	color			: #FFFFFF;
+	font-weight		: bold;
+}
+
+/**
+ * highlight quoted text
+ */
+.string {
+	color			: #FFFFFF;
+	background      	: none;
+}
+/**
+ * highlight legal escapes
+ */
+.string .escape {
+	color			: #EEDED9;
+}
+
+/**
+ * highlight numbers
+ */
+.number {
+	color			: #BBAAB0;
+	background      : none;
+}
+
+/**
+ * highlight operators
+ */
+.operator {
+	color			: #FFFFFF;
+	font-weight		: bold;
+	background      : none;
+}
+
+/**
+ * ASM block
+ */
+.asm {
+	background      : #3C2C2C;
+}
+/**
+ * Asm keywords
+ */
+.asm .keyword {
+	font-weight		: bold;
+}
+.asm .keyword.one {
+	color			: #BBAAB0;
+}
+.asm .keyword.two {
+	color			: #BBAAB0;
+}
+
+/**
+ * Preprocessor block
+ */
+.preprocessor {
+	background      : #3C2C2C;
+}
+.preprocessor .keyword {
+	font-weight		: bold;
+	color			: #FFFFFF;
+}
+.preprocessor .keyword.one {
+	color			: #FFFFFF;
+}
+.preprocessor .keyword.two {
+	color			: #FFFFFF;
+}
+
+
+/**
+ * FB keywords
+ */
+.keyword {
+	font-weight		: bold;
+	background      : none;
+}
+.keyword.one {
+	color			: #CCDDDD;
+}
+.keyword.two {
+	color			: #CC9066;
+}
+.keyword.three {
+	color			: #FFFFFF;
+}
+.keyword.four {
+	color			: #FFFFFF;
+}

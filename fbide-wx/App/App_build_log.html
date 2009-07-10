@@ -4,61 +4,29 @@
 </head>
 <body>
 <tt>
-Build started on: <u>27-03-2009 at 20:24.18</u><br />
-Build ended on: <u>27-03-2009 at 20:24.21</u><p />
-<b>-------------- Build: Win32 Release in SDK ---------------</b><br />
-mingw32-g++.exe -Wall -Winvalid-pch -include wx_pch.h -DwxUSE_UNICODE -DWX_PRECOMP -DSCI_LEXER -DEXPORT_LIB -D__WX__ -DWXMAKINGDLL_SCI -DwxUSE_AUI  -fexpensive-optimizations -O3 -pipe -mthreads -D__GNUWIN32__ -D__WXMSW__ -DWXUSINGDLL -D_DLL    -Iinclude -I..\sdk -IC:\dev\boost_1_38_0 -I..\sdk\src\wxScintilla\scintilla\include -I..\sdk\src\wxScintilla\scintilla\src -IC:\dev\wx2.8.10\lib\gcc_dll\mswu -IC:\dev\wx2.8.10\include  -c C:\dev\fbide\trunk\fbide-wx\sdk\src\EditorModMargin.cpp -o obj\Release\src\EditorModMargin.o<br />
-C:\dev\fbide\trunk\fbide-wx\sdk\src\EditorModMargin.cpp: In member function 'void fb::CEditorModMargin::Modify(unsigned int, int, int)':<br />
-<font color="#0000ff">C:\dev\fbide\trunk\fbide-wx\sdk\src\EditorModMargin.cpp:355: warning: comparison between signed and unsigned integer expressions</font><br />
-mingw32-g++.exe -shared -Wl,--output-def=C:\dev\fbide\trunk\fbide-wx\bin\release\libfbide.def -Wl,--out-implib=C:\dev\fbide\trunk\fbide-wx\bin\release\libfbide.a -Wl,--dll -LC:\dev\wx2.8.10\lib\gcc_dll  obj\Release\src\ArtProvider.o obj\Release\src\DocManager.o obj\Release\src\Document.o obj\Release\src\Editor.o obj\Release\src\EditorManager.o obj\Release\src\EditorModMargin.o obj\Release\src\Exception.o obj\Release\src\Manager.o obj\Release\src\PluginManager.o obj\Release\src\StyleInfo.o obj\Release\src\TypeManager.o obj\Release\src\UiManager.o obj\Release\src\wxScintilla\PlatWX.o obj\Release\src\wxScintilla\ScintillaWX.o obj\Release\src\wxScintilla\scintilla\src\AutoComplete.o obj\Release\src\wxScintilla\scintilla\src\CallTip.o obj\Release\src\wxScintilla\scintilla\src\CellBuffer.o obj\Release\src\wxScintilla\scintilla\src\CharClassify.o obj\Release\src\wxScintilla\scintilla\src\ContractionState.o obj\Release\src\wxScintilla\scintilla\src\Decoration.o obj\Release\src\wxScintilla\scintilla\src\Document.o obj\Release\src\wxScintilla\scintilla\src\DocumentAccessor.o obj\Release\src\wxScintilla\scintilla\src\Editor.o obj\Release\src\wxScintilla\scintilla\src\ExternalLexer.o obj\Release\src\wxScintilla\scintilla\src\Indicator.o obj\Release\src\wxScintilla\scintilla\src\KeyMap.o obj\Release\src\wxScintilla\scintilla\src\KeyWords.o obj\Release\src\wxScintilla\scintilla\src\LineMarker.o obj\Release\src\wxScintilla\scintilla\src\PositionCache.o obj\Release\src\wxScintilla\scintilla\src\PropSet.o obj\Release\src\wxScintilla\scintilla\src\RESearch.o obj\Release\src\wxScintilla\scintilla\src\RunStyles.o obj\Release\src\wxScintilla\scintilla\src\ScintillaBase.o obj\Release\src\wxScintilla\scintilla\src\Style.o obj\Release\src\wxScintilla\scintilla\src\StyleContext.o obj\Release\src\wxScintilla\scintilla\src\UniConversion.o obj\Release\src\wxScintilla\scintilla\src\ViewStyle.o obj\Release\src\wxScintilla\scintilla\src\WindowAccessor.o obj\Release\src\wxScintilla\scintilla\src\XPM.o obj\Release\src\wxScintilla\wxscintilla.o   -o C:\dev\fbide\trunk\fbide-wx\bin\release\fbide.dll -s -shared-libgcc  -lwxmsw28u -lstdc++<br />
-<font color="#0000ff">c:/dev/mingw/bin/../lib/gcc/mingw32/4.3.3/../../../../mingw32/bin/ld.exe: warning: auto-importing has been activated without --enable-auto-import specified on the command line.</font><br />
-This should work unless it involves constant data structures referencing symbols from auto-imported DLLs.<br />
-Info: resolving vtable for wxFileDialogBase by linking to __imp___ZTV16wxFileDialogBase (auto-import)<br />
-Info: resolving vtable for wxFileDialog by linking to __imp___ZTV12wxFileDialog (auto-import)<br />
-Info: resolving vtable for wxWindow by linking to __imp___ZTV8wxWindow (auto-import)<br />
-Info: resolving vtable for wxControl by linking to __imp___ZTV9wxControl (auto-import)<br />
-Info: resolving vtable for wxColour by linking to __imp___ZTV8wxColour (auto-import)<br />
-Info: resolving vtable for wxObject by linking to __imp___ZTV8wxObject (auto-import)<br />
-Info: resolving vtable for wxConvAuto by linking to __imp___ZTV10wxConvAuto (auto-import)<br />
-Info: resolving vtable for wxTextFile by linking to __imp___ZTV10wxTextFile (auto-import)<br />
-Info: resolving vtable for wxTextBuffer by linking to __imp___ZTV12wxTextBuffer (auto-import)<br />
-Info: resolving vtable for wxwxMenuItemListNode by linking to __imp___ZTV20wxwxMenuItemListNode (auto-import)<br />
-Info: resolving vtable for wxXmlDocument by linking to __imp___ZTV13wxXmlDocument (auto-import)<br />
-Info: resolving vtable for wxMenuBase by linking to __imp___ZTV10wxMenuBase (auto-import)<br />
-Info: resolving vtable for wxListBase by linking to __imp___ZTV10wxListBase (auto-import)<br />
-Info: resolving vtable for wxMenu by linking to __imp___ZTV6wxMenu (auto-import)<br />
-Info: resolving vtable for wxStatusBar by linking to __imp___ZTV11wxStatusBar (auto-import)<br />
-Info: resolving vtable for wxBitmap by linking to __imp___ZTV8wxBitmap (auto-import)<br />
-Info: resolving vtable for wxListView by linking to __imp___ZTV10wxListView (auto-import)<br />
-Info: resolving vtable for wxPopupWindow by linking to __imp___ZTV13wxPopupWindow (auto-import)<br />
-Info: resolving vtable for wxImageList by linking to __imp___ZTV11wxImageList (auto-import)<br />
-Info: resolving vtable for wxDCBase by linking to __imp___ZTV8wxDCBase (auto-import)<br />
-Info: resolving vtable for wxBrush by linking to __imp___ZTV7wxBrush (auto-import)<br />
-Info: resolving vtable for wxFont by linking to __imp___ZTV6wxFont (auto-import)<br />
-Info: resolving vtable for wxMemoryDC by linking to __imp___ZTV10wxMemoryDC (auto-import)<br />
-Info: resolving vtable for wxListItem by linking to __imp___ZTV10wxListItem (auto-import)<br />
-Info: resolving vtable for wxListCtrl by linking to __imp___ZTV10wxListCtrl (auto-import)<br />
-Info: resolving vtable for wxTextDropTarget by linking to __imp___ZTV16wxTextDropTarget (auto-import)<br />
-Info: resolving vtable for wxBufferedDC by linking to __imp___ZTV12wxBufferedDC (auto-import)<br />
-Info: resolving vtable for wxTimer by linking to __imp___ZTV7wxTimer (auto-import)<br />
-Info: resolving vtable for wxBufferedPaintDC by linking to __imp___ZTV17wxBufferedPaintDC (auto-import)<br />
-Info: resolving vtable for wxCommandEvent by linking to __imp___ZTV14wxCommandEvent (auto-import)<br />
-Info: resolving vtable for wxTextDataObject by linking to __imp___ZTV16wxTextDataObject (auto-import)<br />
-Creating library file: C:\dev\fbide\trunk\fbide-wx\bin\release\libfbide.a<br />
-<b>-------------- Build: Win32 Release in FBIdePlugin ---------------</b><br />
+Build started on: <u>10-07-2009 at 19:27.43</u><br />
+Build ended on: <u>10-07-2009 at 19:27.45</u><p />
+<b>-------------- Build: Win32 Debug in SDK ---------------</b><br />
 Target is up to date.<br />
-<b>-------------- Build: Win32 Release in TangoTheme ---------------</b><br />
+<b>-------------- Build: Win32 Debug in FBIdePlugin ---------------</b><br />
 Target is up to date.<br />
-<b>-------------- Build: Win32 Release in ClassicTheme ---------------</b><br />
+<b>-------------- Build: Win32 Debug in TangoTheme ---------------</b><br />
 Target is up to date.<br />
-<b>-------------- Build: Win32 Release in Projects ---------------</b><br />
+<b>-------------- Build: Win32 Debug in ClassicTheme ---------------</b><br />
 Target is up to date.<br />
-<b>-------------- Build: Win32 Release in LogPlugin ---------------</b><br />
+<b>-------------- Build: Win32 Debug in Projects ---------------</b><br />
 Target is up to date.<br />
-<b>-------------- Build: Win32 Release in App ---------------</b><br />
+<b>-------------- Build: Win32 Debug in LogPlugin ---------------</b><br />
+mingw32-g++.exe -Wall -Winvalid-pch -include wx_pch.h -DwxUSE_UNICODE -DWX_PRECOMP  -g -pipe -mthreads -D__GNUWIN32__ -D__WXMSW__ -DWXUSINGDLL -D_DLL -D__WXDEBUG__    -IC:\dev\fbide\trunk\fbide-wx\sdk\include -IC:\dev\wxWidgets-2.9.0-RC5\lib\gcc_dll\mswud -IC:\dev\wxWidgets-2.9.0-RC5\include -IC:\dev\wxWidgets-2.9.0-RC5\contrib\include -IC:\dev\fbide\trunk\fbide-wx\sdk\include  -c C:\dev\fbide\trunk\fbide-wx\Plugins\Log\main.cpp -o obj\Debug\main.o<br />
+C:\dev\fbide\trunk\fbide-wx\Plugins\Log\main.cpp: In member function 'virtual bool LogPlugin::Detach(bool)':<br />
+<font color="#0000ff">C:\dev\fbide\trunk\fbide-wx\Plugins\Log\main.cpp:228: warning: no return statement in function returning non-void</font><br />
+mingw32-g++.exe -shared   -Wl,--dll -LC:\dev\fbide\trunk\fbide-wx\bin\debug -LC:\dev\wxWidgets-2.9.0-RC5\lib\gcc_dll  obj\Debug\main.o   -o C:\dev\fbide\trunk\fbide-wx\bin\debug\ide\plugins\LogPlugin.dll -shared-libgcc  -lwxmsw29ud -lfbide_debug<br />
+<b>-------------- Build: Win32 Debug in WebBrowser ---------------</b><br />
 Target is up to date.<br />
-<font color="#0000ff">Process terminated with status 0 (0 minutes, 3 seconds)</font><br />
-<font color="#0000ff">0 errors, 2 warnings</font><br />
+<b>-------------- Build: Win32 Debug in App ---------------</b><br />
+Target is up to date.<br />
+<font color="#0000ff">Process terminated with status 0 (0 minutes, 1 seconds)</font><br />
+<font color="#0000ff">0 errors, 1 warnings</font><br />
 </tt>
 </body>
 </html>

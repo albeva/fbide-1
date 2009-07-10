@@ -101,11 +101,6 @@
             msg << code;                    \
             ::ShowException(msg);           \
         }                                   \
-        catch (const char * msg)            \
-        {                                   \
-            wxString msg(msg, wxConvUTF8);  \
-            ::ShowException(msg);           \
-        }                                   \
         catch (...)                         \
         {                                   \
             ::ShowException(_T("Unknown exception was thrown!")); \

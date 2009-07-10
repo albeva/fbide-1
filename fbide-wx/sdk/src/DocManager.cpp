@@ -52,7 +52,7 @@ struct CDocManager::CData : wxEvtHandler
         wxWindow * wnd = dynamic_cast<wxWindow *>(doc);
         wxASSERT(wnd != NULL);
 
-        wnd->ProcessEvent(event);
+        wnd->wxEvtHandler::ProcessEvent(event);
     }
 
 

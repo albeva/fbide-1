@@ -352,7 +352,7 @@ CEditor::CEditor (
  */
 CEditor::~CEditor ()
 {
-    RemoveEventHandler(m_data);
+    wxEvtHandler::SetNextHandler(NULL);
     if (m_data) delete m_data;
 }
 
@@ -373,7 +373,7 @@ bool CEditor::Create(
     m_data = new CEditor::CData (this);
 
     // Set event handler
-    SetNextHandler(m_data);
+    wxEvtHandler::SetNextHandler(m_data);
 }
 
 
@@ -484,6 +484,10 @@ void CEditor::Setup (CStyleParser * styles)
         SetCaretForeground(info.fg);
         SetCaretWidth(info.width ? info.width : 1);
 
+        /**
+         * @todo figure out why alpha doesn't work
+         */
+        /*
         if (reg["editor.highlightCurrentLine"].AsBool(true))
         {
             if (info.bg.IsOk())
@@ -496,6 +500,7 @@ void CEditor::Setup (CStyleParser * styles)
                 }
             }
         }
+        */
     }
 
 

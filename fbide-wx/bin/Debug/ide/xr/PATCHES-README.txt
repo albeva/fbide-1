@@ -1,0 +1,1 @@
+This build of Xulrunner is based on the Xulrunner 1.8.1.3 (CVS tag FIREFOX_2_0_0_3) with some advanced patches applied. See PATCHES.txt for details.

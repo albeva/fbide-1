@@ -81,6 +81,7 @@ bool CApp::OnInit()
         // Load colour pallettes
         mgr.SetupPalette(_T(""));
 
+
         // Load language file
         mgr.LoadLang(reg["dir.data"].AsString() + reg["file.lang"].AsString());
 
@@ -107,6 +108,7 @@ bool CApp::OnInit()
         // Initalize docManager. Must be called after wxFrame has been assigned to uiManager
         GET_DOCMGR();
 
+
         // Load plugin manager
         CPluginManager * pm = GET_PLUGINMGR();
 
@@ -115,6 +117,9 @@ bool CApp::OnInit()
 
         // Load LogPlugin
         pm->LoadPlugin(_T("LogPlugin"));
+
+        //
+        // pm->LoadPlugin(_T("WebBrowser"));
 
         // Load Skin plugin
         pm->LoadPlugin(reg["ui.plugin.theme"].AsString("TangoTheme"));

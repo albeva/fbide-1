@@ -9,8 +9,8 @@
 		<Build>
 			<Target title="Win32 Debug">
 				<Option platforms="Windows;" />
-				<Option output="$(#fbide.debug)/ide/plugins/TangoTheme" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="$(#fbide.debug)\ide\plugins\TangoTheme" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -23,28 +23,28 @@
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-D_DLL" />
 					<Add option="-D__WXDEBUG__" />
-					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
-					<Add directory="$(#wx)/include" />
-					<Add directory="$(#wx)/contrib/include" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
+					<Add directory="$(#wx)\include" />
+					<Add directory="$(#wx)\contrib\include" />
 					<Add directory="$(#fbide.sdk)" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
-					<Add directory="$(#wx)/include" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswud" />
+					<Add directory="$(#wx)\include" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-shared-libgcc" />
-					<Add library="libwxmsw28ud.a" />
+					<Add library="libwxmsw29ud.a" />
 					<Add library="libfbide_debug.a" />
 					<Add library="libstdc++.a" />
 					<Add directory="$(#fbide.debug)" />
-					<Add directory="$(#wx)/lib/gcc_dll" />
+					<Add directory="$(#wx)\lib\gcc_dll" />
 				</Linker>
 			</Target>
 			<Target title="Win32 Release">
 				<Option platforms="Windows;" />
-				<Option output="$(#fbide.release)/ide/plugins/TangoTheme" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="$(#fbide.release)\ide\plugins\TangoTheme" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -57,29 +57,29 @@
 					<Add option="-D__WXMSW__" />
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-D_DLL" />
-					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-					<Add directory="$(#wx)/include" />
-					<Add directory="$(#wx)/contrib/include" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswu" />
+					<Add directory="$(#wx)\include" />
+					<Add directory="$(#wx)\contrib\include" />
 					<Add directory="$(#fbide.sdk)" />
 				</Compiler>
 				<ResourceCompiler>
-					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
-					<Add directory="$(#wx)/include" />
+					<Add directory="$(#wx)\lib\gcc_dll\mswu" />
+					<Add directory="$(#wx)\include" />
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
 					<Add option="-shared-libgcc" />
-					<Add library="libwxmsw28u.a" />
+					<Add library="libwxmsw29u.a" />
 					<Add library="libfbide.a" />
 					<Add library="libstdc++.a" />
 					<Add directory="$(#fbide.release)" />
-					<Add directory="$(#wx)/lib/gcc_dll" />
+					<Add directory="$(#wx)\lib\gcc_dll" />
 				</Linker>
 			</Target>
 			<Target title="Linux Debug">
 				<Option platforms="Unix;" />
-				<Option output="$(#fbide.debug)/ide/plugins/TangoTheme" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="$(#fbide.debug)\ide\plugins\TangoTheme" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
@@ -90,9 +90,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="`wx-config --static=no --unicode=yes --debug=yes --libs`" />
-					<Add library="$(#fbide.debug)/fbide_debug.so" />
+					<Add library="$(#fbide.debug)\fbide_debug.so" />
 					<Add directory="$(#fbide.debug)" />
-					<Add directory="$(#wx)/lib/gcc_dll" />
+					<Add directory="$(#wx)\lib\gcc_dll" />
 				</Linker>
 			</Target>
 		</Build>

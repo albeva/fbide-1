@@ -34,7 +34,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-shared-libgcc" />
-					<Add library="libwxmsw28ud.a" />
+					<Add library="libwxmsw29ud.a" />
 					<Add library="libfbide_debug.a" />
 					<Add directory="$(#fbide.debug)" />
 					<Add directory="$(#wx)\lib\gcc_dll" />
@@ -68,7 +68,7 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-shared-libgcc" />
-					<Add library="libwxmsw28u.a" />
+					<Add library="libwxmsw29u.a" />
 					<Add library="libfbide.a" />
 					<Add directory="$(#fbide.release)" />
 					<Add directory="$(#wx)\lib\gcc_dll" />

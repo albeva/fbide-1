@@ -99,11 +99,16 @@ namespace fb
             // bg
             tmp << _T("background-color : ");
             tmp << bg.GetAsString(wxC2S_NAME | wxC2S_HTML_SYNTAX);
-            tmp << _T(";");
+            tmp << _T(";\n");
 
             // border
             tmp << _T("outline-color : ");
             tmp << outline.GetAsString(wxC2S_NAME | wxC2S_HTML_SYNTAX);
+            tmp << _T(";\n");
+
+            // opacity
+            tmp << _T("opacity : ");
+            tmp << opacity;
             tmp << _T(";");
 
             return tmp;

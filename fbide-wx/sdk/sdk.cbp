@@ -35,7 +35,7 @@
 				<Linker>
 					<Add option="-pg -lgmon" />
 					<Add option="-shared-libgcc" />
-					<Add library="libwxmsw28ud.a" />
+					<Add library="libwxmsw29ud.a" />
 					<Add library="libstdc++.a" />
 					<Add directory="$(#wx)\lib\gcc_dll" />
 				</Linker>
@@ -68,7 +68,7 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-shared-libgcc" />
-					<Add library="libwxmsw28u.a" />
+					<Add library="libwxmsw29u.a" />
 					<Add library="libstdc++.a" />
 					<Add directory="$(#wx)\lib\gcc_dll" />
 				</Linker>
