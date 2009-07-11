@@ -4,8 +4,8 @@
 </head>
 <body>
 <tt>
-Build started on: <u>10-07-2009 at 19:27.43</u><br />
-Build ended on: <u>10-07-2009 at 19:27.45</u><p />
+Build started on: <u>10-07-2009 at 23:05.08</u><br />
+Build ended on: <u>10-07-2009 at 23:05.10</u><p />
 <b>-------------- Build: Win32 Debug in SDK ---------------</b><br />
 Target is up to date.<br />
 <b>-------------- Build: Win32 Debug in FBIdePlugin ---------------</b><br />
@@ -17,16 +17,14 @@ Target is up to date.<br />
 <b>-------------- Build: Win32 Debug in Projects ---------------</b><br />
 Target is up to date.<br />
 <b>-------------- Build: Win32 Debug in LogPlugin ---------------</b><br />
-mingw32-g++.exe -Wall -Winvalid-pch -include wx_pch.h -DwxUSE_UNICODE -DWX_PRECOMP  -g -pipe -mthreads -D__GNUWIN32__ -D__WXMSW__ -DWXUSINGDLL -D_DLL -D__WXDEBUG__    -IC:\dev\fbide\trunk\fbide-wx\sdk\include -IC:\dev\wxWidgets-2.9.0-RC5\lib\gcc_dll\mswud -IC:\dev\wxWidgets-2.9.0-RC5\include -IC:\dev\wxWidgets-2.9.0-RC5\contrib\include -IC:\dev\fbide\trunk\fbide-wx\sdk\include  -c C:\dev\fbide\trunk\fbide-wx\Plugins\Log\main.cpp -o obj\Debug\main.o<br />
-C:\dev\fbide\trunk\fbide-wx\Plugins\Log\main.cpp: In member function 'virtual bool LogPlugin::Detach(bool)':<br />
-<font color="#0000ff">C:\dev\fbide\trunk\fbide-wx\Plugins\Log\main.cpp:228: warning: no return statement in function returning non-void</font><br />
-mingw32-g++.exe -shared   -Wl,--dll -LC:\dev\fbide\trunk\fbide-wx\bin\debug -LC:\dev\wxWidgets-2.9.0-RC5\lib\gcc_dll  obj\Debug\main.o   -o C:\dev\fbide\trunk\fbide-wx\bin\debug\ide\plugins\LogPlugin.dll -shared-libgcc  -lwxmsw29ud -lfbide_debug<br />
+Target is up to date.<br />
 <b>-------------- Build: Win32 Debug in WebBrowser ---------------</b><br />
 Target is up to date.<br />
 <b>-------------- Build: Win32 Debug in App ---------------</b><br />
-Target is up to date.<br />
+mingw32-g++.exe -Wall -Winvalid-pch -include wx_pch.h -DwxUSE_UNICODE -DWX_PRECOMP  -Wall -pg -g -pipe -mthreads -D__GNUWIN32__ -D__WXMSW__ -DWXUSINGDLL -D_DLL -D__WXDEBUG__    -IC:\dev\fbide\trunk\fbide-wx\sdk\include -IC:\dev\fbide\trunk\fbide-wx\App -IC:\dev\fbide\trunk\fbide-wx\App\include -IC:\dev\wxWidgets-2.9.0-RC5\lib\gcc_dll\mswud -IC:\dev\wxWidgets-2.9.0-RC5\include -IC:\dev\wxWidgets-2.9.0-RC5\contrib\include  -c C:\dev\fbide\trunk\fbide-wx\App\src\App.cpp -o obj\Debug\src\App.o<br />
+mingw32-g++.exe -LC:\dev\fbide\trunk\fbide-wx\bin\debug -LC:\dev\wxWidgets-2.9.0-RC5\lib\gcc_dll  -o C:\dev\fbide\trunk\fbide-wx\bin\debug\FBIde.exe obj\Debug\src\Frame.o obj\Debug\src\App.o   -pg -lgmon -shared-libgcc  -lwxmsw29ud -lfbide_debug -lstdc++  -mwindows<br />
 <font color="#0000ff">Process terminated with status 0 (0 minutes, 1 seconds)</font><br />
-<font color="#0000ff">0 errors, 1 warnings</font><br />
+<font color="#0000ff">0 errors, 0 warnings</font><br />
 </tt>
 </body>
 </html>
