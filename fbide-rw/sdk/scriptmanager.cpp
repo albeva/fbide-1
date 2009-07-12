@@ -22,7 +22,6 @@
 #include <wx/textfile.h>
 #include "manager.h"
 #include "scriptmanager.h"
-#include "angelscript.h"
 #include "v8/v8.h"
 
 using namespace fb;

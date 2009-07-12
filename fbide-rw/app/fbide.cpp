@@ -40,14 +40,7 @@ class FBIde : public wxApp
      */
     virtual bool OnInit()
     {
-        auto ui = GET_UIMGR();
-        auto sm = GET_SCRIPTMGR();
-
-        wxString path = wxStandardPaths::Get().GetExecutablePath();
-        path = ::wxPathOnly(path);
-
-        sm->Execute(path + "\\test.js");
-
+        GET_UIMGR();
         return true;
     }
 
