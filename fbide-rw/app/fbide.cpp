@@ -40,8 +40,13 @@ class FBIde : public wxApp
     virtual bool OnInit()
     {
         auto sm = GET_SCRIPTMGR();
-        sm->Execute("var i = 'Hello' + ', World!'");
-
+        sm->Execute(
+            "var greeting = ['Hello'];"
+            "function sayhello(obj) {\n"
+            "   return greeting[0] + ', ' + obj.name + '!';\n"
+            "}\n"
+            "sayhello({name : 'world'});"
+        );
         wxMessageBox("quit");
         return false;
     }
