@@ -24,6 +24,7 @@
 #include "scriptmanager.h"
 #include "variant.h"
 #include "registry.h"
+#include <wx/stdpaths.h>
 
 using namespace fb;
 
@@ -39,16 +40,15 @@ class FBIde : public wxApp
      */
     virtual bool OnInit()
     {
+        auto ui = GET_UIMGR();
         auto sm = GET_SCRIPTMGR();
-        sm->Execute(
-            "var greeting = ['Hello'];"
-            "function sayhello(obj) {\n"
-            "   return greeting[0] + ', ' + obj.name + '!';\n"
-            "}\n"
-            "sayhello({name : 'world'});"
-        );
-        wxMessageBox("quit");
-        return false;
+
+        wxString path = wxStandardPaths::Get().GetExecutablePath();
+        path = ::wxPathOnly(path);
+
+        sm->Execute(path + "\\test.js");
+
+        return true;
     }
 
 

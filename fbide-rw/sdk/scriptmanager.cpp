@@ -19,23 +19,70 @@
  */
 
 #include "wx_pch.h"
+#include <wx/textfile.h>
 #include "manager.h"
 #include "scriptmanager.h"
+#include "angelscript.h"
 #include "v8/v8.h"
-
 
 using namespace fb;
 using namespace v8;
+
+
+// The callback that is invoked by v8 whenever the JavaScript 'print'
+// function is called. Prints its arguments on stdout separated by
+// spaces and ending with a newline.
+Handle<Value> JsPrint(const Arguments& args)
+{
+    wxString msg = "";
+    bool first = true;
+    for (int i = 0; i < args.Length(); i++)
+    {
+        HandleScope handle_scope;
+        if (first)
+        {
+            first = false;
+        }
+        else
+        {
+            msg += "\n";
+        }
+        //convert the args[i] type to normal char* string
+        String::AsciiValue str(args[i]);
+        msg += *str;
+    }
+
+    wxMessageBox(msg);
+
+    //returning Undefined is the same as returning void...
+    return v8::Undefined();
+}
+
+
+/**
+ * Show JavaScript errors
+ */
+void jsMessages (Handle<Message> message, Handle<Value> data)
+{
+    String::AsciiValue str(message->Get());
+    wxString msg;
+    msg << *str << " on line " << message->GetLineNumber() << "\n"
+        << *String::AsciiValue(message->GetSourceLine())
+        ;
+    wxMessageBox(msg, "JavaScript error");
+}
+
+
 
 /**
  * Manager class implementation
  */
 struct TheScriptManager : ScriptManager
 {
+
     // create
     TheScriptManager ()
     {}
-
 
     // destroy
     ~TheScriptManager ()
@@ -43,13 +90,41 @@ struct TheScriptManager : ScriptManager
 
 
     // execute arbitraru javascript
-    void Execute (const wxString & code)
+    void Execute (const wxString & fileName)
     {
+        // check if file exists
+        if (!::wxFileExists(fileName))
+        {
+            wxLogMessage("file '" + fileName + "' is not found");
+            return;
+        }
+
+        // read file in
+        wxTextFile file(fileName);
+        if (!file.Open())
+        {
+            wxLogMessage("could not open '" + fileName + "'");
+            return;
+        }
+
+        // get the content
+        wxString code = file.GetFirstLine();
+        for ( ; !file.Eof(); code += "\n" + file.GetNextLine() );
+
+        // Register the error callback
+        V8::AddMessageListener(jsMessages);
+
         // Create a stack-allocated handle scope.
         HandleScope handle_scope;
 
-        // Create a new context.
-        Persistent<Context> context = Context::New();
+        // Create a template for the global object and set the
+        // built-in global functions.
+        Handle<ObjectTemplate> global = ObjectTemplate::New();
+        global->Set(String::New("print"), FunctionTemplate::New(JsPrint));
+
+        // Each processor gets its own context so different processors
+        // do not affect each other.
+        Persistent<Context> context = Context::New(NULL, global);
 
         // Enter the created context for compiling and
         // running the hello world script.
@@ -60,17 +135,21 @@ struct TheScriptManager : ScriptManager
 
         // Compile the source code.
         Handle<Script> script = Script::Compile(source);
+        if (script.IsEmpty()) return;
 
-        // Run the script to get the result.
+        // javascript exceptions
+        TryCatch trycatch;
         Handle<Value> result = script->Run();
+        if (result.IsEmpty())
+        {
+            Handle<Value> exception = trycatch.Exception();
+            String::AsciiValue exception_str(exception);
+            wxMessageBox(*exception_str, "Exception");
+        }
 
         // Dispose the persistent context.
         context.Dispose();
 
-        // Convert the result to an ASCII string and print it.
-        String::AsciiValue ascii(result);
-
-        wxMessageBox(*ascii);
     }
 
 };
