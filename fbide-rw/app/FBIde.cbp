@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FBIde" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\fbide" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\$(TARGET_NAME)\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="`wx-config --cflags --wxcfg=gcc_dll\mswud`" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --wxcfg=gcc_dll\mswud`" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\fbide" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\$(TARGET_NAME)\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="`wx-config --cflags --wxcfg=gcc_dll\mswu`" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --wxcfg=gcc_dll\mswu`" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=gnu++0x" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-DUSE_PCH" />
+			<Add option="-DWX_PRECOMP" />
+			<Add directory="$(WORKSPACE_DIR)\sdk" />
+		</Compiler>
+		<Linker>
+			<Add library="fbide" />
+			<Add directory="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\" />
+		</Linker>
+		<Unit filename="fbide.cpp" />
+		<Unit filename="wx_pch.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

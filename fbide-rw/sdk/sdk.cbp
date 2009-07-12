@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FBIde SDK" />
+		<Option compiler="gcc" />
+		<Option extended_obj_names="1" />
+		<Build>
+			<Target title="Debug">
+				<Option output="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\fbide" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="`wx-config --cflags --wxcfg=gcc_dll\mswud`" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --wxcfg=gcc_dll\mswud`" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\fbide" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="`wx-config --cflags --wxcfg=gcc_dll\mswu`" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --wxcfg=gcc_dll\mswu`" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=gnu++0x" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-DUSE_PCH" />
+			<Add option="-DWX_PRECOMP" />
+			<Add option="-DEXPORT_SDK" />
+			<Add option="-DUSING_V8_SHARED" />
+		</Compiler>
+		<Linker>
+			<Add library="v8" />
+			<Add directory="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\" />
+		</Linker>
+		<Unit filename="manager.cpp" />
+		<Unit filename="manager.h" />
+		<Unit filename="registry.cpp" />
+		<Unit filename="registry.h" />
+		<Unit filename="scriptmanager.cpp" />
+		<Unit filename="scriptmanager.h" />
+		<Unit filename="sdk.cpp" />
+		<Unit filename="sdk.h" />
+		<Unit filename="sdk_pch.h" />
+		<Unit filename="singleton.h" />
+		<Unit filename="uimanager.cpp" />
+		<Unit filename="uimanager.h" />
+		<Unit filename="utilities.h" />
+		<Unit filename="v8\v8.h" />
+		<Unit filename="variant.cpp" />
+		<Unit filename="variant.h" />
+		<Unit filename="version.h" />
+		<Unit filename="wx_pch.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
