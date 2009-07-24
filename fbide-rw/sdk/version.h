@@ -28,7 +28,7 @@ namespace fb
      */
     struct Version
     {
-        int major, minor, release;
+        unsigned char major, minor, release;
         const char * string;
         const char * timestamp;
     };

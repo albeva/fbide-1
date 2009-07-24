@@ -41,6 +41,7 @@ class FBIde : public wxApp
     virtual bool OnInit()
     {
         GET_UIMGR();
+
         return true;
     }
 
