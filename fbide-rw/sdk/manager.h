@@ -30,7 +30,6 @@
 #define GET_REG()       GET_MGR()->GetRegistry()
 
 
-
 namespace fb
 {
 
@@ -59,10 +58,6 @@ namespace fb
         // get ScriptManager
         ScriptManager * GetScriptManager ();
 
-        // Release managers
-        void ReleaseManagers ();
-
-
         // get manager instance
         static Manager * GetInstance ();
 
@@ -71,6 +66,10 @@ namespace fb
 
         // private methods
         protected :
+
+            // Release managers
+            void ReleaseManagers ();
+
             // can't create directly
             Manager () = default;
 

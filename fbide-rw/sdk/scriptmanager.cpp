@@ -37,15 +37,9 @@ Handle<Value> JsPrint(const Arguments& args)
     bool first = true;
     for (int i = 0; i < args.Length(); i++)
     {
-        HandleScope handle_scope;
-        if (first)
-        {
-            first = false;
-        }
-        else
-        {
-            msg += "\n";
-        }
+        if (first) first = false;
+        else msg += "\n";
+
         //convert the args[i] type to normal char* string
         String::AsciiValue str(args[i]);
         msg += *str;
@@ -89,7 +83,7 @@ struct TheScriptManager : ScriptManager
 
 
     // execute arbitraru javascript
-    void Execute (const wxString & fileName)
+    virtual void Execute (const wxString & fileName)
     {
         // check if file exists
         if (!::wxFileExists(fileName))
@@ -108,13 +102,14 @@ struct TheScriptManager : ScriptManager
 
         // get the content
         wxString code = file.GetFirstLine();
-        for ( ; !file.Eof(); code += "\n" + file.GetNextLine() );
+        while ( !file.Eof() ) code += "\n" + file.GetNextLine();
 
         // Register the error callback
         V8::AddMessageListener(jsMessages);
 
         // Create a stack-allocated handle scope.
         HandleScope handle_scope;
+
 
         // Create a template for the global object and set the
         // built-in global functions.

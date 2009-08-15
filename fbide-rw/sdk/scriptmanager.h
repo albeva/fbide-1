@@ -23,8 +23,6 @@
 namespace fb
 {
 
-    class Manager;
-
     /**
      * Manager to control and manage scripts
      * based on google's v8 javascript engine

@@ -34,6 +34,8 @@ namespace fb
      */
     struct SDK_DLL UiManager : private NonCopyable
     {
+        // Load ui. return false if failed.
+        virtual bool Load () = 0;
 
         // Get application title
         virtual wxString GetTitle () = 0;

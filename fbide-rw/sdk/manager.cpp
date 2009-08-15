@@ -33,7 +33,7 @@ using namespace fb;
 struct TheManager : Manager
 {
     // create
-    TheManager () {}
+    TheManager () = default;
 
 
     // destroy
@@ -41,7 +41,7 @@ struct TheManager : Manager
 
 
     // get version information
-    const Version & GetVersion ()
+    virtual const Version & GetVersion ()
     {
         // the static version object
         static Version v = {
@@ -57,7 +57,7 @@ struct TheManager : Manager
 
 
     // get global registry object
-    Registry & GetRegistry () { return m_reg; }
+    virtual Registry & GetRegistry () { return m_reg; }
 
 
     // application registry ( configuration )

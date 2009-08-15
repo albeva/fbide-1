@@ -31,7 +31,16 @@ using namespace fb;
 struct TheUiManager : UiManager, wxEvtHandler
 {
     // create
-    TheUiManager () : m_frame(NULL)
+    TheUiManager () : m_frame(NULL) {}
+
+
+    // destroy
+    ~TheUiManager ()
+    {}
+
+
+    // Load user interface. Return false if failed.
+    virtual bool Load ()
     {
         m_frame = new wxFrame(
             NULL, wxID_ANY, GetTitle() ,
@@ -40,12 +49,25 @@ struct TheUiManager : UiManager, wxEvtHandler
         wxTheApp->SetTopWindow(m_frame);
         m_frame->PushEventHandler(this);
         m_frame->Show();
+
+        return true;
     }
 
 
-    // destroy
-    ~TheUiManager ()
-    {}
+    // Get application title
+    // - maybe use later a title template
+    //   to allow customing?
+    virtual wxString GetTitle ()
+    {
+        return wxString("FBIde ") + GET_MGR()->GetVersion().string;
+    }
+
+
+    // get the main frame
+    virtual wxFrame * GetFrame ()
+    {
+        return m_frame;
+    }
 
 
     // Handle close event
@@ -53,22 +75,6 @@ struct TheUiManager : UiManager, wxEvtHandler
     {
         m_frame->RemoveEventHandler(this);
         m_frame->Destroy();
-    }
-
-
-    // Get application title
-    // - maybe use later a title template
-    //   to allow customing?
-    wxString GetTitle ()
-    {
-        return wxString("FBIde ") + GET_MGR()->GetVersion().string;
-    }
-
-
-    // get the main frame
-    wxFrame * GetFrame ()
-    {
-        return m_frame;
     }
 
 

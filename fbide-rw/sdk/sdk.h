@@ -24,7 +24,7 @@
 #define SDK_VERSION_MAJOR       0
 #define SDK_VERSION_MINOR       5
 #define SDK_VERSION_RELEASE     1
-#define SDK_VERSION_STRING  "0.5.1"
+#define SDK_VERSION_STRING      "0.5.1"
 
 // macro function to check sdk version
 #define SDK_CHECK_VERSION(major, minor, release) \

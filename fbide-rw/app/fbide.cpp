@@ -24,7 +24,9 @@
 #include "scriptmanager.h"
 #include "variant.h"
 #include "registry.h"
+
 #include <wx/stdpaths.h>
+#include <wx/apptrait.h>
 
 using namespace fb;
 
@@ -40,7 +42,15 @@ class FBIde : public wxApp
      */
     virtual bool OnInit()
     {
-        GET_UIMGR();
+        // load ui
+        GET_UIMGR()->Load();
+
+        if (argc > 1)
+        {
+            auto sp = this->GetTraits()->GetStandardPaths();
+            auto path = ::wxPathOnly(sp.GetExecutablePath());
+            GET_SCRIPTMGR()->Execute(path + "/" + argv[1]);
+        }
 
         return true;
     }

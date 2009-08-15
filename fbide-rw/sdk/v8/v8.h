@@ -85,11 +85,10 @@ typedef unsigned __int64 uint64_t;
 
 #include <stdint.h>
 
-// Setup for Linux shared library export. There is no need to destinguish
-// neither between building or using the V8 shared library nor between using
-// the shared or static V8 library as there is on Windows. Therefore there is
-// no checking of BUILDING_V8_SHARED and USING_V8_SHARED.
-#if defined(__GNUC__) && (__GNUC__ >= 4)
+// Setup for Linux shared library export. There is no need to distinguish
+// between building or using the V8 shared library, but we should not
+// export symbols when we are building a static library.
+#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(V8_SHARED)
 #define V8EXPORT __attribute__ ((visibility("default")))
 #define V8EXPORT_INLINE __attribute__ ((visibility("default")))
 #else  // defined(__GNUC__) && (__GNUC__ >= 4)
@@ -180,7 +179,7 @@ template <class T> class V8EXPORT_INLINE Handle {
   /**
    * Creates an empty handle.
    */
-  Handle();
+  inline Handle();
 
   /**
    * Creates a new handle for the specified value.
@@ -264,7 +263,7 @@ template <class T> class V8EXPORT_INLINE Handle {
  */
 template <class T> class V8EXPORT_INLINE Local : public Handle<T> {
  public:
-  Local();
+  inline Local();
   template <class S> inline Local(Local<S> that)
       : Handle<T>(reinterpret_cast<T*>(*that)) {
     /**
@@ -284,7 +283,7 @@ template <class T> class V8EXPORT_INLINE Local : public Handle<T> {
    *  The referee is kept alive by the local handle even when
    *  the original handle is destroyed/disposed.
    */
-  static Local<T> New(Handle<T> that);
+  inline static Local<T> New(Handle<T> that);
 };
 
 
@@ -312,7 +311,7 @@ template <class T> class V8EXPORT_INLINE Persistent : public Handle<T> {
    * Creates an empty persistent handle that doesn't point to any
    * storage cell.
    */
-  Persistent();
+  inline Persistent();
 
   /**
    * Creates a persistent handle for the same storage cell as the
@@ -353,7 +352,7 @@ template <class T> class V8EXPORT_INLINE Persistent : public Handle<T> {
    * Creates a new persistent handle for an existing local or
    * persistent handle.
    */
-  static Persistent<T> New(Handle<T> that);
+  inline static Persistent<T> New(Handle<T> that);
 
   /**
    * Releases the storage cell referenced by this persistent handle.
@@ -361,7 +360,7 @@ template <class T> class V8EXPORT_INLINE Persistent : public Handle<T> {
    * This handle's reference, and any any other references to the storage
    * cell remain and IsEmpty will still return false.
    */
-  void Dispose();
+  inline void Dispose();
 
   /**
    * Make the reference to this object weak.  When only weak handles
@@ -369,20 +368,20 @@ template <class T> class V8EXPORT_INLINE Persistent : public Handle<T> {
    * callback to the given V8::WeakReferenceCallback function, passing
    * it the object reference and the given parameters.
    */
-  void MakeWeak(void* parameters, WeakReferenceCallback callback);
+  inline void MakeWeak(void* parameters, WeakReferenceCallback callback);
 
   /** Clears the weak reference to this object.*/
-  void ClearWeak();
+  inline void ClearWeak();
 
   /**
    *Checks if the handle holds the only reference to an object.
    */
-  bool IsNearDeath() const;
+  inline bool IsNearDeath() const;
 
   /**
    * Returns true if the handle's reference is weak.
    */
-  bool IsWeak() const;
+  inline bool IsWeak() const;
 
  private:
   friend class ImplementationUtilities;
@@ -902,6 +901,11 @@ class V8EXPORT String : public Primitive {
    */
   bool MakeExternal(ExternalAsciiStringResource* resource);
 
+  /**
+   * Returns true if this string can be made external.
+   */
+  bool CanMakeExternal();
+
   /** Creates an undetectable string from the supplied ascii or utf-8 data.*/
   static Local<String> NewUndetectable(const char* data, int length = -1);
 
@@ -1100,6 +1104,12 @@ class V8EXPORT Object : public Value {
   Local<Value> GetPrototype();
 
   /**
+   * Finds an instance of the given function template in the prototype
+   * chain.
+   */
+  Local<Object> FindInstanceInPrototypeChain(Handle<FunctionTemplate> tmpl);
+
+  /**
    * Call builtin Object.prototype.toString on this object.
    * This is different from Value::ToString() that may call
    * user-defined toString function. This one does not.
@@ -1112,6 +1122,13 @@ class V8EXPORT Object : public Value {
   Local<Value> GetInternalField(int index);
   /** Sets the value in an internal field. */
   void SetInternalField(int index, Handle<Value> value);
+
+  // The two functions below do not perform index bounds checks and
+  // they do not check that the VM is still running. Use with caution.
+  /** Gets a native pointer from an internal field. */
+  void* GetPointerFromInternalField(int index);
+  /** Sets a native pointer in an internal field. */
+  void SetPointerInInternalField(int index, void* value);
 
   // Testers for local properties.
   bool HasRealNamedProperty(Handle<String> key);
@@ -1161,6 +1178,15 @@ class V8EXPORT Object : public Value {
    * to the same values as the original object.
    */
   Local<Object> Clone();
+
+  /**
+   * Set the backing store of the indexed properties to be managed by the
+   * embedding layer. Access to the indexed properties will follow the rules
+   * spelled out in CanvasPixelArray.
+   * Note: The embedding program still owns the data and needs to ensure that
+   *       the backing store is preserved while V8 has a reference.
+   */
+  void SetIndexedPropertiesToPixelData(uint8_t* data, int length);
 
   static Local<Object> New();
   static Object* Cast(Value* obj);
@@ -1951,6 +1977,23 @@ typedef Persistent<Context> (*ContextGenerator)();
 
 
 /**
+ * Profiler modules.
+ *
+ * In V8, profiler consists of several modules: CPU profiler, and different
+ * kinds of heap profiling. Each can be turned on / off independently.
+ * When PROFILER_MODULE_HEAP_SNAPSHOT flag is passed to ResumeProfilerEx,
+ * modules are enabled only temporarily for making a snapshot of the heap.
+ */
+enum ProfilerModules {
+  PROFILER_MODULE_NONE            = 0,
+  PROFILER_MODULE_CPU             = 1,
+  PROFILER_MODULE_HEAP_STATS      = 1 << 1,
+  PROFILER_MODULE_JS_CONSTRUCTORS = 1 << 2,
+  PROFILER_MODULE_HEAP_SNAPSHOT   = 1 << 16
+};
+
+
+/**
  * Container class for static utility functions.
  */
 class V8EXPORT V8 {
@@ -2104,6 +2147,32 @@ class V8EXPORT V8 {
   static bool IsProfilerPaused();
 
   /**
+   * Resumes specified profiler modules.
+   * "ResumeProfiler" is equivalent to "ResumeProfilerEx(PROFILER_MODULE_CPU)".
+   * See ProfilerModules enum.
+   *
+   * \param flags Flags specifying profiler modules.
+   */
+  static void ResumeProfilerEx(int flags);
+
+  /**
+   * Pauses specified profiler modules.
+   * "PauseProfiler" is equivalent to "PauseProfilerEx(PROFILER_MODULE_CPU)".
+   * See ProfilerModules enum.
+   *
+   * \param flags Flags specifying profiler modules.
+   */
+  static void PauseProfilerEx(int flags);
+
+  /**
+   * Returns active (resumed) profiler modules.
+   * See ProfilerModules enum.
+   *
+   * \returns active profiler modules.
+   */
+  static int GetActiveProfilerModules();
+
+  /**
    * If logging is performed into a memory buffer (via --logfile=*), allows to
    * retrieve previously written messages. This can be used for retrieving
    * profiler log data in the application. This function is thread-safe.
@@ -2131,6 +2200,14 @@ class V8EXPORT V8 {
    * to use if the process needs the resources taken up by v8.
    */
   static bool Dispose();
+
+
+  /**
+   * Optional notification that the embedder is idle.
+   * V8 uses the notification to reduce memory footprint.
+   * \param is_high_priority tells whether the embedder is high priority.
+   */
+  static void IdleNotification(bool is_high_priority);
 
  private:
   V8();
