@@ -49,6 +49,11 @@
 			<Add option="-DWX_PRECOMP" />
 			<Add option="-DEXPORT_SDK" />
 			<Add option="-DUSING_V8_SHARED" />
+			<Add option="-DDSCI_LEXER" />
+			<Add option="-DDWXMAKINGDLL_SCI" />
+			<Add option="-DPLAT_WX" />
+			<Add directory="stc\scintilla\include" />
+			<Add directory="stc\scintilla\src" />
 		</Compiler>
 		<Linker>
 			<Add directory="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\" />

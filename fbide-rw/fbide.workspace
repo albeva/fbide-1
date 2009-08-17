@@ -5,6 +5,5 @@
 			<Depends filename="sdk\sdk.cbp" />
 		</Project>
 		<Project filename="sdk\sdk.cbp" />
-		<Project filename="tests\misc\misc.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

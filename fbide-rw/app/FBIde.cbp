@@ -11,6 +11,7 @@
 				<Option object_output="obj\$(TARGET_NAME)\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters="test.js" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-Wall" />
@@ -26,6 +27,7 @@
 				<Option object_output="obj\$(TARGET_NAME)\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters="test.js" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O3" />
