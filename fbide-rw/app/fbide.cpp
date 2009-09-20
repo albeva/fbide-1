@@ -45,14 +45,12 @@ class FBIde : public wxApp
         // load ui
         GET_UIMGR()->Load();
 
-        /*
         if (argc > 1)
         {
-            auto sp = this->GetTraits()->GetStandardPaths();
+            wxStandardPathsBase & sp = this->GetTraits()->GetStandardPaths();
             auto path = ::wxPathOnly(sp.GetExecutablePath());
             GET_SCRIPTMGR()->Execute(path + "/" + argv[1]);
         }
-        */
 
         return true;
     }
