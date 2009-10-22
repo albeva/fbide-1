@@ -62,6 +62,7 @@
 		<Unit filename="docmanager.h" />
 		<Unit filename="editormanager.cpp" />
 		<Unit filename="editormanager.h" />
+		<Unit filename="language.h" />
 		<Unit filename="manager.cpp" />
 		<Unit filename="manager.h" />
 		<Unit filename="pluginmanager.cpp" />

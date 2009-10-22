@@ -19,33 +19,31 @@
  */
 
 #pragma once
+
+#include "variant.h"
 #include <unordered_map>
 
 namespace fb
 {
-
     /**
-     * Declare non copyable class
+     * Simple hashmap containing identifier and
+     * meaning for translations, etc...
      */
-    struct NonCopyable
+    class Language
     {
-        // disable copy
-        NonCopyable (const NonCopyable &) = delete;
-        NonCopyable & operator = (const NonCopyable &) = delete;
+        public :
 
-        // default protected constructor and destructor
-        protected :
-            NonCopyable() = default;
-            ~NonCopyable() = default;
+            /// get translation by key. If doesn't exist return the
+            /// key.
+            /// @note Should it log a warning ?
+            wxString & operator [] ( const wxString & key ) {
+                auto iter = m_map.find(key);
+                if (iter != m_map.end()) return iter->second;
+                return m_map[key] = key;
+            }
+
+        private :
+            StringMap m_map;
     };
-
-
-    /**
-     * String hash map
-     */
-    typedef std::unordered_map<
-        wxString, wxString,
-        wxStringHash, wxStringEqual
-    > StringMap;
 
 }

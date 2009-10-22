@@ -27,3 +27,4 @@
 #include "version.h"
 #include "variant.h"
 #include "registry.h"
+#include "language.h"

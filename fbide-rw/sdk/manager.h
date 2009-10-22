@@ -26,8 +26,6 @@
 #define GET_UIMGR()     GET_MGR()->GetUiManager()
 // get script manager
 #define GET_SCRIPTMGR() GET_MGR()->GetScriptManager()
-// get global configuration registry
-#define GET_REG()       GET_MGR()->GetRegistry()
 // get document manager
 #define GET_DOCMGR()    GET_MGR()->GetDocManager()
 // get editor manager
@@ -36,6 +34,10 @@
 #define GET_PLUGINMGR() GET_MGR()->GetPluginManager()
 // get type manager
 #define GET_TYPEMGR()   GET_MGR()->GetTypeManager()
+// get global configuration registry
+#define GET_REG()       GET_MGR()->GetRegistry()
+// get translations
+#define GET_LANG()      GET_MGR()->GetLang()
 
 
 namespace fb
@@ -63,6 +65,9 @@ namespace fb
 
         // get global registry object
         virtual Registry & GetRegistry () = 0;
+
+        // get language
+        virtual Language & GetLang () = 0;
 
         // Get UiManager
         UiManager * GetUiManager ();

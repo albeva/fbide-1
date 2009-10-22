@@ -57,11 +57,20 @@ struct TheManager : Manager
         return v;
     }
 
+
     // get global registry object
     virtual Registry & GetRegistry () { return m_reg; }
 
+
+    // get translations
+    virtual Language & GetLang () { return m_lang; }
+
+
     // application registry ( configuration )
     Registry m_reg;
+
+    // language
+    Language m_lang;
 };
 
 
