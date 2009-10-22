@@ -22,6 +22,8 @@
 #include "manager.h"
 #include "uimanager.h"
 
+#include "wx/aui/aui.h"
+
 using namespace fb;
 
 
@@ -49,6 +51,10 @@ struct TheUiManager : UiManager, wxEvtHandler
         wxTheApp->SetTopWindow(m_frame);
         m_frame->PushEventHandler(this);
         m_frame->Show();
+
+        m_aui.SetFlags(wxAUI_MGR_LIVE_RESIZE | wxAUI_MGR_DEFAULT);
+        m_aui.SetManagedWindow(m_frame);
+        m_aui.Update();
 
         return true;
     }
@@ -79,12 +85,16 @@ struct TheUiManager : UiManager, wxEvtHandler
     // Handle close event
     void OnClose (wxCloseEvent & event)
     {
+        m_aui.UnInit();
         m_frame->RemoveEventHandler(this);
         m_frame->Destroy();
     }
 
     // main frame
     wxFrame * m_frame;
+
+    // the wxAui manager
+    wxAuiManager m_aui;
 
     // route events
     DECLARE_EVENT_TABLE();
