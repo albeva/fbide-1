@@ -45,7 +45,9 @@ Handle<Value> JsPrint(const Arguments& args)
         msg += *str;
     }
 
-    wxMessageBox(msg);
+    wxString version = "V8: ";
+    version += V8::GetVersion();
+    wxMessageBox(msg, version);
 
     //returning Undefined is the same as returning void...
     return v8::Undefined();
