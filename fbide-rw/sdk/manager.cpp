@@ -22,7 +22,11 @@
 #include "manager.h"
 #include "uimanager.h"
 #include "scriptmanager.h"
+#include "docmanager.h"
+#include "editormanager.h"
 #include "registry.h"
+#include "pluginmanager.h"
+#include "typemanager.h"
 
 using namespace fb;
 
@@ -35,10 +39,8 @@ struct TheManager : Manager
     // create
     TheManager () = default;
 
-
     // destroy
     ~TheManager () { ReleaseManagers(); }
-
 
     // get version information
     virtual const Version & GetVersion ()
@@ -55,10 +57,8 @@ struct TheManager : Manager
         return v;
     }
 
-
     // get global registry object
     virtual Registry & GetRegistry () { return m_reg; }
-
 
     // application registry ( configuration )
     Registry m_reg;
@@ -79,10 +79,49 @@ ScriptManager * Manager::GetScriptManager ()
 }
 
 
-// Release all managers
+// get document manager
+DocManager * Manager::GetDocManager ()
+{
+    return DocManager::GetInstance();
+}
+
+
+// Get editor manager
+EditorManager * Manager::GetEditorManager()
+{
+    return EditorManager::GetInstance();
+}
+
+
+// get plugin manager
+PluginManager * Manager::GetPluginManager()
+{
+    return PluginManager::GetInstance();
+}
+
+
+// type manager
+TypeManager * Manager::GetTypeManager()
+{
+    return TypeManager::GetInstance();
+}
+
+
+/**
+ * Release all managers. The order is important
+ * And probably needs some adjustment later on
+ *
+ * Logically thinking plugin and scripting should go down
+ * first, followed by various content managers and lastly
+ * the ui
+ */
 void Manager::ReleaseManagers ()
 {
+    PluginManager::Release();
     ScriptManager::Release();
+    TypeManager::Release();
+    EditorManager::Release();
+    DocManager::Release();
     UiManager::Release();
 }
 

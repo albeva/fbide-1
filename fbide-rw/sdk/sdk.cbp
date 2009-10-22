@@ -58,8 +58,14 @@
 		<Linker>
 			<Add directory="$(WORKSPACE_DIR)\bin\$(TARGET_NAME)\" />
 		</Linker>
+		<Unit filename="docmanager.cpp" />
+		<Unit filename="docmanager.h" />
+		<Unit filename="editormanager.cpp" />
+		<Unit filename="editormanager.h" />
 		<Unit filename="manager.cpp" />
 		<Unit filename="manager.h" />
+		<Unit filename="pluginmanager.cpp" />
+		<Unit filename="pluginmanager.h" />
 		<Unit filename="registry.cpp" />
 		<Unit filename="registry.h" />
 		<Unit filename="scriptmanager.cpp" />
@@ -68,6 +74,8 @@
 		<Unit filename="sdk.h" />
 		<Unit filename="sdk_pch.h" />
 		<Unit filename="singleton.h" />
+		<Unit filename="typemanager.cpp" />
+		<Unit filename="typemanager.h" />
 		<Unit filename="uimanager.cpp" />
 		<Unit filename="uimanager.h" />
 		<Unit filename="utilities.h" />

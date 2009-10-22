@@ -23,31 +23,15 @@
 namespace fb
 {
 
-    class Manager;
-
     /**
-     * Main manager class. This is aproxy class that holds
-     * the instances and other bookkeeping of the SDK
-     * and should be used to access the SDK API
-     *
-     * This class is a singleton
+     * Manage FBIde plugins
      */
-    struct SDK_DLL UiManager : private NonCopyable
+    struct SDK_DLL PluginManager : private NonCopyable
     {
-        // Load ui. return false if failed.
-        virtual bool Load () = 0;
-
-        // Get application title
-        virtual wxString GetTitle () = 0;
-
-        // get the main frame
-        virtual wxFrame * GetFrame () = 0;
-
-        // get document area location
-        virtual wxWindow * GetDocumentArea () = 0;
 
         // declare this class as a manager
-        DECLARE_MANAGER(UiManager)
+        DECLARE_MANAGER(PluginManager)
+
     };
 
 }

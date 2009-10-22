@@ -28,6 +28,14 @@
 #define GET_SCRIPTMGR() GET_MGR()->GetScriptManager()
 // get global configuration registry
 #define GET_REG()       GET_MGR()->GetRegistry()
+// get document manager
+#define GET_DOCMGR()    GET_MGR()->GetDocManager()
+// get editor manager
+#define GET_EDITORMGR() GET_MGR()->GetEditorManager()
+// get plugin manager
+#define GET_PLUGINMGR() GET_MGR()->GetPluginManager()
+// get type manager
+#define GET_TYPEMGR()   GET_MGR()->GetTypeManager()
 
 
 namespace fb
@@ -35,6 +43,10 @@ namespace fb
 
     class UiManager;
     class ScriptManager;
+    class DocManager;
+    class EditorManager;
+    class PluginManager;
+    class TypeManager;
 
     /**
      * Main manager class. This is aproxy class that holds
@@ -57,6 +69,18 @@ namespace fb
 
         // get ScriptManager
         ScriptManager * GetScriptManager ();
+
+        // get document manager
+        DocManager * GetDocManager ();
+
+        // get editor manager
+        EditorManager * GetEditorManager();
+
+        // get plugin manager
+        PluginManager * GetPluginManager();
+
+        // get type manager
+        TypeManager * GetTypeManager();
 
         // get manager instance
         static Manager * GetInstance ();

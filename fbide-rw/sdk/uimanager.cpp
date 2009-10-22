@@ -70,13 +70,18 @@ struct TheUiManager : UiManager, wxEvtHandler
     }
 
 
+    virtual wxWindow * GetDocumentArea ()
+    {
+        return NULL;
+    }
+
+
     // Handle close event
     void OnClose (wxCloseEvent & event)
     {
         m_frame->RemoveEventHandler(this);
         m_frame->Destroy();
     }
-
 
     // main frame
     wxFrame * m_frame;
