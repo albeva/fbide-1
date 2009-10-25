@@ -37,16 +37,20 @@ using namespace fb;
 struct TheManager : Manager
 {
     // create
-    TheManager () = default;
+    TheManager() = default;
 
     // destroy
-    ~TheManager () { ReleaseManagers(); }
+    ~TheManager()
+    {
+        ReleaseManagers();
+    }
 
     // get version information
-    virtual const Version & GetVersion ()
+    virtual const Version & GetVersion()
     {
         // the static version object
-        static Version v = {
+        static Version v =
+        {
             SDK_VERSION_MAJOR,
             SDK_VERSION_MINOR,
             SDK_VERSION_RELEASE,
@@ -59,11 +63,17 @@ struct TheManager : Manager
 
 
     // get global registry object
-    virtual Registry & GetRegistry () { return m_reg; }
+    virtual Registry & GetRegistry()
+    {
+        return m_reg;
+    }
 
 
     // get translations
-    virtual Language & GetLang () { return m_lang; }
+    virtual Language & GetLang()
+    {
+        return m_lang;
+    }
 
 
     // application registry ( configuration )
@@ -75,21 +85,21 @@ struct TheManager : Manager
 
 
 // Get Ui manager instance
-UiManager * Manager::GetUiManager ()
+UiManager * Manager::GetUiManager()
 {
     return UiManager::GetInstance();
 }
 
 
 // Get Ui manager instance
-ScriptManager * Manager::GetScriptManager ()
+ScriptManager * Manager::GetScriptManager()
 {
     return ScriptManager::GetInstance();
 }
 
 
 // get document manager
-DocManager * Manager::GetDocManager ()
+DocManager * Manager::GetDocManager()
 {
     return DocManager::GetInstance();
 }
@@ -124,7 +134,7 @@ TypeManager * Manager::GetTypeManager()
  * first, followed by various content managers and lastly
  * the ui
  */
-void Manager::ReleaseManagers ()
+void Manager::ReleaseManagers()
 {
     PluginManager::Release();
     ScriptManager::Release();
@@ -136,4 +146,4 @@ void Manager::ReleaseManagers ()
 
 
 // implement manager
-IMPLEMENT_MANAGER(Manager, TheManager)
+IMPLEMENT_MANAGER( Manager, TheManager )

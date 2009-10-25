@@ -22,7 +22,6 @@
 
 namespace fb
 {
-
     /**
      * Manage open documents. The type or content is
      * unimportant. Each document has various states
@@ -32,10 +31,7 @@ namespace fb
      */
     struct SDK_DLL DocManager : private NonCopyable
     {
-
         // declare this class as a manager
-        DECLARE_MANAGER(DocManager)
-
+        DECLARE_MANAGER( DocManager )
     };
-
 }

@@ -33,15 +33,15 @@ struct TheDocManager : DocManager
 {
 
     // create
-    TheDocManager ()
+    TheDocManager()
     {}
 
     // destroy
-    ~TheDocManager ()
+    ~TheDocManager()
     {}
 
 };
 
 
 // Implement Manager
-IMPLEMENT_MANAGER(DocManager, TheDocManager)
+IMPLEMENT_MANAGER( DocManager, TheDocManager )

@@ -61,22 +61,22 @@ namespace fb
     {
 
         // get version as an INT
-        virtual const Version & GetVersion () = 0;
+        virtual const Version & GetVersion() = 0;
 
         // get global registry object
-        virtual Registry & GetRegistry () = 0;
+        virtual Registry & GetRegistry() = 0;
 
         // get language
-        virtual Language & GetLang () = 0;
+        virtual Language & GetLang() = 0;
 
         // Get UiManager
-        UiManager * GetUiManager ();
+        UiManager * GetUiManager();
 
         // get ScriptManager
-        ScriptManager * GetScriptManager ();
+        ScriptManager * GetScriptManager();
 
         // get document manager
-        DocManager * GetDocManager ();
+        DocManager * GetDocManager();
 
         // get editor manager
         EditorManager * GetEditorManager();
@@ -88,35 +88,35 @@ namespace fb
         TypeManager * GetTypeManager();
 
         // get manager instance
-        static Manager * GetInstance ();
+        static Manager * GetInstance();
 
         // release the manager instance ( shut down )
-        static void Release ();
+        static void Release();
 
         // private methods
         protected :
 
             // Release managers
-            void ReleaseManagers ();
+            void ReleaseManagers();
 
             // can't create directly
-            Manager () = default;
+            Manager() = default;
 
             // ensure delete to fail. Use Release() instead!
-            virtual ~Manager () = default;
+            virtual ~Manager() = default;
     };
 }
 
 
 // macro to declare a manager class in the header
 #define DECLARE_MANAGER(_class) \
-        protected : \
-            _class () = default; \
-            virtual ~_class () = default; \
-        private : \
-            friend class Manager; \
-            static _class * GetInstance (); \
-            static void Release ();
+    protected : \
+    _class () = default; \
+    virtual ~_class () = default; \
+    private : \
+    friend class Manager; \
+    static _class * GetInstance (); \
+    static void Release ();
 
 // Macro to implement Manager class logic in the source
 #define IMPLEMENT_MANAGER(_baseClass, _extClass) \
