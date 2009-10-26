@@ -1,0 +1,31 @@
+/* XPM */
+const char *dos[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 9 1",
+"  c black",
+". c #686868",
+"X c gray44",
+"o c green",
+"O c #8B8B8B",
+"+ c #A4A4A4",
+"@ c #B9B9B9",
+"# c gray75",
+"$ c gray87",
+/* pixels */
+".               ",
+" $@@@@@@@@@@@@+ ",
+" @XOOOOOOOOOO+O ",
+" @O          @O ",
+" @O          @O ",
+" @O  o oo o  @O ",
+" @O          @O ",
+" @O  oo ooo  @O ",
+" @O          @O ",
+" @O  ooo oo  @O ",
+" @O          @O ",
+" @O          @O ",
+" @+@@@@@@@@@@$O ",
+" +OOOOOOOOOOOOX ",
+"                ",
+"################"
+};
