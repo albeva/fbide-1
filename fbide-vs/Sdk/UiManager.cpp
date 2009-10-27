@@ -18,8 +18,9 @@
  * Copyright (C) The FBIde development team
  */
 #include "sdk_pch.h"
-#include "manager.h"
-#include "uimanager.h"
+#include "Manager.h"
+#include "UiManager.h"
+#include "CmdManager.h"
 #include "Ui/MenuHandler.h"
 #include "Ui/ToolbarHandler.h"
 #include "Ui/IArtProvider.h"
@@ -37,8 +38,8 @@ struct TheUiManager : UiManager, wxEvtHandler
     TheUiManager () : m_frame(nullptr), m_artProvider(nullptr)
     {
         // register UI related IDs
-        IdMap & ids = GET_IDMAP();
-        ids.Register("fullscreen", ::wxNewId(), true);
+        auto cmdMgr = GET_CMDMGR();
+        cmdMgr->Register("fullscreen", ::wxNewId(), true);
     }
 
 

@@ -21,7 +21,11 @@
 #include "MenuHandler.h"
 #include "../Manager.h"
 #include "../UiManager.h"
+#include "../CmdManager.h"
 #include "IArtProvider.h"
+
+
+
 using namespace fbi;
 
 
@@ -157,9 +161,9 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
 
     Manager     * mgr   = GET_MGR();
     Language    & lang  = mgr->GetLang();
-    IdMap       & idmap = mgr->GetIdMap();
+    CmdManager  * cmdMgr = mgr->GetCmdManager();
 
-    auto id     = idmap[name];
+    auto id     = cmdMgr->GetId(name);
     auto label  = lang[name];
     auto help   = lang[name + ".help"];
     auto style  = wxITEM_NORMAL;

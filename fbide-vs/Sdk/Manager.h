@@ -33,12 +33,13 @@
 #define GET_PLUGINMGR() GET_MGR()->GetPluginManager()
 // get type manager
 #define GET_TYPEMGR()   GET_MGR()->GetTypeManager()
+// Get cmd manager
+#define GET_CMDMGR()     GET_MGR()->GetCmdManager()
 // get global configuration registry
 #define GET_REG()       GET_MGR()->GetRegistry()
 // get translations
 #define GET_LANG()      GET_MGR()->GetLang()
-// Get id map
-#define GET_IDMAP()     GET_MGR()->GetIdMap()
+
 
 
 namespace fbi
@@ -50,7 +51,7 @@ namespace fbi
     class EditorManager;
     class PluginManager;
     class TypeManager;
-    class IdMap;
+    class CmdManager;
 
     /**
      * Main manager class. This is aproxy class that holds
@@ -71,7 +72,7 @@ namespace fbi
         virtual Language & GetLang() = 0;
 
         // Get Id map
-        virtual IdMap & GetIdMap() = 0;
+        CmdManager * GetCmdManager();
 
         // Get UiManager
         UiManager * GetUiManager();

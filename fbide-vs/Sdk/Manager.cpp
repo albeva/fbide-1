@@ -26,6 +26,7 @@
 #include "Registry.h"
 #include "PluginManager.h"
 #include "TypeManager.h"
+#include "CmdManager.h"
 
 using namespace fbi;
 
@@ -39,7 +40,7 @@ struct TheManager : Manager
     TheManager()
     {
         // Load common ids
-        IdMap & idmap = GetIdMap();
+        CmdManager & idmap = *GetCmdManager();
         idmap.Register("new",       wxID_NEW);
         idmap.Register("open",      wxID_OPEN);
         idmap.Register("save",      wxID_SAVE);
@@ -88,13 +89,8 @@ struct TheManager : Manager
     virtual Language & GetLang() { return m_lang; }
 
 
-    // get id map
-    virtual IdMap & GetIdMap() { return m_idMap; }
-
-
     Registry    m_reg;      // application registry ( configuration )
     Language    m_lang;     // language translations
-    IdMap       m_idMap;    // the global id map
 };
 
 
@@ -141,6 +137,13 @@ TypeManager * Manager::GetTypeManager()
 }
 
 
+// Command manager
+CmdManager * Manager::GetCmdManager()
+{
+    return CmdManager::GetInstance();
+}
+
+
 /**
  * Release all managers. The order is important
  * And probably needs some adjustment later on
@@ -156,6 +159,7 @@ void Manager::ReleaseManagers()
     TypeManager::Release();
     EditorManager::Release();
     DocManager::Release();
+    CmdManager::Release();
     UiManager::Release();
 }
 

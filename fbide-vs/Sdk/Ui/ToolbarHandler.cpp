@@ -21,8 +21,11 @@
 #include "MenuHandler.h"
 #include "ToolbarHandler.h"
 #include "../Manager.h"
+#include "../CmdManager.h"
 #include "../UiManager.h"
 #include "IArtProvider.h"
+
+
 using namespace fbi;
 
 
@@ -248,9 +251,9 @@ void UiToolbarHandler::AddToolBarItem (const wxString & name, wxAuiToolBar * too
 
     Manager     * mgr   = GET_MGR();
     Language    & lang  = mgr->GetLang();
-    IdMap       & idmap = mgr->GetIdMap();
+    CmdManager  * cmdMgr = mgr->GetCmdManager();
 
-    auto id     = idmap[name];
+    auto id     = cmdMgr->GetId(name);
     auto label  = lang[name];
     auto help   = lang[name + ".help"];
     auto style  = wxITEM_NORMAL;

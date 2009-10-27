@@ -85,7 +85,7 @@
   <ItemGroup>
     <ClInclude Include="DocManager.h" />
     <ClInclude Include="EditorManager.h" />
-    <ClInclude Include="IdMap.h" />
+    <ClInclude Include="CmdManager.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="sdk_pch.h" />
@@ -106,7 +106,7 @@
   <ItemGroup>
     <ClCompile Include="DocManager.cpp" />
     <ClCompile Include="EditorManager.cpp" />
-    <ClCompile Include="IdMap.cpp" />
+    <ClCompile Include="CmdManager.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="sdk_pch.cpp">

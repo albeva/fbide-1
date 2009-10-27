@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Cmd">
+      <UniqueIdentifier>{bc8d3bb6-ddf6-499e-a0fd-e0a02a027cd7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Doc">
       <UniqueIdentifier>{179b29f4-fa44-466f-bbcc-e3cd57ef1587}</UniqueIdentifier>
     </Filter>
@@ -27,14 +30,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CmdManager.h">
+      <Filter>Cmd</Filter>
+    </ClInclude>
     <ClInclude Include="DocManager.h">
       <Filter>Doc</Filter>
     </ClInclude>
     <ClInclude Include="EditorManager.h">
       <Filter>Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="IdMap.h">
-      <Filter>Generic</Filter>
     </ClInclude>
     <ClInclude Include="Language.h">
       <Filter>Generic</Filter>
@@ -86,14 +89,14 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CmdManager.cpp">
+      <Filter>Cmd</Filter>
+    </ClCompile>
     <ClCompile Include="DocManager.cpp">
       <Filter>Doc</Filter>
     </ClCompile>
     <ClCompile Include="EditorManager.cpp">
       <Filter>Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="IdMap.cpp">
-      <Filter>Generic</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">
       <Filter>Generic</Filter>
