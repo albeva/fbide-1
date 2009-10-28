@@ -5,6 +5,7 @@
 #include "Sdk/Manager.h"
 #include "Sdk/UiManager.h"
 #include "Sdk/ScriptManager.h"
+#include "Sdk/CmdManager.h"
 
 using namespace fbi;
 

@@ -19,6 +19,7 @@
         <menu id="view">
             <menu id="toolbars" />
             <item id="fullscreen" />
+            <item id="toolbars.toggle" />
         </menu>
         <menu id="search">
             <item id="find" />

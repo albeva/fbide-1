@@ -22,6 +22,10 @@
 #include "Manager.h"
 #include "CmdManager.h"
 
+
+#include <functional>
+
+
 using namespace fbi;
 
 /**
@@ -30,6 +34,18 @@ using namespace fbi;
 struct TheCmdManager : CmdManager
 {
 
+    // Add new entry. Internal call only
+    inline Entry & AddEntry (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked)
+    {
+        Entry & entry = m_map[name].entry;
+        entry.id = id;
+        entry.type = type;
+        entry.object = object;
+        entry.checked = checked;
+        return entry;
+    }
+
+
     // Retreave registered id
     // if doesn't exist will return new id value and log a warning
     virtual int GetId (const wxString & name)
@@ -37,25 +53,56 @@ struct TheCmdManager : CmdManager
         auto iter = m_map.find(name);
         if (iter == m_map.end())
         {
-            wxLogWarning("Id '%s' is not registered in IdMap", name);
-            int newid = ::wxNewId();
-            m_map[name] = newid;
-            return newid;
+            wxLogWarning("Id '%s' is not registered with CmdManager", name);
+            Entry & entry = AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false);
+            return entry.id;
         }
-        return iter->second;
+        return iter->second.entry.id;
+    }
+
+
+    // Retreave registered control kind
+    virtual Entry * FindEntry (const wxString & name)
+    {
+        auto iter = m_map.find(name);
+        if (iter == m_map.end())
+        {
+            return nullptr;
+        }
+        return &iter->second.entry;
+    }
+
+
+    // get entry or create a default one
+    virtual Entry & GetEntry (const wxString & name)
+    {
+        auto iter = m_map.find(name);
+        if (iter == m_map.end())
+        {
+            wxLogWarning("Id '%s' is not registered with CmdManager", name);
+            return AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false);
+        }
+        return iter->second.entry;
     }
 
 
     // register id
-    virtual  void Register (const wxString & name, int id, bool overwrite)
+    virtual  void Register (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked)
     {
-        auto iter = m_map.find(name);
-        if (iter != m_map.end() && !overwrite)
+        // Already registered?
+        if (m_map.find(name) != m_map.end())
         {
-            wxLogWarning("Attempting to overwrite existing id '%s' in idmap", name);
+            wxLogWarning("Attempting to overwrite existing id '%s' in CmdManager", name);
             return;
         }
-        m_map[name] = id;
+        // check for integrity
+        if (type == CmdManager::Type_Menu && !dynamic_cast<wxMenu*>(object))
+        {
+            wxLogError("Object passed must be an instance of wxMenu");
+            return;
+        }
+        // insert
+        AddEntry(name, id, type, object, checked);
     }
 
 
@@ -74,8 +121,55 @@ struct TheCmdManager : CmdManager
         m_map.erase(iter);
     }
 
+    
+    // Check a check item. Basically notify any listeber bound
+    virtual void Check (const wxString & name, bool state)
+    {
+        auto iter = m_map.find(name);
+        if (iter == m_map.end())
+        {
+            wxLogWarning("Id '%s' is not registered with CmdManager", name);
+            return;
+        }
+        // iter->second.m_checkDlg(state);
+    }
+
+    /*
+    // Bind listener
+    virtual void BindCeckListener (const wxString & name, Delegate<void(bool)> dg)
+    {
+        auto iter = m_map.find(name);
+        if (iter == m_map.end())
+        {
+            wxLogWarning("Id '%s' is not registered with CmdManager", name);
+            return;
+        }
+        iter->second.m_checkDlg += dg;
+    }
+
+
+    // UnBind the listener
+    virtual void UnBindCeckListener (const wxString & name, Delegate<void(bool)> dg)
+    {
+        auto iter = m_map.find(name);
+        if (iter == m_map.end())
+        {
+            wxLogWarning("Id '%s' is not registered with CmdManager", name);
+            return;
+        }
+        iter->second.m_checkDlg -= dg;
+    }
+    */
+
+    // Internal data structure for entries
+    struct InternalEntry
+    {
+        Entry                       entry;      // the public data entry
+        // MultiDelegate<void(bool)>   m_checkDlg; // check callback delegate
+    };
+
     // data
-    HashMap<int> m_map;    // hold name id pairs
+    HashMap<InternalEntry> m_map;    // hold name id pairs
 };
 
 

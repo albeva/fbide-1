@@ -32,20 +32,34 @@ using namespace fbi;
 /**
  * Construct
  */
-UiToolbarHandler::UiToolbarHandler() : m_aui(nullptr), m_parent(nullptr), m_menu(nullptr)
+UiToolbarHandler::UiToolbarHandler() : m_aui(nullptr), m_parent(nullptr), m_menu(nullptr), m_showTbars(false)
 {
 }
 
 
+struct TMenu : wxMenu {};
+
+
 // Initalize
-void UiToolbarHandler::Init (wxAuiManager * aui, wxMenu * menu)
+void UiToolbarHandler::Init (wxAuiManager * aui)
 {
+    // vars
     m_aui = aui;
-    m_menu = menu;
     m_parent = m_aui->GetManagedWindow();
+    
     // bind event handlers
     m_aui->Bind(wxEVT_AUI_PANE_CLOSE, &UiToolbarHandler::OnPaneClose, this, wxID_ANY);
     m_parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &UiToolbarHandler::OnToolbarMenuClick, this, wxID_ANY);
+    
+    // register toolbars menu
+    m_menu = new wxMenu();
+    auto cmdMgr = GET_CMDMGR();
+    cmdMgr->Register("menu.toolbars", ::wxNewId(), CmdManager::Type_Menu, m_menu);
+    
+    // toggle toolbars
+    int tbToggleId = ::wxNewId();
+    cmdMgr->Register("toolbars.toggle", tbToggleId, CmdManager::Type_Check, nullptr, true);
+    m_parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &UiToolbarHandler::OnToggleToolbars, this, tbToggleId);
 }
 
 
@@ -67,8 +81,17 @@ void UiToolbarHandler::OnToolbarMenuClick(wxCommandEvent & event)
             // mark and update aui
             pane.Show(event.IsChecked());
             m_aui->Update();
-            return;
+            break;
         }
+    }
+
+    // if show the toolbar and toolbars globally are hidden then update
+    // the "show toolbars" toggle
+    if (!m_showTbars && event.IsChecked())
+    {
+        m_showTbars = true;
+        auto cmdMgr = GET_CMDMGR();
+        cmdMgr->Check("toolbars.toggle", true);
     }
 }
 
@@ -86,6 +109,28 @@ void UiToolbarHandler::OnPaneClose(wxAuiManagerEvent & event)
     if (item == nullptr) return;
     // mark
     item->Check(false);
+}
+
+
+// Show or hide the toolbars
+void UiToolbarHandler::OnToggleToolbars(wxCommandEvent & event)
+{
+    m_showTbars = event.IsChecked();
+    for (auto iter = m_map.begin(); iter != m_map.end(); iter++)
+    {
+        // toggle the toolbar
+        wxAuiToolBar * tbar = iter->second;
+        m_aui->GetPane(tbar).Show(m_showTbars);
+
+        // toggle associated meny command
+        // find ID
+        auto idIter = m_idbridge.find(tbar->GetId());
+        if (idIter == m_idbridge.end()) continue;
+        // find menu entry and toggle if exists
+        auto item = m_menu->FindItem(idIter->second);
+        if (item != nullptr) item->Check(m_showTbars);
+    }
+    m_aui->Update();
 }
 
 

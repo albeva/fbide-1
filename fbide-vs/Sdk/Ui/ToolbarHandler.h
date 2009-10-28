@@ -31,7 +31,7 @@ namespace fbi
         UiToolbarHandler();
 
         // Initalize
-        void Init (wxAuiManager * aui, wxMenu * menu);
+        void Init (wxAuiManager * aui);
 
         // Uninitalize
         void UnInit ();
@@ -54,6 +54,9 @@ namespace fbi
         // catch tbar menu clicks
         void OnToolbarMenuClick(wxCommandEvent & event);
 
+        // Show / Hide the toolbars
+        void OnToggleToolbars(wxCommandEvent & event);
+
 
         private :
             wxAuiManager *                  m_aui;      // toolbar owner
@@ -61,6 +64,7 @@ namespace fbi
             wxMenu *                        m_menu;     // menu where to put toolbar entries
             HashMap<wxAuiToolBar *>         m_map;      // hold id-toolbar associations
             std::unordered_map<int, int>    m_idbridge; // bridge toolbar id and a menu commands
+            bool                            m_showTbars;// Show toolbars
     };
 
 }

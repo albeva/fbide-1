@@ -3,26 +3,23 @@
 
 // #include "stdafx.h"
 #include <iostream>
-#include <map>
+
+//#include "make_delegate.h"
+//#include "multi_delegate.h"
+#include "boost/function.hpp"
+#include "boost/signals2.hpp"
+
+
+
 using namespace std;
-
-struct Right {};
-template<typename T1, typename T2, class N1 = Right> class BiMap
-{
-    public:
-
-    private:
-        std::map<T1, T2> m_left;
-        std::map<T2, T1> m_right;
-};
-
 
 int main(int argc, char * argv[])
 {
-    
-    typedef BiMap<int, int> IntBridge;
-    // IntBridge::
+    auto fn = [](void) { cout << "hi\n"; };
+    boost::signals2::signal<void ()> sig;
+    sig.connect(fn);
+    sig();
 
-	return 0;
+
 }
 

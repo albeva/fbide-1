@@ -32,18 +32,50 @@ namespace fbi
     {
         public :
 
+            // data structure to hold information
+            struct Entry {
+                int         id;         // numeric ID
+                int         type;       // type
+                bool        checked;    // For Entry_Check
+                wxObject *  object;     // the control pointer
+            };
+
+            // Entry types
+            enum Type {
+                Type_Normal,
+                Type_Check,
+                Type_Menu
+            };
+
             // Retreave registered id
             // if doesn't exist will return new id value and log a warning
             virtual int GetId (const wxString & name) = 0;
 
+            // Get entry for the given name. If doesn't exist log a warning and create
+            // a default entyr
+            virtual Entry & GetEntry (const wxString & name) = 0;
+
+            // retreave the entry for the given name. nullptr if doesn't exist
+            virtual Entry * FindEntry (const wxString & name) = 0;
+
             // register id
-            virtual void Register (const wxString & name, int id, bool overwrite = false) = 0;
+            virtual void Register (const wxString & name, int id, CmdManager::Type type = CmdManager::Type_Normal, wxObject * object = nullptr, bool checked = false) = 0;
 
             // check if id is registred
             virtual bool IsRegistered (const wxString & name) = 0;
 
             // unregister the id
             virtual void UnRegister (const wxString & name) = 0;
+
+            // toggle the checkbox
+            virtual void Check (const wxString & name, bool state) = 0;
+
+            // Bind listener
+            // virtual void BindCeckListener (const wxString & name, Delegate<void(bool)> dg) = 0;
+
+            // UnBind the listener
+            // virtual void UnBindCeckListener (const wxString & name, Delegate<void(bool)> dg) = 0;
+
 
         private :
 

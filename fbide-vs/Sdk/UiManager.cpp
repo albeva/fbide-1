@@ -39,7 +39,7 @@ struct TheUiManager : UiManager, wxEvtHandler
     {
         // register UI related IDs
         auto cmdMgr = GET_CMDMGR();
-        cmdMgr->Register("fullscreen", ::wxNewId(), true);
+        cmdMgr->Register("fullscreen", ::wxNewId(), CmdManager::Type_Check, nullptr);
     }
 
 
@@ -92,9 +92,7 @@ struct TheUiManager : UiManager, wxEvtHandler
         );
 
         // Initalize toolbar
-        wxMenu * tbarMenu = new wxMenu();
-        m_menuHandler.AddMenu("toolbars", tbarMenu, false);
-        m_tbarHandler.Init(&m_aui, tbarMenu);
+        m_tbarHandler.Init(&m_aui);
 
         // Success
         return true;

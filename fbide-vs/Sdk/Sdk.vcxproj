@@ -87,6 +87,7 @@
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="CmdManager.h" />
     <ClInclude Include="Language.h" />
+    <ClInclude Include="Delegates.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="sdk_pch.h" />
     <ClInclude Include="PluginManager.h" />

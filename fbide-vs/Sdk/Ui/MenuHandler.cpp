@@ -60,6 +60,7 @@ void UiMenuHandler::Load (wxXmlNode * xml, wxMenu * parent)
     wxString id;
     Manager * mgr = GET_MGR();
     Language & lang = mgr->GetLang();
+    auto cmdMgr = mgr->GetCmdManager();
 
     for ( ; xml; xml = xml->GetNext())
     {
@@ -79,7 +80,11 @@ void UiMenuHandler::Load (wxXmlNode * xml, wxMenu * parent)
             wxMenu * menu = GetMenu(id);
             if (menu == nullptr) 
             {
-                menu = new wxMenu();
+                auto entry = cmdMgr->FindEntry("menu." + id);
+                if (entry != nullptr
+                    && entry->type == CmdManager::Type_Menu
+                    && (menu = dynamic_cast<wxMenu*>(entry->object)) != nullptr);
+                else menu = new wxMenu();
                 m_map[id] = menu;
             }
 
@@ -100,7 +105,7 @@ void UiMenuHandler::Load (wxXmlNode * xml, wxMenu * parent)
         // integrity check. Follwing can only appear in <menu> block
         if (parent == nullptr)
         {
-            wxLogWarning("Only <menu> entries allowed in <menus> section. <%s> found", xml->GetName());
+            wxLogWarning("<menu> entry expected <%s> found", xml->GetName());
             continue;
         }
 
@@ -152,6 +157,8 @@ void UiMenuHandler::AddMenu (const wxString & id, wxMenu * menu, bool show)
     if (show) m_mbar->Append(menu, GET_LANG()["group." + id]);
 }
 
+#include <functional>
+
 
 // Add a new item to the menu
 void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
@@ -161,15 +168,22 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
 
     Manager     * mgr   = GET_MGR();
     Language    & lang  = mgr->GetLang();
-    CmdManager  * cmdMgr = mgr->GetCmdManager();
+    CmdManager::Entry & entry = mgr->GetCmdManager()->GetEntry(name);
 
-    auto id     = cmdMgr->GetId(name);
     auto label  = lang[name];
     auto help   = lang[name + ".help"];
-    auto style  = wxITEM_NORMAL;
     auto art    = mgr->GetUiManager()->GetArtProvider();
-
-    auto item = new wxMenuItem (parent, id, label, help, style);
-    if (art != NULL) item->SetBitmap(art->GetIcon(name));
-    parent->Append(item);
+    
+    if (entry.type == CmdManager::Type_Normal)
+    {
+        auto item = new wxMenuItem (parent, entry.id, label, help, wxITEM_NORMAL);
+        if (art != NULL) item->SetBitmap(art->GetIcon(name));
+        parent->Append(item);
+    }
+    else if (entry.type == CmdManager::Type_Check)
+    {
+        auto item = new wxMenuItem (parent, entry.id, label, help, wxITEM_CHECK);
+        parent->Append(item);
+        item->Check(entry.checked);
+    }
 }

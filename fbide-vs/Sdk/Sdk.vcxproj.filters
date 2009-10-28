@@ -33,6 +33,9 @@
     <ClInclude Include="CmdManager.h">
       <Filter>Cmd</Filter>
     </ClInclude>
+    <ClInclude Include="Delegates.h">
+      <Filter>Generic</Filter>
+    </ClInclude>
     <ClInclude Include="DocManager.h">
       <Filter>Doc</Filter>
     </ClInclude>
