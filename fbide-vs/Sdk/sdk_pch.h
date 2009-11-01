@@ -38,13 +38,9 @@
 #include <unordered_map>
 #include <memory>
 
-// boost headers
-#include <boost/function.hpp>
-#include <boost/signals2.hpp>
-#include <boost/smart_ptr.hpp>
-
-// Helper headers
-#include "make_delegate.h"
+// delegates
+#include "Delegate.h"
+#include "MultiDelegate.h"
 
 // FBIde SDK headers
 #include "Sdk.h"

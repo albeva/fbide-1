@@ -26,6 +26,8 @@
 
 
 
+
+
 using namespace fbi;
 
 
@@ -184,9 +186,12 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
         auto item = new wxMenuItem (parent, entry.id, label, help, wxITEM_CHECK);
         parent->Append(item);
         item->Check(entry.checked);
-        // cmdMgr->Connect(name, boost::make_delegate(&UiMenuHandler::ChechItem, this));
+
+        // connect
+        cmdMgr->Connect(name, MakeDelegate(this, &UiMenuHandler::ChechItem));
     }
 }
+
 
 
 /**

@@ -19,6 +19,7 @@
  */
 #pragma once
 
+
 namespace fbi
 {
     
@@ -70,14 +71,16 @@ namespace fbi
         // toggle the checkbox
         virtual void Check (const wxString & name, bool state) = 0;
         
-        /*
         // Define Signal and Slot types
-        typedef boost::signals2::signal<void(const wxString & name, Entry & entry)> Signal;
-        typedef Signal::slot_type Slot;
+        typedef MultiDelegate<void(const wxString & name, Entry & entry)> CmdSignal;
+        typedef CmdSignal::Signature CmdSlot;
 
         // connect slot to a signal
-        virtual boost::signals2::connection Connect (const wxString & name, const Slot & slot) = 0;
-        */
+        virtual void Connect (const wxString & name, const CmdSlot & slot) = 0;
+
+        // Disconnect
+        virtual void Disconnect (const wxString & name, const CmdSlot & slot) = 0;
+
         // declare the manager
         DECLARE_MANAGER(CmdManager)
     };

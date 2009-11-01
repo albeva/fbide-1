@@ -18,7 +18,6 @@
  * Copyright (C) The FBIde development team
  */
 #include "sdk_pch.h"
-
 #include "Manager.h"
 #include "CmdManager.h"
 
@@ -129,29 +128,41 @@ struct TheCmdManager : CmdManager
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
             return;
         }
-        // iter->second->m_signal(name, iter->second->m_entry);
+        iter->second->m_signal(name, iter->second->m_entry);
     }
     
 
-    /*
     // Bind a listener
-    virtual boost::signals2::connection Connect (const wxString & name, const Slot & slot)
+    virtual void Connect (const wxString & name, const CmdSlot & slot)
     {
         auto iter = m_map.find(name);
         if (iter == m_map.end())
         {
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return boost::signals2::connection();
+            return;
         }
-        return iter->second->m_signal.connect(slot);
+        iter->second->m_signal += slot;
     }
-    */
+
+
+    // disconnect
+    virtual void Disconnect (const wxString & name, const CmdSlot & slot)
+    {
+        auto iter = m_map.find(name);
+        if (iter == m_map.end())
+        {
+            wxLogWarning("Id '%s' is not registered with CmdManager", name);
+            return;
+        }
+        iter->second->m_signal -= slot;
+    }
+
 
     // Internal data structure for entries
     struct InternalEntry
     {
-        Entry   m_entry;    // the public data entry
-        //Signal  m_signal;   // signal to send when something changes
+        Entry       m_entry;    // the public data entry
+        CmdSignal   m_signal;   // signal to send when something changes
     };
 
     // data

@@ -48,7 +48,7 @@
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_dll\mswud;$(WXWIN)\include;$(BOOSTDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_dll\mswud;$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WXMSW__;WXUSINGDLL;EXPORT_SDK;USING_V8_SHARED;;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>sdk_pch.h</PrecompiledHeaderFile>
@@ -87,9 +87,10 @@
     <ClInclude Include="DocManager.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="CmdManager.h" />
+    <ClInclude Include="Delegate.h" />
     <ClInclude Include="Language.h" />
-    <ClInclude Include="make_delegate.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="MultiDelegate.h" />
     <ClInclude Include="sdk_pch.h" />
     <ClInclude Include="PluginManager.h" />
     <ClInclude Include="Registry.h" />
