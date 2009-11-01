@@ -40,6 +40,7 @@ struct TheUiManager : UiManager, wxEvtHandler
         // register UI related IDs
         auto cmdMgr = GET_CMDMGR();
         cmdMgr->Register("fullscreen", ::wxNewId(), CmdManager::Type_Check, nullptr);
+        cmdMgr->Register("log", ::wxNewId(), CmdManager::Type_Check, nullptr);
     }
 
 

@@ -57,6 +57,8 @@ namespace fbi
         // Show / Hide the toolbars
         void OnToggleToolbars(wxCommandEvent & event);
 
+        // Flag check items
+        void CheckItem(const wxString & name, CmdManager::Entry & entry);
 
         private :
             wxAuiManager *                  m_aui;      // toolbar owner

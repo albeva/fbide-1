@@ -34,97 +34,37 @@
  * nested partial templates are parameters
  * to one - another.
  */
-template<class T> class MultiDelegateBase
+template<class T, class Container = std::vector<T*>> class MultiDelegateBase
 {
     public :
-        
-
+        // convinience overload for connecting slots
+        void operator += (const T & delegate) 
+        {
+            Connect(delegate);
+        }        
         // Connect slot
-        void Connect (T delegate)
+        void Connect (const T & delegate)
         {
             m_list.push_back(new T(delegate));
         }
-        // convinience overload for connecting slots
-        void operator += (T delegate)
+
+        // convinience method to disconnect
+        void operator -= (const T & delegate)
         {
-            m_list.push_back(new T(delegate));
+            Disconnect(delegate);
         }
         // disconnect a slot
-        void Disconnect (T delegate)
+        void Disconnect (const T & delegate)
         {
-            Remove(&delegate);
-        }
-        // convinience method to disconnect
-        void operator -= (T delegate)
-        {
-            Remove(&delegate);
-        }
-
-        /**
-         * create
-         */
-        MultiDelegateBase () : activeLevel(0), toCleanup(0)
-        {
-        }
-
-        /**
-         * Clean up
-         */
-        virtual ~MultiDelegateBase()
-        {
-            iterator iter = m_list.begin();
+            auto iter = m_list.begin();
             while (iter != m_list.end())
             {
-                T * dg = reinterpret_cast<T *>(*iter);
-                delete dg;
-                iter++;
-            }
-        }
-    protected :
-        typedef std::vector<void *> list;
-        typedef std::vector<void *>::iterator iterator;
-        list m_list;
-        int activeLevel; //
-        int toCleanup;
-
-
-        /**
-         * Cleanup empty entries (caused by callee trying to remove itself
-         * from call list
-         */
-        void Cleanup ()
-        {
-            if (activeLevel || !toCleanup) return;
-
-            iterator iter = m_list.begin();
-            while (iter != m_list.end())
-            {
-                if (*iter == NULL)
+                if (**iter == delegate)
                 {
-                    iter = m_list.erase(iter);
-                }
-                else
-                {
-                    iter++;
-                }
-            }
-
-            toCleanup = 0;
-        }
-
-    private :
-        void Remove (T * delegate)
-        {
-            iterator iter = m_list.begin();
-            while (iter != m_list.end())
-            {
-                T * dg = reinterpret_cast<T *>(*iter);
-                if ((*dg) == *delegate)
-                {
-                    delete dg;
+                    delete *iter;
                     if (activeLevel)
                     {
-                        *iter = NULL;
+                        *iter = nullptr;
                         toCleanup++;
                     }
                     else
@@ -135,6 +75,45 @@ template<class T> class MultiDelegateBase
                 }
                 iter++;
             }
+        }
+
+        /**
+         * create
+         */
+        MultiDelegateBase () : activeLevel(0), toCleanup(0) {}
+
+        /**
+         * Clean up
+         */
+        virtual ~MultiDelegateBase()
+        {
+            for (auto iter = m_list.begin(); iter != m_list.end(); iter++)
+            {
+                delete *iter;
+            }
+        }
+
+    protected :
+        Container m_list;
+        int activeLevel;
+        int toCleanup;
+
+        /**
+         * Cleanup empty entries (caused by callee trying to remove itself
+         * from call list
+         */
+        void Cleanup ()
+        {
+            // can't or nothing to clean up
+            if (activeLevel || !toCleanup) return;
+            // do the cleanup
+            auto iter = m_list.begin();
+            while (iter != m_list.end())
+            {
+                if (*iter == nullptr) iter = m_list.erase(iter);
+                else iter++;
+            }
+            toCleanup = 0;
         }
 };
 
@@ -154,11 +133,10 @@ class MultiDelegate;
  */
 #define DLG_CALL_START \
         parent::activeLevel++; \
-        std::vector<void *>::iterator iter = parent::m_list.begin(); \
+        auto iter = parent::m_list.begin(); \
         while (iter != parent::m_list.end()) \
         { \
-            type * dg = reinterpret_cast<type *>(*iter); \
-            if (NULL != dg)
+            if (nullptr != *iter)
 
 /**
  * End block. Wrap delegate method call
@@ -176,10 +154,8 @@ class MultiDelegate;
         parent::Cleanup();
 
 
-/**
- * N=0
- * R ();
- */
+// N=0
+// R ();
 template<typename R>
 class MultiDelegate < R (  ) >
 : public MultiDelegateBase<Delegate0<R> >
@@ -192,16 +168,15 @@ class MultiDelegate < R (  ) >
         {
             DLG_CALL_START
             {
-                (*dg)();
+                (**iter)();
             }
             DLG_CALL_END
         }
 };
 
-/**
- * N=1
- * R (P1);
- */
+
+// N=1
+// R (P1);
 template<typename R, class P1>
 class MultiDelegate < R ( P1 ) >
 : public MultiDelegateBase<Delegate1<P1, R> >
@@ -214,19 +189,18 @@ class MultiDelegate < R ( P1 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1));
+                (**iter)(std::forward<P1>(p1));
             }
             DLG_CALL_END
         }
 };
 
-/**
- * N=2
- * R (P1, P2);
- */
+
+// N=2
+// R (P1, P2);
 template<typename R, class P1, class P2>
 class MultiDelegate < R ( P1, P2 ) >
-: public MultiDelegateBase<Delegate2<P1, P2, R> >
+: public MultiDelegateBase< Delegate2<P1, P2, R> >
 {
     typedef Delegate2<P1, P2, R> type;
     typedef MultiDelegateBase<type> parent;
@@ -236,16 +210,15 @@ class MultiDelegate < R ( P1, P2 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1), std::forward<P2>(p2));
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2));
             }
             DLG_CALL_END
         }
 };
 
-/**
- * N=3
- * R (P1, P2, P3);
- */
+
+// N=3
+// R (P1, P2, P3);
 template<typename R, class P1, class P2, class P3>
 class MultiDelegate < R ( P1, P2, P3 ) >
 : public MultiDelegateBase<Delegate3<P1, P2, P3, R> >
@@ -258,17 +231,16 @@ class MultiDelegate < R ( P1, P2, P3 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1), std::forward<P2>(p2),
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2),
                       std::forward<P3>(p3));
             }
             DLG_CALL_END
         }
 };
 
-/**
- * N=4
- * R (P1, P2, P3, P4);
- */
+
+// N=4
+// R (P1, P2, P3, P4);
 template<typename R, class P1, class P2, class P3, class P4>
 class MultiDelegate < R ( P1, P2, P3, P4 ) >
 : public MultiDelegateBase<Delegate4<P1, P2, P3, P4, R> >
@@ -281,17 +253,16 @@ class MultiDelegate < R ( P1, P2, P3, P4 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1), std::forward<P2>(p2), 
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2), 
                       std::forward<P3>(p3), std::forward<P4>(p4));
             }
             DLG_CALL_END
         }
 };
 
-/**
- * N=5
- * R (P1, P2, P3, P4, P5);
- */
+
+// N=5
+// R (P1, P2, P3, P4, P5);
 template<typename R, class P1, class P2, class P3, class P4, class P5>
 class MultiDelegate < R ( P1, P2, P3, P4, P5 ) >
 : public MultiDelegateBase<Delegate5<P1, P2, P3, P4, P5, R> >
@@ -304,7 +275,7 @@ class MultiDelegate < R ( P1, P2, P3, P4, P5 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1), std::forward<P2>(p2),
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2),
                       std::forward<P3>(p3), std::forward<P4>(p4),
                       std::forward<P5>(p5));
             }
@@ -313,10 +284,8 @@ class MultiDelegate < R ( P1, P2, P3, P4, P5 ) >
 };
 
 
-/**
- * N=6
- * R (P1, P2, P3, P4, P5, P6);
- */
+// N=6
+// R (P1, P2, P3, P4, P5, P6);
 template<typename R, class P1, class P2, class P3, class P4, class P5, class P6>
 class MultiDelegate < R ( P1, P2, P3, P4, P5, P6 ) >
 : public MultiDelegateBase<Delegate6<P1, P2, P3, P4, P5, P6, R> >
@@ -329,7 +298,7 @@ class MultiDelegate < R ( P1, P2, P3, P4, P5, P6 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1), std::forward<P2>(p2),
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2),
                       std::forward<P3>(p3), std::forward<P4>(p4),
                       std::forward<P5>(p5), std::forward<P6>(p6));
             }
@@ -337,10 +306,9 @@ class MultiDelegate < R ( P1, P2, P3, P4, P5, P6 ) >
         }
 };
 
-/**
- * N=7
- * R (P1, P2, P3, P4, P5, P6, P7);
- */
+
+// N=7
+// R (P1, P2, P3, P4, P5, P6, P7);
 template<typename R, class P1, class P2, class P3, class P4, class P5, class P6, class P7>
 class MultiDelegate < R ( P1, P2, P3, P4, P5, P6, P7 ) >
 : public MultiDelegateBase<Delegate7<P1, P2, P3, P4, P5, P6, P7, R>>
@@ -353,7 +321,7 @@ class MultiDelegate < R ( P1, P2, P3, P4, P5, P6, P7 ) >
         {
             DLG_CALL_START
             {
-                (*dg)(std::forward<P1>(p1), std::forward<P2>(p2),
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2),
                       std::forward<P3>(p3), std::forward<P4>(p4),
                       std::forward<P5>(p5), std::forward<P6>(p6),
                       std::forward<P7>(p7));
@@ -361,5 +329,30 @@ class MultiDelegate < R ( P1, P2, P3, P4, P5, P6, P7 ) >
             DLG_CALL_END
         }
 };
+
+
+// N=8
+// R (P1, P2, P3, P4, P5, P6, P7, P8);
+template<typename R, class P1, class P2, class P3, class P4, class P5, class P6, class P7, class P8>
+class MultiDelegate < R ( P1, P2, P3, P4, P5, P6, P7, P8 ) >
+: public MultiDelegateBase<Delegate8<P1, P2, P3, P4, P5, P6, P7, P8, R>>
+{
+    typedef Delegate8<P1, P2, P3, P4, P5, P6, P7, P8, R> type;
+    typedef MultiDelegateBase<type> parent;
+    public :
+        typedef type Signature;
+        void operator () (P1 && p1, P2 && p2, P3 && p3, P4 && p4, P5 && p5, P6 && p6, P7 && p7, P8 && p8)
+        {
+            DLG_CALL_START
+            {
+                (**iter)(std::forward<P1>(p1), std::forward<P2>(p2),
+                      std::forward<P3>(p3), std::forward<P4>(p4),
+                      std::forward<P5>(p5), std::forward<P6>(p6),
+                      std::forward<P7>(p7), std::forward<P8>(p8));
+            }
+            DLG_CALL_END
+        }
+};
+
 
 #endif // MULTIDELEGATE_H_INCLUDED

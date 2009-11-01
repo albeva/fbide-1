@@ -19,6 +19,7 @@
         <menu id="view">
             <menu id="toolbars" />
             <item id="fullscreen" />
+            <item id="log" />
             <item id="toolbars.toggle" />
         </menu>
         <menu id="search">
@@ -38,6 +39,8 @@
             >
         -->
         <toolbar id="common" show="yes">
+            <item id="fullscreen" />
+            <item id="log" />
             <item id="new" />
             <item id="open" />
             <item id="save" />

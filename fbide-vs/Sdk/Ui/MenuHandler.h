@@ -49,11 +49,11 @@ namespace fbi
         void AddMenuItem (const wxString & id, wxMenu * parent);
 
         // Flag check items
-        void ChechItem(const wxString & name, CmdManager::Entry & entry);
+        void CheckItem(const wxString & name, CmdManager::Entry & entry);
         
         private :
-            HashMap<wxMenu *>   m_map; // hold id-menu associations
-            wxMenuBar *         m_mbar;
+            HashMap<wxMenu *>   m_map;          // hold id-menu associations
+            wxMenuBar *         m_mbar;         // the menu bar
     };
 
 }

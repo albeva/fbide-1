@@ -128,7 +128,20 @@ struct TheCmdManager : CmdManager
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
             return;
         }
-        iter->second->m_signal(name, iter->second->m_entry);
+        // shortcut
+        auto & info = *iter->second;
+        // check sanity
+        if (info.m_entry.type != Type_Check)
+        {
+            wxLogWarning("Id '%s' is not a checkable item", name);
+            return;
+        }
+        // no need to update
+        //if (info.m_entry.checked == state) return;
+        // set state
+        info.m_entry.checked = state;
+        // send signal
+        info.m_signal(name, iter->second->m_entry);
     }
     
 

@@ -297,14 +297,46 @@ void UiToolbarHandler::AddToolBarItem (const wxString & name, wxAuiToolBar * too
     Language    & lang  = mgr->GetLang();
     CmdManager  * cmdMgr = mgr->GetCmdManager();
 
-    auto id     = cmdMgr->GetId(name);
+    auto &entry = cmdMgr->GetEntry(name);
     auto label  = lang[name];
     auto help   = lang[name + ".help"];
-    auto style  = wxITEM_NORMAL;
     auto art    = mgr->GetUiManager()->GetArtProvider();
+    auto id     = entry.id;
 
-    wxBitmap bmp = art ? art->GetIcon(name) : wxNullBitmap;
-    toolbar->AddTool(id, label, bmp, help, style);
-    auto tool = toolbar->FindTool(id);
-    tool->SetLongHelp(help);
+    if (entry.type == CmdManager::Type_Normal)
+    {
+        wxBitmap bmp = art ? art->GetIcon(name) : wxNullBitmap;
+        auto tool = toolbar->AddTool(id, label, bmp, help, wxITEM_NORMAL);
+        tool->SetLongHelp(help);
+    }
+    else if (entry.type == CmdManager::Type_Check)
+    {
+        wxBitmap bmp = art ? art->GetIcon(name) : wxNullBitmap;
+        auto tool = toolbar->AddTool(id, label, bmp, help, wxITEM_CHECK);
+        tool->SetLongHelp(help);
+        toolbar->ToggleTool(id, entry.checked);
+        // connect toggle handling
+        cmdMgr->Connect(name, MakeDelegate(this, &UiToolbarHandler::CheckItem));
+        m_parent->Bind(wxEVT_COMMAND_MENU_SELECTED, [name](wxCommandEvent & evt){
+            GET_CMDMGR()->Check(name, evt.IsChecked());
+        }, id);
+    }
+}
+
+
+/**
+ * Toggle toolbar item
+ */
+void UiToolbarHandler::CheckItem(const wxString & name, CmdManager::Entry & entry)
+{
+    wxAuiPaneInfoArray & panes = m_aui->GetAllPanes();
+    for (size_t iter = 0; iter < panes.Count(); iter++)
+    {
+        wxAuiPaneInfo & pane = panes[iter];
+        if (!pane.IsToolbar()) continue;
+        auto tbar = dynamic_cast<wxAuiToolBar*>(pane.window);
+        if (tbar == nullptr) continue;
+        tbar->ToggleTool(entry.id, entry.checked);
+    }
+    m_aui->Update();
 }
