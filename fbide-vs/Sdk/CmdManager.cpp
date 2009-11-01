@@ -22,10 +22,6 @@
 #include "Manager.h"
 #include "CmdManager.h"
 
-
-#include <functional>
-
-
 using namespace fbi;
 
 /**
@@ -37,7 +33,9 @@ struct TheCmdManager : CmdManager
     // Add new entry. Internal call only
     inline Entry & AddEntry (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked)
     {
-        Entry & entry = m_map[name].entry;
+        auto sp = std::make_shared<InternalEntry>();
+        m_map[name] = sp;
+        Entry & entry = sp->m_entry;
         entry.id = id;
         entry.type = type;
         entry.object = object;
@@ -57,7 +55,7 @@ struct TheCmdManager : CmdManager
             Entry & entry = AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false);
             return entry.id;
         }
-        return iter->second.entry.id;
+        return iter->second->m_entry.id;
     }
 
 
@@ -69,7 +67,7 @@ struct TheCmdManager : CmdManager
         {
             return nullptr;
         }
-        return &iter->second.entry;
+        return &iter->second->m_entry;
     }
 
 
@@ -82,7 +80,7 @@ struct TheCmdManager : CmdManager
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
             return AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false);
         }
-        return iter->second.entry;
+        return iter->second->m_entry;
     }
 
 
@@ -131,45 +129,33 @@ struct TheCmdManager : CmdManager
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
             return;
         }
-        // iter->second.m_checkDlg(state);
+        // iter->second->m_signal(name, iter->second->m_entry);
     }
+    
 
     /*
-    // Bind listener
-    virtual void BindCeckListener (const wxString & name, Delegate<void(bool)> dg)
+    // Bind a listener
+    virtual boost::signals2::connection Connect (const wxString & name, const Slot & slot)
     {
         auto iter = m_map.find(name);
         if (iter == m_map.end())
         {
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return;
+            return boost::signals2::connection();
         }
-        iter->second.m_checkDlg += dg;
-    }
-
-
-    // UnBind the listener
-    virtual void UnBindCeckListener (const wxString & name, Delegate<void(bool)> dg)
-    {
-        auto iter = m_map.find(name);
-        if (iter == m_map.end())
-        {
-            wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return;
-        }
-        iter->second.m_checkDlg -= dg;
+        return iter->second->m_signal.connect(slot);
     }
     */
 
     // Internal data structure for entries
     struct InternalEntry
     {
-        Entry                       entry;      // the public data entry
-        // MultiDelegate<void(bool)>   m_checkDlg; // check callback delegate
+        Entry   m_entry;    // the public data entry
+        //Signal  m_signal;   // signal to send when something changes
     };
 
     // data
-    HashMap<InternalEntry> m_map;    // hold name id pairs
+    HashMap<std::shared_ptr<InternalEntry>> m_map;    // hold name id pairs
 };
 
 

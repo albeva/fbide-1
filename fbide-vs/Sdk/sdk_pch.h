@@ -19,6 +19,7 @@
  */
 #pragma once
 
+// wxWidget headers
 #include <wx/wxprec.h>
 #include <wx/stdpaths.h>
 #include <wx/apptrait.h>
@@ -33,13 +34,22 @@
 #include <wx/log.h>
 #include <wx/stc/stc.h>
 
+// c++ stl headers
 #include <unordered_map>
 #include <memory>
 
+// boost headers
+#include <boost/function.hpp>
+#include <boost/signals2.hpp>
+#include <boost/smart_ptr.hpp>
+
+// Helper headers
+#include "make_delegate.h"
+
+// FBIde SDK headers
 #include "Sdk.h"
 #include "Variant.h"
 #include "Utilities.h"
 #include "Version.h"
 #include "Registry.h"
 #include "Language.h"
-// #include "IdMap.h"

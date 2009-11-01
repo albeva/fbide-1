@@ -18,11 +18,11 @@
  * Copyright (C) The FBIde development team
  */
 #include "sdk_pch.h"
-#include "MenuHandler.h"
 #include "../Manager.h"
 #include "../UiManager.h"
 #include "../CmdManager.h"
 #include "IArtProvider.h"
+#include "MenuHandler.h"
 
 
 
@@ -157,8 +157,6 @@ void UiMenuHandler::AddMenu (const wxString & id, wxMenu * menu, bool show)
     if (show) m_mbar->Append(menu, GET_LANG()["group." + id]);
 }
 
-#include <functional>
-
 
 // Add a new item to the menu
 void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
@@ -168,8 +166,9 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
 
     Manager     * mgr   = GET_MGR();
     Language    & lang  = mgr->GetLang();
-    CmdManager::Entry & entry = mgr->GetCmdManager()->GetEntry(name);
+    CmdManager  * cmdMgr= mgr->GetCmdManager();
 
+    auto &entry = cmdMgr->GetEntry(name);
     auto label  = lang[name];
     auto help   = lang[name + ".help"];
     auto art    = mgr->GetUiManager()->GetArtProvider();
@@ -185,5 +184,15 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
         auto item = new wxMenuItem (parent, entry.id, label, help, wxITEM_CHECK);
         parent->Append(item);
         item->Check(entry.checked);
+        // cmdMgr->Connect(name, boost::make_delegate(&UiMenuHandler::ChechItem, this));
     }
+}
+
+
+/**
+ * Mark the item
+ */
+void UiMenuHandler::ChechItem(const wxString & name, CmdManager::Entry & entry)
+{
+    wxMessageBox(name);
 }

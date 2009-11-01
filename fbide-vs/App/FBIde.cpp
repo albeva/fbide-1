@@ -12,7 +12,8 @@ using namespace fbi;
 /**
  * Main application class
  */
-class FBIdeApp : public wxApp {
+class FBIdeApp : public wxApp
+{
     
     // Entry point
     virtual bool OnInit () {
@@ -34,7 +35,6 @@ class FBIdeApp : public wxApp {
         ui->LoadLayout(path + "/ide/layout.xml");
         ui->GetFrame()->Show();
 
-        
         // success
         return true;
     }

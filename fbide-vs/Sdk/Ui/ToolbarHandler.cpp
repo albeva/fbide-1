@@ -18,13 +18,12 @@
  * Copyright (C) The FBIde development team
  */
 #include "sdk_pch.h"
-#include "MenuHandler.h"
-#include "ToolbarHandler.h"
 #include "../Manager.h"
 #include "../CmdManager.h"
 #include "../UiManager.h"
 #include "IArtProvider.h"
-
+#include "MenuHandler.h"
+#include "ToolbarHandler.h"
 
 using namespace fbi;
 

@@ -193,7 +193,6 @@ struct TheUiManager : UiManager, wxEvtHandler
         m_frame->Destroy();
     }
 
-
     // vars
     wxFrame *           m_frame;        // the main application frame
     wxAuiManager        m_aui;          // AUI manager instance
@@ -209,7 +208,7 @@ struct TheUiManager : UiManager, wxEvtHandler
 
 // event dispatching
 BEGIN_EVENT_TABLE(TheUiManager, wxEvtHandler)
-    EVT_CLOSE(TheUiManager::OnClose)
+    EVT_CLOSE   (       TheUiManager::OnClose)
 END_EVENT_TABLE()
 
 
