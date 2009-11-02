@@ -27,15 +27,13 @@ namespace fbi
      */
     struct SDK_DLL NonCopyable
     {
-        private :
-            // disable copy
-            NonCopyable (const NonCopyable &) {};
-            NonCopyable & operator = (const NonCopyable &) { return *this; };
+       protected:
+            NonCopyable() {}
+            ~NonCopyable() {}
 
-        // default protected constructor and destructor
-        protected :
-            NonCopyable() {};
-            ~NonCopyable() {};
+       private:  // emphasize the following members are private
+            NonCopyable( const NonCopyable& );
+            const NonCopyable& operator=( const NonCopyable& );
     };
 
 

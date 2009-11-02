@@ -118,7 +118,7 @@ struct TheCmdManager : CmdManager
         m_map.erase(iter);
     }
 
-    
+    /*
     // Check a check item. Basically notify any listeber bound
     virtual void Check (const wxString & name, bool state)
     {
@@ -169,13 +169,13 @@ struct TheCmdManager : CmdManager
         }
         iter->second->m_signal -= slot;
     }
-
+    */
 
     // Internal data structure for entries
     struct InternalEntry
     {
         Entry       m_entry;    // the public data entry
-        CmdSignal   m_signal;   // signal to send when something changes
+        // CmdSignal   m_signal;   // signal to send when something changes
     };
 
     // data

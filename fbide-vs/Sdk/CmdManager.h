@@ -29,7 +29,7 @@ namespace fbi
      * It alos provides a way to bind UI elements (check item, menus, dropdowns, ...) to
      * the IDs so that UI loader knows how to handle such special cases.
      */
-    class SDK_DLL CmdManager : public NonCopyable
+    class SDK_DLL CmdManager : public wxEvtHandler, public NonCopyable
     {
         public :
 
@@ -68,6 +68,7 @@ namespace fbi
         // unregister the id
         virtual void UnRegister (const wxString & name) = 0;
 
+        /*
         // toggle the checkbox
         virtual void Check (const wxString & name, bool state) = 0;
         
@@ -80,6 +81,7 @@ namespace fbi
 
         // Disconnect
         virtual void Disconnect (const wxString & name, const CmdSlot & slot) = 0;
+        */
 
         // declare the manager
         DECLARE_MANAGER(CmdManager)

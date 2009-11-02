@@ -90,7 +90,7 @@ void UiToolbarHandler::OnToolbarMenuClick(wxCommandEvent & event)
     {
         m_showTbars = true;
         auto cmdMgr = GET_CMDMGR();
-        cmdMgr->Check("toolbars.toggle", true);
+        // cmdMgr->Check("toolbars.toggle", true);
     }
 }
 
@@ -316,10 +316,10 @@ void UiToolbarHandler::AddToolBarItem (const wxString & name, wxAuiToolBar * too
         tool->SetLongHelp(help);
         toolbar->ToggleTool(id, entry.checked);
         // connect toggle handling
-        cmdMgr->Connect(name, MakeDelegate(this, &UiToolbarHandler::CheckItem));
-        m_parent->Bind(wxEVT_COMMAND_MENU_SELECTED, [name](wxCommandEvent & evt){
+        // cmdMgr->Connect(name, MakeDelegate(this, &UiToolbarHandler::CheckItem));
+        /*m_parent->Bind(wxEVT_COMMAND_MENU_SELECTED, [name](wxCommandEvent & evt){
             GET_CMDMGR()->Check(name, evt.IsChecked());
-        }, id);
+        }, id);*/
     }
 }
 
@@ -327,6 +327,7 @@ void UiToolbarHandler::AddToolBarItem (const wxString & name, wxAuiToolBar * too
 /**
  * Toggle toolbar item
  */
+/*
 void UiToolbarHandler::CheckItem(const wxString & name, CmdManager::Entry & entry)
 {
     wxAuiPaneInfoArray & panes = m_aui->GetAllPanes();
@@ -340,3 +341,4 @@ void UiToolbarHandler::CheckItem(const wxString & name, CmdManager::Entry & entr
     }
     m_aui->Update();
 }
+*/

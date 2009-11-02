@@ -187,7 +187,7 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
         parent->Append(item);
         item->Check(entry.checked);
         // connect
-        cmdMgr->Connect(name, MakeDelegate(this, &UiMenuHandler::CheckItem));
+        // cmdMgr->Connect(name, MakeDelegate(this, &UiMenuHandler::CheckItem));
     }
 }
 
@@ -196,9 +196,11 @@ void UiMenuHandler::AddMenuItem (const wxString & name, wxMenu * parent)
 /**
  * Mark the item
  */
+/*
 void UiMenuHandler::CheckItem(const wxString & name, CmdManager::Entry & entry)
 {
     auto item = m_mbar->FindItem(entry.id);
     if (item == nullptr) return;
     item->Check(entry.checked);
 }
+*/
