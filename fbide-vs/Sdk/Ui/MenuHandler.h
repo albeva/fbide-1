@@ -48,6 +48,9 @@ namespace fbi
         // Add a new item to the menu
         void AddMenuItem (const wxString & id, wxMenu * parent);
 
+        // on muni item clicked
+        void OnMenuItem (wxCommandEvent & event);
+
         // Flag check items
         // void CheckItem(const wxString & name, CmdManager::Entry & entry);
         

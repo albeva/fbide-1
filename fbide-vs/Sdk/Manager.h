@@ -34,11 +34,13 @@
 // get type manager
 #define GET_TYPEMGR()   GET_MGR()->GetTypeManager()
 // Get cmd manager
-#define GET_CMDMGR()     GET_MGR()->GetCmdManager()
+#define GET_CMDMGR()    GET_MGR()->GetCmdManager()
 // get global configuration registry
 #define GET_REG()       GET_MGR()->GetRegistry()
 // get translations
 #define GET_LANG()      GET_MGR()->GetLang()
+// get main frame
+#define GET_FRAME()     GET_UIMGR()->GetFrame()
 
 
 

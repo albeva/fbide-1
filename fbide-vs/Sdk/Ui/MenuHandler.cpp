@@ -43,6 +43,7 @@ UiMenuHandler::UiMenuHandler() : m_mbar(nullptr)
 void UiMenuHandler::Init (wxMenuBar * menubar)
 {
     m_mbar = menubar;
+    GET_FRAME()->Bind(wxEVT_COMMAND_MENU_SELECTED, &UiMenuHandler::OnMenuItem, this, wxID_ANY);
 }
 
 
@@ -51,6 +52,15 @@ void UiMenuHandler::UnInit ()
 {
     m_mbar = nullptr;
     m_map.clear();
+}
+
+
+/**
+ * On menu item
+ */
+void UiMenuHandler::OnMenuItem (wxCommandEvent & event)
+{
+    wxMessageBox("hi");
 }
 
 
