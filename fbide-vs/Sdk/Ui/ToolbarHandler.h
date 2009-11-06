@@ -52,21 +52,23 @@ namespace fbi
         void OnPaneClose(wxAuiManagerEvent & event);
 
         // catch tbar menu clicks
-        void OnToolbarMenuClick(wxCommandEvent & event);
+        void OnCommandEvent(wxCommandEvent & event);
 
         // Show / Hide the toolbars
-        void OnToggleToolbars(wxCommandEvent & event);
+        void ToggleToolbars(bool show);
 
         // Flag check items
-        // void CheckItem(const wxString & name, CmdManager::Entry & entry);
+        void OnCmdMgrEvent(wxCommandEvent & event);
 
         private :
-            wxAuiManager *                  m_aui;      // toolbar owner
-            wxWindow *                      m_parent;   // parent window
-            wxMenu *                        m_menu;     // menu where to put toolbar entries
-            HashMap<wxAuiToolBar *>         m_map;      // hold id-toolbar associations
-            std::unordered_map<int, int>    m_idbridge; // bridge toolbar id and a menu commands
-            bool                            m_showTbars;// Show toolbars
+            wxAuiManager *                  m_aui;          // toolbar owner
+            wxWindow *                      m_parent;       // parent window
+            wxMenu *                        m_menu;         // menu where to put toolbar entries
+            HashMap<wxAuiToolBar *>         m_map;          // hold id-toolbar associations
+            std::unordered_map<int, int>    m_idbridge;     // bridge toolbar id and a menu commands
+            std::unordered_map<int, bool>   m_visibleMap;   // visible toolbar map
+            int                             m_visibleCnt;   // number of visible toolbars
+            bool                            m_showTbars;    // Show toolbars
     };
 
 }

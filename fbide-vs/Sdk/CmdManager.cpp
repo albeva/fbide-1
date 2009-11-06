@@ -23,6 +23,11 @@
 
 using namespace fbi;
 
+// check event
+wxDEFINE_EVENT(fbi::fbiCMD_CHECK,   wxCommandEvent);
+wxDEFINE_EVENT(fbi::fbiCMD_ENABLE,  wxCommandEvent);
+
+
 /**
  * Manager class implementation
  */
@@ -30,15 +35,17 @@ struct TheCmdManager : CmdManager
 {
 
     // Add new entry. Internal call only
-    inline Entry & AddEntry (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked)
+    inline Entry & AddEntry (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked, bool enabled)
     {
         auto sp = std::make_shared<InternalEntry>();
         m_map[name] = sp;
+        m_idMap[id] = sp;
         Entry & entry = sp->m_entry;
         entry.id = id;
         entry.type = type;
         entry.object = object;
         entry.checked = checked;
+        entry.enabled = enabled;
         return entry;
     }
 
@@ -51,7 +58,7 @@ struct TheCmdManager : CmdManager
         if (iter == m_map.end())
         {
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            Entry & entry = AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false);
+            Entry & entry = AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false, true);
             return entry.id;
         }
         return iter->second->m_entry.id;
@@ -70,6 +77,18 @@ struct TheCmdManager : CmdManager
     }
 
 
+    // retreave entry by registered numeric ID
+    virtual Entry * FindEntry (int id)
+    {
+        auto iter = m_idMap.find(id);
+        if (iter == m_idMap.end())
+        {
+            return nullptr;
+        }
+        return &iter->second->m_entry;
+    }
+
+
     // get entry or create a default one
     virtual Entry & GetEntry (const wxString & name)
     {
@@ -77,14 +96,14 @@ struct TheCmdManager : CmdManager
         if (iter == m_map.end())
         {
             wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false);
+            return AddEntry(name, ::wxNewId(), CmdManager::Type_Normal, nullptr, false, true);
         }
         return iter->second->m_entry;
     }
 
 
     // register id
-    virtual  void Register (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked)
+    virtual  void Register (const wxString & name, int id, CmdManager::Type type, wxObject * object, bool checked, bool enabled)
     {
         // Already registered?
         if (m_map.find(name) != m_map.end())
@@ -99,7 +118,7 @@ struct TheCmdManager : CmdManager
             return;
         }
         // insert
-        AddEntry(name, id, type, object, checked);
+        AddEntry(name, id, type, object, checked, enabled);
     }
 
 
@@ -115,71 +134,74 @@ struct TheCmdManager : CmdManager
     {
         auto iter = m_map.find(name);
         if (iter == m_map.end()) return;
+        m_idMap.erase(iter->second->m_entry.id);
         m_map.erase(iter);
     }
 
-    /*
-    // Check a check item. Basically notify any listeber bound
+
+    // toggle the checkbox
     virtual void Check (const wxString & name, bool state)
     {
-        auto iter = m_map.find(name);
-        if (iter == m_map.end())
-        {
-            wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return;
-        }
-        // shortcut
-        auto & info = *iter->second;
-        // check sanity
-        if (info.m_entry.type != Type_Check)
-        {
-            wxLogWarning("Id '%s' is not a checkable item", name);
-            return;
-        }
-        // no need to update
-        //if (info.m_entry.checked == state) return;
-        // set state
-        info.m_entry.checked = state;
-        // send signal
-        info.m_signal(name, iter->second->m_entry);
+        _check(FindEntry(name), state);
     }
-    
 
-    // Bind a listener
-    virtual void Connect (const wxString & name, const CmdSlot & slot)
+
+    // toggle checkbox identified by numeric ID
+    virtual void Check (int id, bool state)
     {
-        auto iter = m_map.find(name);
-        if (iter == m_map.end())
-        {
-            wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return;
-        }
-        iter->second->m_signal += slot;
+        _check(FindEntry(id), state);
     }
 
 
-    // disconnect
-    virtual void Disconnect (const wxString & name, const CmdSlot & slot)
+    // toggle the item
+    void _check(Entry * entry, bool state)
     {
-        auto iter = m_map.find(name);
-        if (iter == m_map.end())
-        {
-            wxLogWarning("Id '%s' is not registered with CmdManager", name);
-            return;
-        }
-        iter->second->m_signal -= slot;
+        if (entry == nullptr) return;
+        if (entry->checked == state || entry->type != Type_Check) return;
+        entry->checked =  state;
+        wxCommandEvent event(fbiCMD_CHECK, entry->id);
+        event.SetInt( state );
+        ProcessEvent(event);
     }
-    */
+
+
+    // enable / disable item
+    virtual void Enable (const wxString & name, bool state)
+    {
+        _enable(FindEntry(name), state);
+    }
+
+
+    // toggle checkbox identified by numeric ID
+    virtual void Enable (int id, bool state)
+    {
+        _enable(FindEntry(id), state);
+    }
+
+
+    // toggle the item
+    void _enable(Entry * entry, bool state)
+    {
+        if (entry == nullptr) return;
+        if (entry->enabled == state) return;
+        entry->enabled =  state;
+        wxCommandEvent event(fbiCMD_ENABLE, entry->id);
+        event.SetInt( state );
+        ProcessEvent(event);
+    }
+
 
     // Internal data structure for entries
     struct InternalEntry
     {
         Entry       m_entry;    // the public data entry
-        // CmdSignal   m_signal;   // signal to send when something changes
     };
 
+
     // data
-    HashMap<std::shared_ptr<InternalEntry>> m_map;    // hold name id pairs
+    typedef std::shared_ptr<InternalEntry> EntryPtr;
+    HashMap<EntryPtr> m_map;                    // hold name id pairs
+    std::unordered_map<int, EntryPtr> m_idMap;  // hold association by numeric id
 };
 
 

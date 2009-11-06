@@ -194,6 +194,22 @@ struct TheUiManager : UiManager, wxEvtHandler
         m_frame->Destroy();
     }
 
+
+    // handle command events
+    void OnCommandEvent (wxCommandEvent & event)
+    {
+        // sllow others to catch
+        event.Skip();
+
+        // handle toggle events for menus, toolbars, ...
+        auto cmdMgr = GET_CMDMGR();
+        auto info = cmdMgr->FindEntry(event.GetId());
+        if (info != nullptr && info->type == CmdManager::Type_Check)
+        {
+            cmdMgr->Check(event.GetId(), event.IsChecked());
+        }
+    }
+
     // vars
     wxFrame *           m_frame;        // the main application frame
     wxAuiManager        m_aui;          // AUI manager instance
@@ -209,7 +225,8 @@ struct TheUiManager : UiManager, wxEvtHandler
 
 // event dispatching
 BEGIN_EVENT_TABLE(TheUiManager, wxEvtHandler)
-    EVT_CLOSE   (       TheUiManager::OnClose)
+    EVT_CLOSE   (           TheUiManager::OnClose)
+    EVT_MENU    (wxID_ANY,  TheUiManager::OnCommandEvent)
 END_EVENT_TABLE()
 
 

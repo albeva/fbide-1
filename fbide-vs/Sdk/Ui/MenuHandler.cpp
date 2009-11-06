@@ -24,10 +24,6 @@
 #include "IArtProvider.h"
 #include "MenuHandler.h"
 
-
-
-
-
 using namespace fbi;
 
 
@@ -43,7 +39,10 @@ UiMenuHandler::UiMenuHandler() : m_mbar(nullptr)
 void UiMenuHandler::Init (wxMenuBar * menubar)
 {
     m_mbar = menubar;
-    GET_FRAME()->Bind(wxEVT_COMMAND_MENU_SELECTED, &UiMenuHandler::OnMenuItem, this, wxID_ANY);
+    // toggle notifications
+    GET_CMDMGR()->Bind(fbiCMD_CHECK, &UiMenuHandler::OnCmdMgrEvent, this, wxID_ANY);
+    // enable / siable
+    GET_CMDMGR()->Bind(fbiCMD_ENABLE, &UiMenuHandler::OnCmdMgrEvent, this, wxID_ANY);
 }
 
 
@@ -52,15 +51,26 @@ void UiMenuHandler::UnInit ()
 {
     m_mbar = nullptr;
     m_map.clear();
+    GET_CMDMGR()->Unbind(fbiCMD_CHECK, &UiMenuHandler::OnCmdMgrEvent, this, wxID_ANY);
+    GET_CMDMGR()->Unbind(fbiCMD_ENABLE, &UiMenuHandler::OnCmdMgrEvent, this, wxID_ANY);
 }
 
 
-/**
- * On menu item
- */
-void UiMenuHandler::OnMenuItem (wxCommandEvent & event)
+// check / enable items
+void UiMenuHandler::OnCmdMgrEvent (wxCommandEvent & event)
 {
-    wxMessageBox("hi");
+    auto item = m_mbar->FindItem(event.GetId());
+    if (item == nullptr) return;
+
+    if (event.GetEventType() == fbiCMD_CHECK)
+    {
+        item->Check(event.IsChecked());
+    }
+    else if (event.GetEventType() == fbiCMD_ENABLE)
+    {
+        item->Enable(event.GetInt());
+    }
+    
 }
 
 
