@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DocManager.h" />
+    <ClInclude Include="Document.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="CmdManager.h" />
@@ -109,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DocManager.cpp" />
+    <ClCompile Include="Document.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="CmdManager.cpp" />

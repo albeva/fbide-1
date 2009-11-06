@@ -18,6 +18,7 @@
  * Copyright (C) The FBIde development team
  */
 #pragma once
+#include "Document.h"
 
 namespace fbi
 {
@@ -25,10 +26,14 @@ namespace fbi
     /**
      * Editor panel
      */
-    class Editor : public wxPanel
+    class Editor : public Document
     {
         public :
-        Editor ();
+            Editor ();
+
+        private:
+
+            wxPanel * m_panel;
     };
 
 }

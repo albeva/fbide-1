@@ -25,6 +25,7 @@
 #include "Ui/ToolbarHandler.h"
 #include "Ui/IArtProvider.h"
 #include "Ui/ClassicThemeProvider.h"
+#include "Document.h"
 
 using namespace fbi;
 
@@ -40,7 +41,6 @@ struct TheUiManager : UiManager, wxEvtHandler
         // register UI related IDs
         auto cmdMgr = GET_CMDMGR();
         cmdMgr->Register("fullscreen", ::wxNewId(), CmdManager::Type_Check, nullptr);
-        cmdMgr->Register("log", ::wxNewId(), CmdManager::Type_Check, nullptr);
     }
 
 
@@ -175,9 +175,9 @@ struct TheUiManager : UiManager, wxEvtHandler
 
 
     // add document
-    virtual void AddDocument(wxWindow * wnd, const wxString & title)
+    virtual void AddDocument(Document * doc)
     {
-        m_docArea->AddPage(wnd, title, true);
+        m_docArea->AddPage(doc->GetDocWindow(), doc->GetDocTitle(), true);
     }
 
 

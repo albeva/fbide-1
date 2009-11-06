@@ -19,16 +19,48 @@
  */
 #include "sdk_pch.h"
 #include "Manager.h"
-#include "UiManager.h"
-#include "Editor.h"
+#include "DocManager.h"
+#include "Document.h"
 
 using namespace fbi;
 
-/**
- * Create new editor
- */
-Editor::Editor ()
+// get new document id
+static int NewId()
 {
-    m_panel = new wxPanel(GET_UIMGR()->GetDocumentArea(), wxID_ANY);
-    SetDocWindow(m_panel);
+    static int cnt = 0;
+    return ++cnt;
+}
+
+
+/**
+ * Create new document
+ */
+Document::Document(wxWindow * wnd, const wxString & name)
+    : m_id(NewId()), m_filename(""), m_window(wnd)
+{
+    SetDocTitle(name);
+}
+
+
+/**
+ * Destroy the document
+ */
+Document::~Document ()
+{
+}
+
+
+/**
+ * Set document title
+ */
+void Document::SetDocTitle (const wxString & name)
+{
+    if (!name.Len())
+    {
+        m_title = GET_LANG().Get("document.unnamed", "id", wxString() << GetDocId());
+    }
+    else
+    {
+        m_title = name;
+    }
 }

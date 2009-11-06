@@ -39,6 +39,9 @@
     <ClInclude Include="DocManager.h">
       <Filter>Doc</Filter>
     </ClInclude>
+    <ClInclude Include="Document.h">
+      <Filter>Doc</Filter>
+    </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>Editor</Filter>
     </ClInclude>
@@ -102,6 +105,9 @@
       <Filter>Cmd</Filter>
     </ClCompile>
     <ClCompile Include="DocManager.cpp">
+      <Filter>Doc</Filter>
+    </ClCompile>
+    <ClCompile Include="Document.cpp">
       <Filter>Doc</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp">

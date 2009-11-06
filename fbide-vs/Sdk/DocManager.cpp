@@ -47,7 +47,7 @@ struct TheDocManager : DocManager
     void OnNew (wxCommandEvent & event)
     {
         auto editor = GET_EDITORMGR()->CreateEditor();
-        GET_UIMGR()->AddDocument(editor, "New file");
+        GET_UIMGR()->AddDocument(editor);
     }
 
     

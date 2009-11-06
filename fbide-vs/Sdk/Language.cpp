@@ -45,6 +45,28 @@ wxString Language::Get (const wxString & key, const StringHashMap & map)
 
 
 /**
+ * Get translation and replace a tag
+ */
+wxString Language::Get(const wxString & key, const std::pair<wxString, wxString> & tag)
+{
+    wxString str = (*this)[key]; // create a copy
+    str.Replace("{" + tag.first + "}", tag.second, true);
+    return str;
+}
+
+
+/**
+ * Get translation and replace a tag
+ */
+wxString Language::Get(const wxString & key, const wxString & tag, const wxString & value)
+{
+    wxString str = (*this)[key]; // create a copy
+    str.Replace("{" + tag + "}", value, true);
+    return str;
+}
+
+
+/**
  * Load language
  */
 void Language::Load (const wxString & file)

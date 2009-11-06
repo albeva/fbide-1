@@ -24,6 +24,7 @@ namespace fbi
 
     class Manager;
     class IArtProvider;
+    class Document;
 
     /**
      * Main manager class. This is aproxy class that holds
@@ -52,7 +53,7 @@ namespace fbi
         virtual wxWindow * GetDocumentArea () = 0;
 
         // Add document
-        virtual void AddDocument(wxWindow * wnd, const wxString & title) = 0;
+        virtual void AddDocument(Document * doc) = 0;
 
         // Set art provider
         virtual void SetArtProvider (IArtProvider * provider) = 0;
