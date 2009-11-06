@@ -31,10 +31,18 @@ class FBIdeApp : public wxApp
         auto ui = GET_UIMGR();
         if (!ui->Load()) return false;
 
+        // ensure all managers are loaded
+        GET_CMDMGR();
+        GET_DOCMGR();
+        GET_TYPEMGR();
+        GET_EDITORMGR();
+        GET_PLUGINMGR();
+        GET_SCRIPTMGR();        
+
         // GET_SCRIPTMGR()->Execute(path + "/test.js");
         ui->LoadLayout(path + "/ide/layout.xml");
         ui->GetFrame()->Show();
-
+        
         // success
         return true;
     }

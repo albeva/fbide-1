@@ -33,6 +33,7 @@
 #include <wx/dynlib.h>
 #include <wx/log.h>
 #include <wx/stc/stc.h>
+#include <wx/textfile.h>
 
 // c++ stl headers
 #include <unordered_map>

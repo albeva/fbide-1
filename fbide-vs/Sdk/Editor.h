@@ -21,20 +21,14 @@
 
 namespace fbi
 {
-
+    
     /**
-     * Manage open documents. The type or content is
-     * unimportant. Each document has various states
-     * such as is it saved, can undo / redo be performed
-     * and so on. Each document resides in the main
-     * document tab area (or floating?)
+     * Editor panel
      */
-    class SDK_DLL DocManager : public wxEvtHandler, private NonCopyable
+    class Editor : public wxPanel
     {
-        public:
-
-        // declare this class as a manager
-        DECLARE_MANAGER( DocManager )
+        public :
+        Editor ();
     };
 
 }

@@ -163,7 +163,7 @@ struct TheUiManager : UiManager, wxEvtHandler
 
 
     // Get document area base window
-    virtual wxWindow * GetDocumentArea () { return nullptr; }
+    virtual wxWindow * GetDocumentArea () { return m_docArea; }
 
 
     // Set art provider
@@ -174,9 +174,19 @@ struct TheUiManager : UiManager, wxEvtHandler
     virtual IArtProvider * GetArtProvider () { return m_artProvider; }
 
 
+    // add document
+    virtual void AddDocument(wxWindow * wnd, const wxString & title)
+    {
+        m_docArea->AddPage(wnd, title, true);
+    }
+
+
+
     // Handle close event
     void OnClose (wxCloseEvent & event)
     {
+        // wxMessageBox(__FUNCTION__);
+
         // release art provider
         if (m_artProvider != nullptr)
         {

@@ -18,23 +18,18 @@
  * Copyright (C) The FBIde development team
  */
 #pragma once
+#include "sdk_pch.h"
+#include "Manager.h"
+#include "UiManager.h"
+#include "Editor.h"
 
-namespace fbi
+using namespace fbi;
+
+/**
+ * Create new editor
+ */
+Editor::Editor ()
 {
-
-    /**
-     * Manage open documents. The type or content is
-     * unimportant. Each document has various states
-     * such as is it saved, can undo / redo be performed
-     * and so on. Each document resides in the main
-     * document tab area (or floating?)
-     */
-    class SDK_DLL DocManager : public wxEvtHandler, private NonCopyable
-    {
-        public:
-
-        // declare this class as a manager
-        DECLARE_MANAGER( DocManager )
-    };
+    Create(GET_UIMGR()->GetDocumentArea(), wxID_ANY);
 
 }

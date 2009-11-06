@@ -51,6 +51,9 @@ namespace fbi
         // get document area location
         virtual wxWindow * GetDocumentArea () = 0;
 
+        // Add document
+        virtual void AddDocument(wxWindow * wnd, const wxString & title) = 0;
+
         // Set art provider
         virtual void SetArtProvider (IArtProvider * provider) = 0;
 

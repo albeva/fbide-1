@@ -21,6 +21,8 @@
 
 namespace fbi
 {
+    // forward decl
+    class Editor;
 
     /**
      * Manage generic editors
@@ -28,6 +30,11 @@ namespace fbi
     class SDK_DLL EditorManager : private NonCopyable
     {
         public:
+
+        /**
+         * Create new editor
+         */
+        virtual Editor * CreateEditor() = 0;
 
         // declare this class as a manager
         DECLARE_MANAGER(EditorManager)

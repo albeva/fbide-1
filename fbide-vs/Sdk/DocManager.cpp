@@ -19,8 +19,11 @@
  */
 
 #include "sdk_pch.h"
-#include "manager.h"
-#include "docmanager.h"
+#include "Manager.h"
+#include "DocManager.h"
+#include "EditorManager.h"
+#include "Editor.h"
+#include "UiManager.h"
 
 using namespace fbi;
 
@@ -30,16 +33,32 @@ using namespace fbi;
  */
 struct TheDocManager : DocManager
 {
-
     // create
     TheDocManager()
-    {}
+    {
+        auto frame = GET_FRAME();
+        frame->PushEventHandler(this);
+    }
+    
 
-    // destroy
-    ~TheDocManager()
-    {}
+    /**
+     * new
+     */
+    void OnNew (wxCommandEvent & event)
+    {
+        auto editor = GET_EDITORMGR()->CreateEditor();
+        GET_UIMGR()->AddDocument(editor, "New file");
+    }
 
+    
+    // handle events
+    DECLARE_EVENT_TABLE()
 };
+
+
+BEGIN_EVENT_TABLE(TheDocManager, DocManager)
+    EVT_MENU( wxID_NEW, TheDocManager::OnNew)
+END_EVENT_TABLE()
 
 
 // Implement Manager

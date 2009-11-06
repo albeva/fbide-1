@@ -18,9 +18,9 @@
  * Copyright (C) The FBIde development team
  */
 #include "sdk_pch.h"
-#include <wx/textfile.h>
-#include "manager.h"
-#include "editormanager.h"
+#include "Manager.h"
+#include "EditorManager.h"
+#include "Editor.h"
 
 using namespace fbi;
 
@@ -32,13 +32,18 @@ struct TheEditorManager : EditorManager
 {
 
     // create
-    TheEditorManager ()
-    {}
+    TheEditorManager () {}
 
     // destroy
-    ~TheEditorManager ()
-    {}
-
+    ~TheEditorManager () {}
+    
+    /**
+     * Create new editor
+     */
+    virtual Editor * CreateEditor()
+    {
+        return new Editor();
+    }
 };
 
 
