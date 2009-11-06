@@ -30,10 +30,16 @@ namespace fbi
     {
         public :
             Editor ();
+            void OnSplitChanging(wxSplitterEvent & event);
+            void OnUnSplit(wxSplitterEvent & event);
 
         private:
-
-            wxPanel * m_panel;
+            wxPanel * m_panel;  // panel contained
+            int splitID1;
+            int splitID2;
+            wxSplitterWindow * splitWin1;
+            wxSplitterWindow * splitWin2;
+            DECLARE_EVENT_TABLE()
     };
 
 }

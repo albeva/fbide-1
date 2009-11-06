@@ -99,6 +99,9 @@
     <ClInclude Include="Version.h">
       <Filter>Generic</Filter>
     </ClInclude>
+    <ClInclude Include="wxFourWaySplitter.h">
+      <Filter>Generic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CmdManager.cpp">
@@ -156,6 +159,9 @@
       <Filter>Generic</Filter>
     </ClCompile>
     <ClCompile Include="Version.cpp">
+      <Filter>Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="wxFourWaySplitter.cpp">
       <Filter>Generic</Filter>
     </ClCompile>
   </ItemGroup>

@@ -107,6 +107,7 @@
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Variant.h" />
     <ClInclude Include="Version.h" />
+    <ClInclude Include="wxFourWaySplitter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DocManager.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="Ui\ToolbarHandler.cpp" />
     <ClCompile Include="Variant.cpp" />
     <ClCompile Include="Version.cpp" />
+    <ClCompile Include="wxFourWaySplitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\bin\Debug\ide\en.ini" />
