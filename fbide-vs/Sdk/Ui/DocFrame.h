@@ -17,49 +17,39 @@
  * Author: Albert Varaksin <albeva@me.com>
  * Copyright (C) The FBIde development team
  */
+#pragma once
 
-#include "sdk_pch.h"
-#include "Manager.h"
-#include "DocManager.h"
-#include "EditorManager.h"
-#include "Editor/Editor.h"
-#include "UiManager.h"
+#include "ToolbarHandler.h"
 
-using namespace fbi;
-
-
-/**
- * Manager class implementation
- */
-struct TheDocManager : DocManager
+namespace fbi
 {
-    // create
-    TheDocManager()
-    {
-        auto frame = GET_FRAME();
-        frame->PushEventHandler(this);
-    }
-    
+
+    // forward reference
+    class Document;
 
     /**
-     * new
+     * Frame into what documents are decoupled
      */
-    void OnNew (wxCommandEvent & event)
+    class SDK_DLL DocFrame : public wxFrame
     {
-        auto editor = GET_EDITORMGR()->CreateEditor();
-        GET_UIMGR()->AddDocument(editor);
-    }
+        public:
 
-    
-    // handle events
-    DECLARE_EVENT_TABLE()
-};
+            // Create new docframe from a Document object
+            DocFrame(Document * doc);
+        
+        private:
 
+            // document managed
+            Document * m_document;
 
-BEGIN_EVENT_TABLE(TheDocManager, DocManager)
-    EVT_MENU( wxID_NEW, TheDocManager::OnNew)
-END_EVENT_TABLE()
+            // aui manager
+            wxAuiManager m_aui;
 
+            // manage toolbars
+            UiToolbarHandler m_tbarHandler;
 
-// Implement Manager
-IMPLEMENT_MANAGER( DocManager, TheDocManager )
+            // handle events
+            DECLARE_EVENT_TABLE()
+    };
+
+}

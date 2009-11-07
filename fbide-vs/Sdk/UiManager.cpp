@@ -25,10 +25,13 @@
 #include "Ui/ToolbarHandler.h"
 #include "Ui/IArtProvider.h"
 #include "Ui/ClassicThemeProvider.h"
+#include "Ui/DocFrame.h"
 #include "Document.h"
 
 using namespace fbi;
 
+// decouple the tab
+const int ID_DecoupleTab = ::wxNewId();
 
 /**
  * Manager class implementation
@@ -177,6 +180,7 @@ struct TheUiManager : UiManager, wxEvtHandler
     // add document
     virtual void AddDocument(Document * doc)
     {
+        m_docMap[doc->GetDocWindow()->GetId()] = doc;
         m_docArea->AddPage(doc->GetDocWindow(), doc->GetDocTitle(), true);
     }
 
@@ -185,8 +189,6 @@ struct TheUiManager : UiManager, wxEvtHandler
     // Handle close event
     void OnClose (wxCloseEvent & event)
     {
-        // wxMessageBox(__FUNCTION__);
-
         // release art provider
         if (m_artProvider != nullptr)
         {
@@ -211,6 +213,17 @@ struct TheUiManager : UiManager, wxEvtHandler
         // sllow others to catch
         event.Skip();
 
+        // pass events to documents
+        for (auto iter = m_docMap.begin(); iter != m_docMap.end(); iter++)
+        {
+            event.StopPropagation();
+            auto childFrame = dynamic_cast<wxFrame *>(iter->second->GetDocWindow()->GetParent());
+            if (childFrame)
+            {
+                childFrame->GetEventHandler()->ProcessEvent(event);
+            }
+        }
+
         // handle toggle events for menus, toolbars, ...
         auto cmdMgr = GET_CMDMGR();
         auto info = cmdMgr->FindEntry(event.GetId());
@@ -220,13 +233,41 @@ struct TheUiManager : UiManager, wxEvtHandler
         }
     }
 
+
+    // On tab context menu
+    void OnTabContextMenu (wxAuiNotebookEvent & event)
+    {
+        // ensure tab is visible
+        m_docArea->SetSelection(event.GetSelection());
+        wxMenu * menu = new wxMenu();
+        menu->Append(ID_DecoupleTab, "Decouple", "Decouple this tab");
+        m_frame->PopupMenu(menu);
+    }
+
+
+    // on decouple
+    void OnDecouple (wxCommandEvent & event)
+    {
+        // decouple the tab
+        int index = m_docArea->GetSelection();
+        wxWindow * wnd = m_docArea->GetPage(index);
+        Document * doc = m_docMap[wnd->GetId()];
+        m_docArea->RemovePage(index);
+
+        // create new window
+        DocFrame * docFrame = new DocFrame(doc);
+        docFrame->Show();
+    }
+
+
     // vars
-    wxFrame *           m_frame;        // the main application frame
-    wxAuiManager        m_aui;          // AUI manager instance
-    UiMenuHandler       m_menuHandler;  // app menu handler / manager
-    UiToolbarHandler    m_tbarHandler;  // app toolbar handler
-    IArtProvider *      m_artProvider;  // The art provider object
-    wxAuiNotebook *     m_docArea;      // Document area
+    wxFrame *           m_frame;                    // the main application frame
+    wxAuiManager        m_aui;                      // AUI manager instance
+    UiMenuHandler       m_menuHandler;              // app menu handler / manager
+    UiToolbarHandler    m_tbarHandler;              // app toolbar handler
+    IArtProvider *      m_artProvider;              // The art provider object
+    wxAuiNotebook *     m_docArea;                  // Document area
+    std::unordered_map<int, Document *> m_docMap;   // document map
 
     // route events
     DECLARE_EVENT_TABLE();
@@ -235,8 +276,10 @@ struct TheUiManager : UiManager, wxEvtHandler
 
 // event dispatching
 BEGIN_EVENT_TABLE(TheUiManager, wxEvtHandler)
-    EVT_CLOSE   (           TheUiManager::OnClose)
-    EVT_MENU    (wxID_ANY,  TheUiManager::OnCommandEvent)
+    EVT_CLOSE   (                           TheUiManager::OnClose)
+    EVT_MENU    (wxID_ANY,                  TheUiManager::OnCommandEvent)
+    EVT_MENU    (ID_DecoupleTab,            TheUiManager::OnDecouple)
+    EVT_AUINOTEBOOK_TAB_RIGHT_UP( wxID_ANY, TheUiManager::OnTabContextMenu)
 END_EVENT_TABLE()
 
 

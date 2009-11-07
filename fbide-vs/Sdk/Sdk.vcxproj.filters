@@ -42,10 +42,10 @@
     <ClInclude Include="Document.h">
       <Filter>Doc</Filter>
     </ClInclude>
-    <ClInclude Include="Editor.h">
+    <ClInclude Include="EditorManager.h">
       <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="EditorManager.h">
+    <ClInclude Include="Editor\Editor.h">
       <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="Language.h">
@@ -56,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="MultiDelegate.h">
       <Filter>Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiSplitter.h">
+      <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="PluginManager.h">
       <Filter>Plugin</Filter>
@@ -81,6 +84,9 @@
     <ClInclude Include="Ui\ClassicThemeProvider.h">
       <Filter>Ui</Filter>
     </ClInclude>
+    <ClInclude Include="Ui\DocFrame.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
     <ClInclude Include="Ui\IArtProvider.h">
       <Filter>Ui</Filter>
     </ClInclude>
@@ -99,9 +105,6 @@
     <ClInclude Include="Version.h">
       <Filter>Generic</Filter>
     </ClInclude>
-    <ClInclude Include="wxFourWaySplitter.h">
-      <Filter>Generic</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CmdManager.cpp">
@@ -113,10 +116,10 @@
     <ClCompile Include="Document.cpp">
       <Filter>Doc</Filter>
     </ClCompile>
-    <ClCompile Include="Editor.cpp">
+    <ClCompile Include="EditorManager.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="EditorManager.cpp">
+    <ClCompile Include="Editor\Editor.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="Manager.cpp">
       <Filter>Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiSplitter.cpp">
+      <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="PluginManager.cpp">
       <Filter>Plugin</Filter>
@@ -149,6 +155,9 @@
     <ClCompile Include="Ui\ClassicThemeProvider.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
+    <ClCompile Include="Ui\DocFrame.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
     <ClCompile Include="Ui\MenuHandler.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
@@ -161,12 +170,5 @@
     <ClCompile Include="Version.cpp">
       <Filter>Generic</Filter>
     </ClCompile>
-    <ClCompile Include="wxFourWaySplitter.cpp">
-      <Filter>Generic</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\bin\Debug\ide\en.ini" />
-    <None Include="..\bin\Debug\ide\layout.xml" />
   </ItemGroup>
 </Project>

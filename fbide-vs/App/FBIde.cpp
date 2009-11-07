@@ -28,6 +28,10 @@ class FBIdeApp : public wxApp
         Language & lang = GET_LANG();
         lang.Load(path + "/ide/en.ini");
 
+        // set registry
+        auto & reg = GET_REG();
+        reg["path.ide.data"] = path + "/ide/";
+
         auto ui = GET_UIMGR();
         if (!ui->Load()) return false;
 

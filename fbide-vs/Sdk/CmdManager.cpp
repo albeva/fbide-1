@@ -125,7 +125,7 @@ struct TheCmdManager : CmdManager
     // check if id is registred
     virtual bool IsRegistered (const wxString & name)
     {
-        return m_map.find(name) == m_map.end();
+        return m_map.find(name) != m_map.end();
     }
 
 

@@ -31,7 +31,7 @@ namespace fbi
         UiToolbarHandler();
 
         // Initalize
-        void Init (wxAuiManager * aui);
+        void Init (wxAuiManager * aui, bool useMenu = true);
 
         // Uninitalize
         void UnInit ();

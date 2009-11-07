@@ -18,27 +18,43 @@
  * Copyright (C) The FBIde development team
  */
 #pragma once
-#include "Document.h"
+#include "../Document.h"
 
 namespace fbi
 {
-    
+    // splitter    
+    class MultiSplitWindow;
+    class StcEditor;
+
     /**
      * Editor panel
      */
-    class Editor : public Document
+    class SDK_DLL Editor : public Document
     {
         public :
+            // default constructor
             Editor ();
-            void OnSplitChanging(wxSplitterEvent & event);
-            void OnUnSplit(wxSplitterEvent & event);
+
+            // Split / Unsplit vertically
+            void OnSplitVertically(wxCommandEvent & event);
+
+            // Split / Unsplit horizontally
+            void OnSplitHorizontally(wxCommandEvent & event);
 
         private:
-            wxPanel * m_panel;  // panel contained
-            int splitID1;
-            int splitID2;
-            wxSplitterWindow * splitWin1;
-            wxSplitterWindow * splitWin2;
+
+            // the panel that contains the controls
+            wxPanel * m_panel;
+            // main sizer
+            wxSizer * m_sizer; 
+            // splitter containint the editor(s)
+            MultiSplitWindow * m_splitter;
+            // main stc editor
+            StcEditor * m_stc;
+            // additional editors visible when split
+            StcEditor * m_editors[4];
+
+            // has an event table
             DECLARE_EVENT_TABLE()
     };
 

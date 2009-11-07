@@ -42,24 +42,38 @@ UiToolbarHandler::UiToolbarHandler() :
 
 
 // Initalize
-void UiToolbarHandler::Init (wxAuiManager * aui)
+void UiToolbarHandler::Init (wxAuiManager * aui, bool useMenu)
 {
     // vars
     m_aui = aui;
     m_parent = m_aui->GetManagedWindow();
+    auto cmdMgr = GET_CMDMGR();
     
     // bind event handlers
     m_aui->Bind(wxEVT_AUI_PANE_CLOSE, &UiToolbarHandler::OnPaneClose, this, wxID_ANY);
     m_parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &UiToolbarHandler::OnCommandEvent, this, wxID_ANY);
     
     // register toolbars menu
-    m_menu = new wxMenu();
-    auto cmdMgr = GET_CMDMGR();
-    cmdMgr->Register("menu.toolbars", ::wxNewId(), CmdManager::Type_Menu, m_menu);
+    if (!cmdMgr->IsRegistered("menu.toolbars"))
+    {
+        m_menu = new wxMenu();
+        cmdMgr->Register("menu.toolbars", ::wxNewId(), CmdManager::Type_Menu, m_menu);
+    }
     
     // toggle toolbars
-    m_showTbars = true;
-    cmdMgr->Register("toolbars.toggle", ID_ToolbarToggle, CmdManager::Type_Check, nullptr, true, m_showTbars);
+    if (!cmdMgr->IsRegistered("toolbars.toggle"))
+    {
+        /// @todo - read from config ?
+        m_showTbars = true;
+        cmdMgr->Register("toolbars.toggle", ID_ToolbarToggle, CmdManager::Type_Check, nullptr, true, m_showTbars);
+    }
+    else
+    {
+        m_showTbars = cmdMgr->GetEntry("toolbars.toggle").checked;
+    }
+
+    // don't use menus
+    if (useMenu) m_menu = nullptr;
 
     // toggle
     cmdMgr->Bind(fbiCMD_CHECK,  &UiToolbarHandler::OnCmdMgrEvent, this, wxID_ANY);
@@ -158,7 +172,7 @@ void UiToolbarHandler::OnPaneClose(wxAuiManagerEvent & event)
     event.Skip();
 
     // not a toolbar pane ?
-    if (!event.GetPane()->IsToolbar()) return;
+    if (!event.GetPane()->IsToolbar() || m_menu == nullptr) return;
 
     // find id mapping
     int tbId = event.GetPane()->window->GetId();
@@ -195,6 +209,8 @@ void UiToolbarHandler::ToggleToolbars(bool show)
             m_visibleCnt += show ? 1 : -1;
             // toggle associated menu command
             // find ID
+            if (m_menu == nullptr) continue;
+
             auto idIter = m_idbridge.find(tbar->GetId());
             if (idIter == m_idbridge.end()) continue;
             // find menu entry and toggle if exists
@@ -354,6 +370,9 @@ void UiToolbarHandler::AddToolBar (const wxString & name, wxAuiToolBar * toolbar
     );
     if (isVisible) m_visibleCnt += 1;
     m_visibleMap[toolbar->GetId()] = show;
+
+    // no menu... don't bother
+    if (m_menu == nullptr) return;
 
     // Add menu item
     int menuId = ::wxNewId();
