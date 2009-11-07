@@ -73,7 +73,7 @@ void UiToolbarHandler::Init (wxAuiManager * aui, bool useMenu)
     }
 
     // don't use menus
-    if (useMenu) m_menu = nullptr;
+    if (!useMenu) m_menu = nullptr;
 
     // toggle
     cmdMgr->Bind(fbiCMD_CHECK,  &UiToolbarHandler::OnCmdMgrEvent, this, wxID_ANY);

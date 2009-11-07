@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<fbide version="1.0" type="ui-layout">
+    <toolbars>
+        <toolbar id="common" show="yes">
+            <item id="save" />
+            <item id="undo" />
+            <item id="redo" />
+            <separator />
+            <item id="cut" />
+            <item id="copy" />
+            <item id="paste" />
+        </toolbar>
+        <toolbar id="search">
+            <item id="find" />
+            <item id="replace" />
+            <item id="goto" />
+        </toolbar>
+    </toolbars>
+</fbide>

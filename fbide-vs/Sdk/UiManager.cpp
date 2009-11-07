@@ -214,6 +214,7 @@ struct TheUiManager : UiManager, wxEvtHandler
         event.Skip();
 
         // pass events to documents
+        // ??? shoudl events be sent only to active window/document?
         for (auto iter = m_docMap.begin(); iter != m_docMap.end(); iter++)
         {
             event.StopPropagation();
