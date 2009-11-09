@@ -107,6 +107,8 @@ bool MultiSplitWindow::Create(wxWindow *parent, wxWindowID id,
  */
 void MultiSplitWindow::ShowWindow (int index, wxWindow * wnd, bool show)
 {
+    wxWindowUpdateLocker uiLock(this);
+
     // ensure index is correct
     wxASSERT_MSG((index >= 0 && index <= 3), "Window index must be from 0 to 3");
 
@@ -294,6 +296,8 @@ int MultiSplitWindow::SashHitTest(int x, int y, int tolerance)
  */
 void MultiSplitWindow::SizeWindows()
 {
+    wxWindowUpdateLocker uiLock(this);
+
     // no visible windows
     if (!m_visible[0]) return;
 

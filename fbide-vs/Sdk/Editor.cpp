@@ -86,7 +86,7 @@ void Editor::ShowContextMenu ( int index )
     if (index != 0)
     {
         auto item0 = split_menu->Append(ID_SplitViewHide, "Hide this", "Hide current view");
-        if (index == 2 && IsVisible(3)) item0->Enable( false );
+        //if (index == 2 && IsVisible(3)) item0->Enable( false );
     }
     // top-right
     split_menu->AppendCheckItem(ID_SplitView1, "Top", "Show top-right view")
@@ -94,12 +94,12 @@ void Editor::ShowContextMenu ( int index )
     // bottom left
     auto item2 = split_menu->AppendCheckItem(ID_SplitView2, "Bottom 1", "Show or hide bottom-left view");
     item2->Check( m_editors[2] != nullptr && IsVisible(2) );
-    if ( IsVisible(3) ) item2->Enable( false );
+    //if ( IsVisible(3) ) item2->Enable( false );
 
     // bottom right
     auto item3 = split_menu->AppendCheckItem(ID_SplitView3, "Bottom 2", "Show or hide bottom-right view");
     item3->Check( m_editors[3] != nullptr && IsVisible(3) );
-    if ( !IsVisible(2) ) item3->Enable( false );
+    //if ( !IsVisible(2) ) item3->Enable( false );
 
 
     // show the menu
@@ -130,7 +130,7 @@ void Editor::OnSplitView (wxCommandEvent & event)
     wxWindowUpdateLocker uiLock(GET_FRAME());
     if (m_editors[index] == nullptr)
     {
-        m_editors[index] = new StcEditor(this, this, index, m_editors[0]);
+        m_editors[index] = new StcEditor(this, this, index, m_editors[m_activeIndex]);
         ShowWindow(index, m_editors[index], event.IsChecked());
         return;
     }

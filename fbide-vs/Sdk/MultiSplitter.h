@@ -179,7 +179,7 @@ namespace fbi
         bool IsVisible (int index )
         {
             wxASSERT(index >= 0 && index <= 3);
-            return m_visible[index] != nullptr;
+            return m_managed[index] != nullptr && m_managed[index]->IsShown();
         }
 
         // set minimum left size
