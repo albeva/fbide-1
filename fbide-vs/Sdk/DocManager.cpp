@@ -22,10 +22,28 @@
 #include "Manager.h"
 #include "DocManager.h"
 #include "EditorManager.h"
+#include "TypeManager.h"
 #include "Editor/Editor.h"
 #include "UiManager.h"
 
 using namespace fbi;
+
+
+struct Test : Document, wxTextCtrl
+{
+
+    Test ()
+    {
+        Create (
+            GET_UIMGR()->GetDocumentArea(), wxID_ANY, "", 
+            wxDefaultPosition, wxDefaultSize,
+            wxTE_MULTILINE | wxTE_BESTWRAP
+        );
+        SetDocWindow(this);
+    }
+
+};
+
 
 
 /**
@@ -38,6 +56,19 @@ struct TheDocManager : DocManager
     {
         auto frame = GET_FRAME();
         frame->PushEventHandler(this);
+
+        // register some types
+        auto tm = GET_TYPEMGR();
+        // freebasic
+        tm->Register("freebasic", "FreeBASIC editor", DocumentCreator<Editor>);
+        tm->BindExtensions("freebasic", "bas;bi;txt");
+
+        // generic
+        tm->Register("generic", "Generic Editor", DocumentCreator<Test>);
+        tm->BindExtensions("generic", "txt;ini;xml");
+        
+        // the default
+        tm->BindAlias("default", "freebasic");
     }
     
 
@@ -46,8 +77,12 @@ struct TheDocManager : DocManager
      */
     void OnNew (wxCommandEvent & event)
     {
-        auto editor = GET_EDITORMGR()->CreateEditor();
-        GET_UIMGR()->AddDocument(editor);
+        auto tm = GET_TYPEMGR();
+        auto doc = tm->CreateFromFile("somefile.sdf");
+        if (doc)
+        {
+            GET_UIMGR()->AddDocument(doc);
+        }
     }
 
     

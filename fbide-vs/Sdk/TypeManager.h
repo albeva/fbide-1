@@ -22,17 +22,69 @@
 namespace fbi
 {
 
+    // Forward reference
+    class Document;
+
+    // Typedef for document creator
+    typedef Document * (*DocCreatorFn)( );
+
+    // Create TypeCreator method
+    // DocumentCreator<MyDocument>
+    template<class T> Document * DocumentCreator( )
+    {
+        return new T();
+    }
+
     /**
      * Manage file types and associated loaders
      * and construct load / save dialogs
      */
     class SDK_DLL TypeManager : private NonCopyable
     {
-        public:
+    public:
+
+        // Register new type with fbide.
+        virtual void Register (const wxString & type, 
+                               const wxString & desc,
+                               DocCreatorFn creator ) = 0;
+        
+        // Bind file extensions to the type
+        virtual void BindExtensions (const wxString & type,
+                                     const wxString & extensions) = 0;
+
+        // Bind type alias to an existing target type or alias
+        // optionally allow overwriting if alias already exists
+        virtual void BindAlias (const wxString & alias,
+                                const wxString & target,
+                                bool overwrite = false ) = 0;
+        
+        // Create new document. Deduct type from extension
+        // if failed show a dialog with an option to open the file
+        // with any other registered loaders or use OS to open it
+        // return nullptr if not opened in the editor
+        virtual Document * CreateFromFile (const wxString & file) = 0;
+
+
+        // Create new document using type name. If not registred
+        // return nullptr and log a warning.
+        virtual Document * CreateFromType (const wxString & type) = 0;
+
+        // Create new document by registered extenions.
+        // if multiple creators are registered show a dialog allowing
+        // to select the proper type.
+        // return nullptr and log a warning if no extension is registered
+        // with the type
+        virtual Document * CreateFromExtension (const wxString & ext) = 0;
+
+        // check if type is registered. Will resolve aliases to the 
+        // actual type
+        virtual bool IsRegistered ( const wxString & type ) = 0;
+
+        // Get file filters to be used with file load / save dialogs
+        virtual wxString GetFileFilters ( bool incAllFiles ) = 0;
 
         // declare this class as a manager
         DECLARE_MANAGER(TypeManager)
-
     };
 
 }

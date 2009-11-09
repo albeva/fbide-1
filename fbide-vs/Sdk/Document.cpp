@@ -25,7 +25,7 @@
 using namespace fbi;
 
 // get new document id
-static int NewId()
+static int GetNewDocId()
 {
     static int cnt = 0;
     return ++cnt;
@@ -35,10 +35,9 @@ static int NewId()
 /**
  * Create new document
  */
-Document::Document(wxWindow * wnd, const wxString & name)
-    : m_id(NewId()), m_filename(""), m_window(wnd)
+Document::Document () : m_id(GetNewDocId()), m_window(nullptr)
 {
-    SetDocTitle(name);
+    SetDocTitle("");
 }
 
 

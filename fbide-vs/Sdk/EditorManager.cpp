@@ -20,6 +20,7 @@
 #include "sdk_pch.h"
 #include "Manager.h"
 #include "EditorManager.h"
+#include "TypeManager.h"
 #include "Editor/Editor.h"
 
 using namespace fbi;
@@ -32,7 +33,10 @@ struct TheEditorManager : EditorManager
 {
 
     // create
-    TheEditorManager () {}
+    TheEditorManager ()
+    {
+    }
+
 
     // destroy
     ~TheEditorManager () {}

@@ -33,14 +33,17 @@ namespace fbi
             /// key.
             wxString & operator [] ( const wxString & key );
 
+            /// get the translation
+            wxString Get(const wxString & key) { return (*this)[key]; }
+
             /// get translation by key. If doesn't exist return the
             /// key. Replace tags
             wxString Get(const wxString & key, const StringHashMap & map);
 
-            // get translation. use std::pair for tag substitution
+            /// get translation. use std::pair for tag substitution
             wxString Get(const wxString & key, const std::pair<wxString, wxString> & tag);
 
-            // get translation and replace tag
+            /// get translation and replace tag
             wxString Get(const wxString & key, const wxString & tag, const wxString & value);
 
             /// Load the language file 

@@ -32,7 +32,7 @@ namespace fbi
             /**
              * Create new document
              */
-            Document(wxWindow * wnd = nullptr, const wxString & name = "");
+            Document();
 
 
             /**
@@ -44,7 +44,7 @@ namespace fbi
             /**
              * Load file in this document
              */
-            virtual void LoadDoc (const wxString & file) { return; }
+            virtual bool LoadDocFile (const wxString & file) { return false; }
 
 
             /**
