@@ -196,7 +196,7 @@ void UiToolbarHandler::OnPaneClose(wxAuiManagerEvent & event)
 // Show or hide the toolbars
 void UiToolbarHandler::ToggleToolbars(bool show)
 {
-    if (m_showTbars == show) return;
+    if (m_showTbars == show || m_menu == nullptr) return;
 
     // m_showTbars = show;
     for (auto iter = m_map.begin(); iter != m_map.end(); iter++)

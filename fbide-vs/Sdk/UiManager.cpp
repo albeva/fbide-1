@@ -215,6 +215,7 @@ struct TheUiManager : UiManager, wxEvtHandler
 
         // pass events to documents
         // ??? shoudl events be sent only to active window/document?
+        /*
         for (auto iter = m_docMap.begin(); iter != m_docMap.end(); iter++)
         {
             event.StopPropagation();
@@ -224,6 +225,7 @@ struct TheUiManager : UiManager, wxEvtHandler
                 childFrame->GetEventHandler()->ProcessEvent(event);
             }
         }
+        */
 
         // handle toggle events for menus, toolbars, ...
         auto cmdMgr = GET_CMDMGR();

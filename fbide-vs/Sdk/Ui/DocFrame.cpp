@@ -117,3 +117,11 @@ DocFrame::DocFrame(Document * document) : m_document(document)
     // Refresh ui
     m_aui.Update();
 }
+
+
+/**
+ * Dock back
+ */
+void DocFrame::OnDockBack (wxCommandEvent & event)
+{
+}

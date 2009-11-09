@@ -36,6 +36,9 @@ namespace fbi
 
             // Create new docframe from a Document object
             DocFrame(Document * doc);
+
+            // dock the frame window back
+            void OnDockBack (wxCommandEvent & event);
         
         private:
 
