@@ -21,7 +21,7 @@
 #include "Manager.h"
 #include "EditorManager.h"
 #include "TypeManager.h"
-#include "Editor/Editor.h"
+#include "Editor.h"
 
 using namespace fbi;
 

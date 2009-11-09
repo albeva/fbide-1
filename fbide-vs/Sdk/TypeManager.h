@@ -28,8 +28,8 @@ namespace fbi
     // Typedef for document creator
     typedef Document * (*DocCreatorFn)( );
 
-    // Create TypeCreator method
-    // DocumentCreator<MyDocument>
+    // Create new automatic creator method method
+    // Use: DocumentCreator<MyDocumentProviderClass>
     template<class T> Document * DocumentCreator( )
     {
         return new T();

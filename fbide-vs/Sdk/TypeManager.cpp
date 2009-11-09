@@ -158,8 +158,8 @@ struct TheTypeManager : TypeManager
         auto extIter = m_extMap.find(ext);
         if (extIter != m_extMap.end())
         {
-            auto doc =_CreateFromExt( extIter->second, true );;
-            if (doc != nullptr) doc->LoadDocFile(file);
+            auto doc =_createFromExt( extIter->second, true );;
+            if (doc != nullptr) _loadFile( doc, file );
             return doc;
         }
 
@@ -190,8 +190,28 @@ struct TheTypeManager : TypeManager
 
         // create the document and load file
         auto doc = list[select.GetSelection()]->creator();
-        doc->LoadDocFile( file );
+        if (doc != nullptr) _loadFile( doc, file );
         return doc;
+    }
+
+
+    // Load file
+    void _loadFile ( Document * doc, const wxString & file )
+    {
+        auto & lang = GET_LANG();
+
+        wxFileName f(file);
+        if (!f.FileExists())
+        {
+            wxMessageBox(lang.Get("error.file-not-found", "filename", file));
+            return;
+        }
+
+        if (doc->LoadDocFile(file))
+        {
+            doc->SetDocFilename(file);
+            doc->SetDocTitle(f.GetFullName());
+        }
     }
 
 
@@ -224,13 +244,13 @@ struct TheTypeManager : TypeManager
         }
 
         // create
-        return _CreateFromExt( extIter->second, false );
+        return _createFromExt( extIter->second, false );
     }
 
 
     // Create from extension
     // internal implementation
-    Document * _CreateFromExt (TypeInfoVector & types, bool fromFile)
+    Document * _createFromExt (TypeInfoVector & types, bool fromFile)
     {
 
         // there is only one registered type then return it
@@ -280,7 +300,43 @@ struct TheTypeManager : TypeManager
     // Get file filters to be used with file load / save dialogs
     virtual wxString GetFileFilters ( bool incAllFiles )
     {
-        return "";
+        // Collect all information needed into a map
+        std::map<TypeInfo *, wxString> map;
+
+        // iterate through the extensions
+        for (auto extIter = m_extMap.begin(); extIter != m_extMap.end(); extIter++)
+        {
+            // get list where the extension can possibly belong
+            auto & list = extIter->second;
+            for (auto typeIter = list.begin(); typeIter != list.end(); typeIter++)
+            {
+                // resolve aliases
+                TypeInfo * info = *typeIter;
+                while (info->isAlias) info = info->alias;
+
+                // add extension to the map
+                wxString & exts = map[info];
+                if (exts.Len()) exts << ";";
+                exts << "*." << extIter->first;
+            }
+        }
+
+        // generate the string
+        wxString result;
+        for (auto iter = map.begin(); iter != map.end(); iter++)
+        {
+            if (result.Len()) result << "|";
+            result << iter->first->desc << " (" << iter->second << ")|" << iter->second;
+        }
+        
+        // add All files
+        if (incAllFiles)
+        {
+            if (result.Len()) result << "|";
+            result << GET_LANG()["all-files"] << " (*.*)|*.*";
+        }
+
+        return result;
     }
 
 

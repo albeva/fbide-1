@@ -25,7 +25,7 @@ namespace fbi
     /**
      * Base class for all documents
      */
-    class SDK_DLL Document : public wxEvtHandler
+    class SDK_DLL Document
     {
         public :
             
@@ -64,7 +64,11 @@ namespace fbi
              * document has a window that can be
              * placed into tabbed document area.
              */
-            virtual wxWindow * GetDocWindow () const { return m_window; }
+            virtual wxWindow * GetDocWindow () const
+            {
+                if (m_window) return m_window;
+                return dynamic_cast<wxWindow *>(const_cast<Document *>(this));
+            }
 
 
             /**

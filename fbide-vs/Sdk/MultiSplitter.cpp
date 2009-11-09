@@ -159,7 +159,7 @@ void MultiSplitWindow::OnSize(wxSizeEvent & event)
 {
     // get client size
     int w, h;
-    GetParent()->GetClientSize(&w, &h);
+    GetClientSize(&w, &h);
     SizeWindows();
 }
 
@@ -299,7 +299,7 @@ void MultiSplitWindow::SizeWindows()
 
     // get client size
     int w, h;
-    GetParent()->GetClientSize(&w, &h);
+    GetClientSize(&w, &h);
 
     // vars
     int border_s = GetBorderSize();

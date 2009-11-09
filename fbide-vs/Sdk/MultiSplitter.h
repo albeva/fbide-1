@@ -175,6 +175,13 @@ namespace fbi
         // Hide window by index
         void HideWindow (int index, bool hide = true) { ShowWindow(index, NULL, !hide); }
 
+        // Is window visible ?
+        bool IsVisible (int index )
+        {
+            wxASSERT(index >= 0 && index <= 3);
+            return m_visible[index] != nullptr;
+        }
+
         // set minimum left size
         void SetMinLeftSize (int size) { m_minLeft = size; }
 

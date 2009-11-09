@@ -23,7 +23,7 @@
 #include "DocManager.h"
 #include "EditorManager.h"
 #include "TypeManager.h"
-#include "Editor/Editor.h"
+#include "Editor.h"
 #include "UiManager.h"
 
 using namespace fbi;
@@ -61,29 +61,64 @@ struct TheDocManager : DocManager
         auto tm = GET_TYPEMGR();
         // freebasic
         tm->Register("freebasic", "FreeBASIC editor", DocumentCreator<Editor>);
-        tm->BindExtensions("freebasic", "bas;bi;txt");
-
-        // generic
-        tm->Register("generic", "Generic Editor", DocumentCreator<Test>);
-        tm->BindExtensions("generic", "txt;ini;xml");
+        tm->BindExtensions("freebasic", "bas;bi;");
         
         // the default
         tm->BindAlias("default", "freebasic");
     }
     
 
-    /**
-     * new
-     */
+    // new document
     void OnNew (wxCommandEvent & event)
     {
+        // lock the ui to avoid any flicker
+        wxWindowUpdateLocker uiLock(GET_FRAME());
+
         auto tm = GET_TYPEMGR();
-        auto doc = tm->CreateFromFile("somefile.sdf");
+        auto doc = tm->CreateFromType("default");
         if (doc)
         {
             GET_UIMGR()->AddDocument(doc);
         }
     }
+
+
+    // open document
+    void OnOpen (wxCommandEvent & event)
+    {
+        // vars
+        auto tm = GET_TYPEMGR();
+        auto & lang = GET_LANG();
+
+        // show file load dialog
+        wxString filters = tm->GetFileFilters(true);
+        wxFileDialog dlg (
+            GET_FRAME(),
+            lang["open-file"],
+            "", "",             // default dir, default file
+            filters,            // wildcards
+            wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE
+        );
+        if (dlg.ShowModal() != wxID_OK) return;
+
+        // get selected files
+        wxArrayString paths;
+        dlg.GetPaths(paths);
+
+        // lock ui to avoid flickering
+        wxWindowUpdateLocker uiLock(GET_FRAME());
+
+        // Open the files
+        for (int i = 0; i < paths.Count(); i++)
+        {
+            auto doc = tm->CreateFromFile(paths[i]);
+            if (doc)
+            {
+                GET_UIMGR()->AddDocument(doc);
+            }
+        }
+    }
+
 
     
     // handle events
@@ -92,7 +127,8 @@ struct TheDocManager : DocManager
 
 
 BEGIN_EVENT_TABLE(TheDocManager, DocManager)
-    EVT_MENU( wxID_NEW, TheDocManager::OnNew)
+    EVT_MENU( wxID_NEW,     TheDocManager::OnNew )
+    EVT_MENU( wxID_OPEN,    TheDocManager::OnOpen )
 END_EVENT_TABLE()
 
 

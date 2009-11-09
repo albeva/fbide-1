@@ -180,7 +180,17 @@ struct TheUiManager : UiManager, wxEvtHandler
     // add document
     virtual void AddDocument(Document * doc)
     {
-        m_docMap[doc->GetDocWindow()->GetId()] = doc;
+        // check doc pointer
+        wxASSERT(doc != nullptr);
+        if (doc == nullptr) return;
+        
+        // get window
+        wxWindow * wnd = doc->GetDocWindow();
+        wxASSERT(wnd != nullptr);
+        if (wnd == nullptr) return;
+
+        // add document
+        m_docMap[wnd->GetId()] = doc;
         m_docArea->AddPage(doc->GetDocWindow(), doc->GetDocTitle(), true);
     }
 

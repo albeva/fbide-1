@@ -86,10 +86,11 @@
   <ItemGroup>
     <ClInclude Include="DocManager.h" />
     <ClInclude Include="Document.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="CmdManager.h" />
     <ClInclude Include="Delegate.h" />
-    <ClInclude Include="Editor\Editor.h" />
+    <ClInclude Include="Editor\StcEditor.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MultiDelegate.h" />
@@ -113,9 +114,10 @@
   <ItemGroup>
     <ClCompile Include="DocManager.cpp" />
     <ClCompile Include="Document.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="CmdManager.cpp" />
-    <ClCompile Include="Editor\Editor.cpp" />
+    <ClCompile Include="Editor\StcEditor.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="MultiSplitter.cpp" />

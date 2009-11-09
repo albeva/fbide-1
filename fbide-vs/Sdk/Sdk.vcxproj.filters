@@ -42,10 +42,13 @@
     <ClInclude Include="Document.h">
       <Filter>Doc</Filter>
     </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
     <ClInclude Include="EditorManager.h">
       <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\Editor.h">
+    <ClInclude Include="Editor\StcEditor.h">
       <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="Language.h">
@@ -116,10 +119,13 @@
     <ClCompile Include="Document.cpp">
       <Filter>Doc</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
     <ClCompile Include="EditorManager.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\Editor.cpp">
+    <ClCompile Include="Editor\StcEditor.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">
