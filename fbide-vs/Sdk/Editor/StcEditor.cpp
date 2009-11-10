@@ -43,7 +43,9 @@ StcEditor::StcEditor ( wxWindow * wnd, Editor * owner, int index, StcEditor * mi
     if ( m_mirror != nullptr )
     {
         SetDocPointer( m_mirror->GetDocPointer() );
+        SetSelection( m_mirror->GetSelectionStart(), m_mirror->GetSelectionEnd() );
         ScrollToLine( m_mirror->GetFirstVisibleLine() );
+        EnsureCaretVisible();
     }
 
     // disable context menu

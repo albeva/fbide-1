@@ -73,7 +73,8 @@ Editor::Editor () : m_activeIndex(0)
  */
 bool Editor::LoadDocFile (const wxString & file)
 {
-    return m_editors[0]->LoadFile( file );
+    if (!m_editors[0]->LoadFile( file )) return false;
+    m_editors[0]->SetSelection(0,0);
 }
 
 
@@ -112,7 +113,14 @@ void Editor::ShowContextMenu ( int index )
  */
 void Editor::OnSplitView (wxCommandEvent & event)
 {
+    // vars
     int index = 0;
+    bool show = event.IsChecked();
+
+    // hide ui updates
+    wxWindowUpdateLocker uiLock(GET_FRAME());
+
+    // what to do ...
     if      (event.GetId() == ID_SplitView1) index = 1;
     else if (event.GetId() == ID_SplitView2) index = 2;
     else if (event.GetId() == ID_SplitView3) index = 3;
@@ -122,16 +130,44 @@ void Editor::OnSplitView (wxCommandEvent & event)
         {
             HideWindow(m_activeIndex);
         }
-        return;
     }
     else return;
 
-    wxWindowUpdateLocker uiLock(GET_FRAME());
-    if (m_editors[index] == nullptr)
+    // create if needed and hide / show the editor
+    if (index != 0)
     {
-        m_editors[index] = new StcEditor(this, this, index, m_editors[m_activeIndex]);
-        ShowWindow(index, m_editors[index], event.IsChecked());
-        return;
+        // create new editor ( lazy loading )
+        if (m_editors[index] == nullptr)
+        {
+            m_editors[index] = new StcEditor(this, this, index, m_editors[m_activeIndex]);
+            ShowWindow(index, m_editors[index], show);
+            if (show) m_editors[index]->SetFocus();
+            return;
+        }
+
+        // hide / show existing one
+        ShowWindow(index, nullptr, event.IsChecked());
     }
-    ShowWindow(index, nullptr, event.IsChecked());
+    else index = m_activeIndex; // so code below would work.
+
+    // set focus to next logical editor
+    if (show) m_editors[index]->SetFocus();
+    else
+    {
+        if (index == 3)
+        {
+            if (IsWindowVisible(2)) m_editors[2]->SetFocus();
+            else if (IsWindowVisible(1)) m_editors[1]->SetFocus();
+            else m_editors[0]->SetFocus();
+        }
+        else if (index == 2)
+        {
+            if (IsWindowVisible(3)) m_editors[3]->SetFocus();
+            else m_editors[0]->SetFocus();
+        }
+        else
+        {
+            m_editors[0]->SetFocus();
+        }
+    }
 }
