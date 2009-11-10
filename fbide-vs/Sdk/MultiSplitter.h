@@ -147,12 +147,18 @@ namespace fbi
         // Hide top-left window
         void HideTopLeft (bool hide = true) { HideWindow(PaneTopLeft, hide); }
 
+        // Is top-left pane visible
+        bool IsTopLeftVisible () const  { return IsWindowVisible( PaneTopLeft ); }
+
         // Show top-right window
         // optionally assign window pointer if it doesn't exist yet
         void ShowTopRight (wxWindow * topRight = NULL, bool show = true) { ShowWindow(PaneTopRight, topRight, show); }
 
         // Hide top-right window
         void HideTopRight (bool hide = true) { HideWindow(PaneTopRight, hide); }
+
+        // Is top-right pane visible
+        bool IsTopRightVisible () const  { return IsWindowVisible( PaneTopRight ); }
 
         // Show bottom-left window
         // optionally assign window pointer if it doesn't exist yet
@@ -161,12 +167,18 @@ namespace fbi
         // Hide bottom-left window
         void HideBottomLeft (bool hide = true) { HideWindow(PaneBottomLeft, hide); }
 
+        // Is bottom-left pane visible
+        bool IsBottomLeftVisible () const  { return IsWindowVisible( PaneBottomLeft ); }
+
         // Show bottom-right window
         // optionally assign window pointer if it doesn't exist yet
         void ShowBottomRight (wxWindow * bottomRight = NULL, bool show = true) { ShowWindow(PaneBottomRight, bottomRight, show); }
 
         // Hide bottom-right window
         void HideBottomRight (bool hide = true) { HideWindow(PaneBottomRight, hide); }
+
+        // Is bottom-right pane visible
+        bool IsBottomRightVisible () const  { return IsWindowVisible( PaneBottomRight ); }
 
         // Show window by index
         // optionally assign window pointer if it doesn't exist yet
@@ -176,7 +188,7 @@ namespace fbi
         void HideWindow (int index, bool hide = true) { ShowWindow(index, NULL, !hide); }
 
         // Is window visible ?
-        bool IsVisible (int index )
+        bool IsWindowVisible (int index ) const
         {
             wxASSERT(index >= 0 && index <= 3);
             return m_managed[index] != nullptr && m_managed[index]->IsShown();
@@ -205,6 +217,35 @@ namespace fbi
 
         // get minimum bottom size
         int GetMinBottomSize () const { return m_minBottom; }
+
+        // Set minimum size
+        void SetMinSize ( int left, int right, int top, int bottom )
+        {
+            SetMinLeftSize(left);
+            SetMinRightSize(right);
+            SetMinTopSize(top);
+            SetMinBottomSize(bottom);
+        }
+
+        // Set vertical gravity
+        void SetVerticalGravity ( double gravity ) { m_vertGravity = gravity; }
+
+        // Get vertical gravity
+        double GetVerticalGravity () const { return m_vertGravity; }
+
+        // Set vertical gravity
+        void SetHorizontalGravity ( double gravity ) { m_horGravity = gravity; }
+
+        // Get vertical gravity
+        double GetHorizontalGravity () const { return m_horGravity; }
+
+        // Set gravity
+        void SetGravity (double vertical, double horizontal)
+        {
+            SetVerticalGravity( vertical );
+            SetHorizontalGravity( horizontal );
+        }
+
 
         // Resize sub windows
         virtual void SizeWindows();
@@ -243,6 +284,9 @@ namespace fbi
         // set sash cursor
         void SetDragCursor(int flags);
 
+        // Calculate sash positions
+        void CalculateSash();
+
         // window panes that are managed
         // PaneXxx flags for positions
         wxWindow * m_managed[4];
@@ -271,6 +315,12 @@ namespace fbi
 
         // mimum sizes
         int m_minLeft, m_minRight, m_minTop, m_minBottom;
+
+        // old size
+        int m_oldw, m_oldh;
+
+        // gravity
+        double m_vertGravity, m_horGravity;
 
         // cursor for vertical sash
         wxCursor    m_sashCursorWE;

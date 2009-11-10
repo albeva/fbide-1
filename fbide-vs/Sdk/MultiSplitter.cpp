@@ -20,6 +20,8 @@
 #include "sdk_pch.h"
 #include <wx/renderer.h>
 #include "MultiSplitter.h"
+#include "Manager.h"
+#include "UiManager.h"
 
 using namespace fbi;
 
@@ -74,9 +76,15 @@ void MultiSplitWindow::Init()
     // set minimum sizes
     m_minLeft = m_minRight = m_minTop = m_minBottom = 0;
 
+    // default gravity
+    m_vertGravity = 0.5, m_horGravity = 0.5;
+
+    // old size
+    m_oldw = 50, m_oldh = 50;
+
     // temporary!
-    m_sashVertical = 200;
-    m_sashHorizontal = 100;
+    m_sashVertical = 50;
+    m_sashHorizontal = 50;
 }
 
 
@@ -96,7 +104,8 @@ bool MultiSplitWindow::Create(wxWindow *parent, wxWindowID id,
 
     if ( !wxWindow::Create(parent, id, pos, size, style, name) )
         return false;
-
+    
+    CalculateSash();
     return true;
 }
 
@@ -155,13 +164,50 @@ void MultiSplitWindow::ShowWindow (int index, wxWindow * wnd, bool show)
 
 
 /**
+ * Calculate sash positions
+ */
+void MultiSplitWindow::CalculateSash()
+{
+    int w, h;
+    GetClientSize(&w, &h);
+    GET_FRAME()->SetTitle(wxString("w=") << w << ", h=" << h);
+    
+    int diffw = w - m_oldw;
+    int diffh = h - m_oldh;
+    
+    // calculate sashes
+    if ( m_vertGravity != 0.0 )
+    {
+        int new_w = m_sashVertical + (int)(((double)diffw) * m_vertGravity);
+        if ( new_w >= m_minLeft )
+        {
+            if ( new_w >= ( w - m_minRight ) ) m_sashVertical = w - m_minRight;
+            else m_sashVertical = new_w;
+        }
+        else m_sashVertical = m_minLeft;
+    }
+    if ( m_horGravity != 0.0 )
+    {
+        int new_h = m_sashHorizontal + (int)(((double)diffh) * m_horGravity);
+        if ( new_h >= m_minTop )
+        {
+            if ( new_h >= ( h - m_minBottom ) ) m_sashHorizontal = h - m_minBottom;
+            m_sashHorizontal = new_h;
+        }
+        else m_sashHorizontal = m_minTop;
+    }
+
+    m_oldw = w, m_oldh = h;
+}
+
+
+/**
  * Handle size events
  */
 void MultiSplitWindow::OnSize(wxSizeEvent & event)
 {
     // get client size
-    int w, h;
-    GetClientSize(&w, &h);
+    CalculateSash();
     SizeWindows();
 }
 
@@ -170,7 +216,9 @@ void MultiSplitWindow::OnSize(wxSizeEvent & event)
 void MultiSplitWindow::OnMouseEvent(wxMouseEvent& event)
 {
     int x = (int)event.GetX(),
-        y = (int)event.GetY();
+        y = (int)event.GetY(),
+        w, h;
+    GetClientSize(&w, &h);
     
     if (event.LeftDown())
     {
@@ -202,11 +250,24 @@ void MultiSplitWindow::OnMouseEvent(wxMouseEvent& event)
     }
     else if (event.Dragging() && (m_dragMode != 0))
     {
+        bool resize = false;
         if (m_dragMode & DragVertical)
-            m_sashVertical = x;
+        {
+            if ( x >= m_minLeft && (w - x) >= m_minRight )
+            {
+                m_sashVertical = x;
+                resize = true;
+            }
+        }
         if (m_dragMode & DragHorizontal)
-            m_sashHorizontal = y;
-        SizeWindows();
+        {
+            if ( y >= m_minTop && (h - y) >= m_minBottom )
+            {
+                m_sashHorizontal = y;
+                resize = true;
+            }
+        }
+        if (resize) SizeWindows();
     }
     else
     {

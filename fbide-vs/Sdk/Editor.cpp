@@ -52,6 +52,9 @@ Editor::Editor () : m_activeIndex(0)
     Create(GET_UIMGR()->GetDocumentArea(), wxID_ANY,
            wxDefaultPosition, wxDefaultSize,
            wxSP_3DSASH | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN );
+    
+    // set min size
+    SetMinSize(30, 30, 30, 30);
 
     // null the m_editors
     memset(m_editors, 0, sizeof(m_editors));
@@ -86,21 +89,17 @@ void Editor::ShowContextMenu ( int index )
     if (index != 0)
     {
         auto item0 = split_menu->Append(ID_SplitViewHide, "Hide this", "Hide current view");
-        //if (index == 2 && IsVisible(3)) item0->Enable( false );
     }
     // top-right
-    split_menu->AppendCheckItem(ID_SplitView1, "Top", "Show top-right view")
-        ->Check( m_editors[1] != nullptr && IsVisible(1) );
+    split_menu->AppendCheckItem(ID_SplitView1, "View 1", "Show top-right view")
+        ->Check( m_editors[1] != nullptr && IsWindowVisible(1) );
     // bottom left
-    auto item2 = split_menu->AppendCheckItem(ID_SplitView2, "Bottom 1", "Show or hide bottom-left view");
-    item2->Check( m_editors[2] != nullptr && IsVisible(2) );
-    //if ( IsVisible(3) ) item2->Enable( false );
+    auto item2 = split_menu->AppendCheckItem(ID_SplitView2, "View 2", "Show or hide bottom-left view");
+    item2->Check( m_editors[2] != nullptr && IsWindowVisible(2) );
 
     // bottom right
-    auto item3 = split_menu->AppendCheckItem(ID_SplitView3, "Bottom 2", "Show or hide bottom-right view");
-    item3->Check( m_editors[3] != nullptr && IsVisible(3) );
-    //if ( !IsVisible(2) ) item3->Enable( false );
-
+    auto item3 = split_menu->AppendCheckItem(ID_SplitView3, "View 3", "Show or hide bottom-right view");
+    item3->Check( m_editors[3] != nullptr && IsWindowVisible(3) );
 
     // show the menu
     m_activeIndex = index;
