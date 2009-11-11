@@ -64,7 +64,6 @@ Editor::Editor () : m_activeIndex(0)
     
     // show this in multisplitter
     ShowTopLeft(m_editors[0]);
-
 }
 
 
