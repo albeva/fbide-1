@@ -109,7 +109,7 @@ struct TheDocManager : DocManager
         wxWindowUpdateLocker uiLock(GET_FRAME());
 
         // Open the files
-        for (int i = 0; i < paths.Count(); i++)
+        for (size_t i = 0; i < paths.Count(); i++)
         {
             auto doc = tm->CreateFromFile(paths[i]);
             if (doc)

@@ -1,0 +1,174 @@
+/*
+ * Default styles are applied
+ * to all elements that explicitly
+ * do not specify a style
+ */
+.default {
+	color			: black;
+	background      : white;
+	font-size		: 12px;
+	font-family		: "Courier New";
+	font-style		: normal;
+	font-weight		: normal;
+	text-decoration	: normal;
+}
+
+
+/**
+ * Highlight linenumbers
+ */
+.line-margin {
+	color			: white;
+	background      : lightgray;
+}
+
+/**
+ * caret
+ */
+.caret {
+    color           : black;
+    width           : 2px;      /* max 3px ? */
+    background      : black;
+    opacity         : 15;
+}
+
+
+/**
+ * Define code folding styles
+ */
+.fold-margin {
+    width           : 12px;
+    color           : gray;
+    background      : white;
+}
+
+
+/**
+ * Style editing margin
+ */
+.edit-margin {
+    width           : 4px;
+    color           : #04FF50;
+    background      : #FFE604;
+}
+
+
+/**
+ * Highlight non keyword identifiers
+ */
+.identifier {
+    background      : none;
+}
+
+/**
+ * Highlight comments.
+ */
+.comment {
+	color			: #606060;
+	font-style		: italic;
+	background      : lightblue;
+}
+/**
+ * link or email inside the comment
+ */
+.comment .url {
+	font-weight		: bold;
+}
+
+/**
+ * highlight labels
+ */
+.label {
+	color			: SteelBlue;
+	font-weight		: bold;
+}
+
+/**
+ * highlight quoted text
+ */
+.string {
+	color			: red;
+	background      : none;
+}
+/**
+ * highlight legal escapes
+ */
+.string .escape {
+	color			: DarkGoldenRod;
+}
+
+/**
+ * highlight numbers
+ */
+.number {
+	color			: blue;
+	background      : none;
+}
+
+/**
+ * highlight operators
+ */
+.operator {
+	color			: #0080C0;
+	font-weight		: bold;
+	background      : none;
+}
+
+/**
+ * ASM block
+ */
+.asm {
+	background		: #F9EEC7;
+}
+/**
+ * Asm keywords
+ */
+.asm .keyword {
+	font-weight		: bold;
+}
+.asm .keyword.one {
+	color			: darkblue;
+}
+.asm .keyword.two {
+	color			: darkgreen;
+}
+
+/**
+ * Preprocessor block
+ */
+.preprocessor {
+	background		: #C9F3C9;
+}
+.preprocessor .keyword {
+	font-weight		: bold;
+	color			: #0BAF4F;
+}
+/*
+.preprocessor .keyword.one {
+	color			: #0BAF4F;
+}
+.preprocessor .keyword.two {
+	color			: #0BAF4F;
+}
+*/
+
+
+/**
+ * FB keywords
+ */
+.keyword {
+	font-weight		: bold;
+	background      : none;
+}
+.keyword.one {
+	color			: blue;
+}
+.keyword.two {
+	color			: green;
+}
+.keyword.three {
+	color			: red;
+}
+.keyword.four {
+	color			: brown;
+}

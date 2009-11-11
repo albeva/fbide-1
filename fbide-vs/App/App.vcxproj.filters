@@ -27,6 +27,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\bin\Debug\ide\default.css" />
     <None Include="..\bin\Debug\ide\docframe.xml" />
     <None Include="..\bin\Debug\ide\en.ini" />
     <None Include="..\bin\Debug\ide\layout.xml" />

@@ -44,13 +44,16 @@ struct TheUiManager : UiManager, wxEvtHandler
         // register UI related IDs
         auto cmdMgr = GET_CMDMGR();
         cmdMgr->Register("fullscreen", ::wxNewId(), CmdManager::Type_Check, nullptr);
+
+        // Load colours
+        LoadColours();
     }
 
 
     // destroy
     ~TheUiManager ()
     {}
-
+    
 
     // Load user interface. Return false if failed.
     virtual bool Load ()
@@ -270,6 +273,152 @@ struct TheUiManager : UiManager, wxEvtHandler
         // create new window
         DocFrame * docFrame = new DocFrame(doc);
         docFrame->Show();
+    }
+
+
+    // Load some colours by name
+    void LoadColours ()
+    {
+    	wxTheColourDatabase->AddColour("AliceBlue",				wxColour("#F0F8FF"));
+    	wxTheColourDatabase->AddColour("AntiqueWhite",			wxColour("#FAEBD7"));
+    	wxTheColourDatabase->AddColour("Aqua",					wxColour("#00FFFF"));
+    	wxTheColourDatabase->AddColour("Aquamarine",			wxColour("#7FFFD4"));
+    	wxTheColourDatabase->AddColour("Azure",					wxColour("#F0FFFF"));
+    	wxTheColourDatabase->AddColour("Beige",					wxColour("#F5F5DC"));
+    	wxTheColourDatabase->AddColour("Bisque",				wxColour("#FFE4C4"));
+    	wxTheColourDatabase->AddColour("Black",					wxColour("#000000"));
+    	wxTheColourDatabase->AddColour("BlanchedAlmond",		wxColour("#FFEBCD"));
+    	wxTheColourDatabase->AddColour("Blue",					wxColour("#0000FF"));
+    	wxTheColourDatabase->AddColour("BlueViolet",			wxColour("#8A2BE2"));
+    	wxTheColourDatabase->AddColour("Brown",					wxColour("#A52A2A"));
+    	wxTheColourDatabase->AddColour("BurlyWood",				wxColour("#DEB887"));
+    	wxTheColourDatabase->AddColour("CadetBlue",				wxColour("#5F9EA0"));
+    	wxTheColourDatabase->AddColour("Chartreuse",			wxColour("#7FFF00"));
+    	wxTheColourDatabase->AddColour("Chocolate",				wxColour("#D2691E"));
+    	wxTheColourDatabase->AddColour("Coral",					wxColour("#FF7F50"));
+    	wxTheColourDatabase->AddColour("CornflowerBlue",		wxColour("#6495ED"));
+    	wxTheColourDatabase->AddColour("Cornsilk",				wxColour("#FFF8DC"));
+    	wxTheColourDatabase->AddColour("Crimson",				wxColour("#DC143C"));
+    	wxTheColourDatabase->AddColour("Cyan",					wxColour("#00FFFF"));
+    	wxTheColourDatabase->AddColour("DarkBlue",				wxColour("#00008B"));
+    	wxTheColourDatabase->AddColour("DarkCyan",				wxColour("#008B8B"));
+    	wxTheColourDatabase->AddColour("DarkGoldenRod",			wxColour("#B8860B"));
+    	wxTheColourDatabase->AddColour("DarkGray",				wxColour("#A9A9A9"));
+    	wxTheColourDatabase->AddColour("DarkGreen",				wxColour("#006400"));
+    	wxTheColourDatabase->AddColour("DarkKhaki",				wxColour("#BDB76B"));
+    	wxTheColourDatabase->AddColour("DarkMagenta",			wxColour("#8B008B"));
+    	wxTheColourDatabase->AddColour("DarkOliveGreen",		wxColour("#556B2F"));
+    	wxTheColourDatabase->AddColour("Darkorange",			wxColour("#FF8C00"));
+    	wxTheColourDatabase->AddColour("DarkOrchid",			wxColour("#9932CC"));
+    	wxTheColourDatabase->AddColour("DarkRed",				wxColour("#8B0000"));
+    	wxTheColourDatabase->AddColour("DarkSalmon",			wxColour("#E9967A"));
+    	wxTheColourDatabase->AddColour("DarkSeaGreen",			wxColour("#8FBC8F"));
+    	wxTheColourDatabase->AddColour("DarkSlateBlue",			wxColour("#483D8B"));
+    	wxTheColourDatabase->AddColour("DarkSlateGray",			wxColour("#2F4F4F"));
+    	wxTheColourDatabase->AddColour("DarkTurquoise",			wxColour("#00CED1"));
+    	wxTheColourDatabase->AddColour("DarkViolet",			wxColour("#9400D3"));
+    	wxTheColourDatabase->AddColour("DeepPink",				wxColour("#FF1493"));
+    	wxTheColourDatabase->AddColour("DeepSkyBlue",			wxColour("#00BFFF"));
+    	wxTheColourDatabase->AddColour("DimGray",				wxColour("#696969"));
+    	wxTheColourDatabase->AddColour("DodgerBlue",			wxColour("#1E90FF"));
+    	wxTheColourDatabase->AddColour("FireBrick",				wxColour("#B22222"));
+    	wxTheColourDatabase->AddColour("FloralWhite",			wxColour("#FFFAF0"));
+    	wxTheColourDatabase->AddColour("ForestGreen",			wxColour("#228B22"));
+    	wxTheColourDatabase->AddColour("Fuchsia",				wxColour("#FF00FF"));
+    	wxTheColourDatabase->AddColour("Gainsboro",				wxColour("#DCDCDC"));
+    	wxTheColourDatabase->AddColour("GhostWhite",			wxColour("#F8F8FF"));
+    	wxTheColourDatabase->AddColour("Gold",					wxColour("#FFD700"));
+    	wxTheColourDatabase->AddColour("GoldenRod",				wxColour("#DAA520"));
+    	wxTheColourDatabase->AddColour("Gray",					wxColour("#808080"));
+    	wxTheColourDatabase->AddColour("Green",					wxColour("#008000"));
+    	wxTheColourDatabase->AddColour("GreenYellow",			wxColour("#ADFF2F"));
+    	wxTheColourDatabase->AddColour("HoneyDew",				wxColour("#F0FFF0"));
+    	wxTheColourDatabase->AddColour("HotPink",				wxColour("#FF69B4"));
+    	wxTheColourDatabase->AddColour("IndianRed",				wxColour("#CD5C5C"));
+    	wxTheColourDatabase->AddColour("Indigo",				wxColour("#4B0082"));
+    	wxTheColourDatabase->AddColour("Ivory",					wxColour("#FFFFF0"));
+    	wxTheColourDatabase->AddColour("Khaki",					wxColour("#F0E68C"));
+    	wxTheColourDatabase->AddColour("Lavender",				wxColour("#E6E6FA"));
+    	wxTheColourDatabase->AddColour("LavenderBlush",			wxColour("#FFF0F5"));
+    	wxTheColourDatabase->AddColour("LawnGreen",				wxColour("#7CFC00"));
+    	wxTheColourDatabase->AddColour("LemonChiffon",			wxColour("#FFFACD"));
+    	wxTheColourDatabase->AddColour("LightBlue",				wxColour("#ADD8E6"));
+    	wxTheColourDatabase->AddColour("LightCoral",			wxColour("#F08080"));
+    	wxTheColourDatabase->AddColour("LightCyan",				wxColour("#E0FFFF"));
+    	wxTheColourDatabase->AddColour("LightGoldenRodYellow",	wxColour("#FAFAD2"));
+    	wxTheColourDatabase->AddColour("LightGrey",				wxColour("#D3D3D3"));
+    	wxTheColourDatabase->AddColour("LightGreen",			wxColour("#90EE90"));
+    	wxTheColourDatabase->AddColour("LightPink",				wxColour("#FFB6C1"));
+    	wxTheColourDatabase->AddColour("LightSalmon",			wxColour("#FFA07A"));
+    	wxTheColourDatabase->AddColour("LightSeaGreen",			wxColour("#20B2AA"));
+    	wxTheColourDatabase->AddColour("LightSkyBlue",			wxColour("#87CEFA"));
+    	wxTheColourDatabase->AddColour("LightSlateGray",		wxColour("#778899"));
+    	wxTheColourDatabase->AddColour("LightSteelBlue",		wxColour("#B0C4DE"));
+    	wxTheColourDatabase->AddColour("LightYellow",			wxColour("#FFFFE0"));
+    	wxTheColourDatabase->AddColour("Lime",					wxColour("#00FF00"));
+    	wxTheColourDatabase->AddColour("LimeGreen",				wxColour("#32CD32"));
+    	wxTheColourDatabase->AddColour("Linen",					wxColour("#FAF0E6"));
+    	wxTheColourDatabase->AddColour("Magenta",				wxColour("#FF00FF"));
+    	wxTheColourDatabase->AddColour("Maroon",				wxColour("#800000"));
+    	wxTheColourDatabase->AddColour("MediumAquaMarine",		wxColour("#66CDAA"));
+    	wxTheColourDatabase->AddColour("MediumBlue",			wxColour("#0000CD"));
+    	wxTheColourDatabase->AddColour("MediumOrchid", 			wxColour("#BA55D3"));
+    	wxTheColourDatabase->AddColour("MediumPurple",			wxColour("#9370D8"));
+    	wxTheColourDatabase->AddColour("MediumSeaGreen",		wxColour("#3CB371"));
+    	wxTheColourDatabase->AddColour("MediumSlateBlue",		wxColour("#7B68EE"));
+    	wxTheColourDatabase->AddColour("MediumSpringGreen",		wxColour("#00FA9A"));
+    	wxTheColourDatabase->AddColour("MediumTurquoise",		wxColour("#48D1CC"));
+    	wxTheColourDatabase->AddColour("MediumVioletRed",		wxColour("#C71585"));
+    	wxTheColourDatabase->AddColour("MidnightBlue",			wxColour("#191970"));
+    	wxTheColourDatabase->AddColour("MintCream",				wxColour("#F5FFFA"));
+    	wxTheColourDatabase->AddColour("MistyRose",				wxColour("#FFE4E1"));
+    	wxTheColourDatabase->AddColour("Moccasin",				wxColour("#FFE4B5"));
+    	wxTheColourDatabase->AddColour("NavajoWhite",			wxColour("#FFDEAD"));
+    	wxTheColourDatabase->AddColour("Navy",					wxColour("#000080"));
+    	wxTheColourDatabase->AddColour("OldLace",				wxColour("#FDF5E6"));
+    	wxTheColourDatabase->AddColour("Olive",					wxColour("#808000"));
+    	wxTheColourDatabase->AddColour("OliveDrab",				wxColour("#6B8E23"));
+    	wxTheColourDatabase->AddColour("Orange",				wxColour("#FFA500"));
+    	wxTheColourDatabase->AddColour("OrangeRed",				wxColour("#FF4500"));
+    	wxTheColourDatabase->AddColour("Orchid",				wxColour("#DA70D6"));
+    	wxTheColourDatabase->AddColour("PaleGoldenRod",			wxColour("#EEE8AA"));
+    	wxTheColourDatabase->AddColour("PaleGreen",				wxColour("#98FB98"));
+    	wxTheColourDatabase->AddColour("PaleTurquoise",			wxColour("#AFEEEE"));
+    	wxTheColourDatabase->AddColour("PaleVioletRed",			wxColour("#D87093"));
+    	wxTheColourDatabase->AddColour("PapayaWhip",			wxColour("#FFEFD5"));
+    	wxTheColourDatabase->AddColour("PeachPuff",				wxColour("#FFDAB9"));
+    	wxTheColourDatabase->AddColour("Peru",					wxColour("#CD853F"));
+    	wxTheColourDatabase->AddColour("Pink",					wxColour("#FFC0CB"));
+    	wxTheColourDatabase->AddColour("Plum",					wxColour("#DDA0DD"));
+    	wxTheColourDatabase->AddColour("PowderBlue",			wxColour("#B0E0E6"));
+    	wxTheColourDatabase->AddColour("Purple",				wxColour("#800080"));
+    	wxTheColourDatabase->AddColour("Red",					wxColour("#FF0000"));
+    	wxTheColourDatabase->AddColour("RosyBrown",				wxColour("#BC8F8F"));
+    	wxTheColourDatabase->AddColour("RoyalBlue",				wxColour("#4169E1"));
+    	wxTheColourDatabase->AddColour("SaddleBrown",			wxColour("#8B4513"));
+    	wxTheColourDatabase->AddColour("Salmon",				wxColour("#FA8072"));
+    	wxTheColourDatabase->AddColour("SandyBrown",			wxColour("#F4A460"));
+    	wxTheColourDatabase->AddColour("SeaGreen",				wxColour("#2E8B57"));
+    	wxTheColourDatabase->AddColour("SeaShell",				wxColour("#FFF5EE"));
+    	wxTheColourDatabase->AddColour("Sienna",				wxColour("#A0522D"));
+    	wxTheColourDatabase->AddColour("Silver",				wxColour("#C0C0C0"));
+    	wxTheColourDatabase->AddColour("SkyBlue",				wxColour("#87CEEB"));
+    	wxTheColourDatabase->AddColour("SlateBlue",				wxColour("#6A5ACD"));
+    	wxTheColourDatabase->AddColour("SlateGray",				wxColour("#708090"));
+    	wxTheColourDatabase->AddColour("Snow",					wxColour("#FFFAFA"));
+    	wxTheColourDatabase->AddColour("SpringGreen",			wxColour("#00FF7F"));
+    	wxTheColourDatabase->AddColour("SteelBlue",				wxColour("#4682B4"));
+    	wxTheColourDatabase->AddColour("Tan",					wxColour("#D2B48C"));
+    	wxTheColourDatabase->AddColour("Teal",					wxColour("#008080"));
+    	wxTheColourDatabase->AddColour("Thistle",				wxColour("#D8BFD8"));
+    	wxTheColourDatabase->AddColour("Tomato",				wxColour("#FF6347"));
+    	wxTheColourDatabase->AddColour("Turquoise",				wxColour("#40E0D0"));
+    	wxTheColourDatabase->AddColour("Violet",				wxColour("#EE82EE"));
+    	wxTheColourDatabase->AddColour("Wheat",					wxColour("#F5DEB3"));
+    	wxTheColourDatabase->AddColour("White",					wxColour("#FFFFFF"));
+    	wxTheColourDatabase->AddColour("WhiteSmoke",			wxColour("#F5F5F5"));
+    	wxTheColourDatabase->AddColour("Yellow",				wxColour("#FFFF00"));
+    	wxTheColourDatabase->AddColour("YellowGreen",			wxColour("#9ACD32"));
     }
 
 

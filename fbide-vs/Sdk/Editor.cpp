@@ -74,6 +74,7 @@ bool Editor::LoadDocFile (const wxString & file)
 {
     if (!m_editors[0]->LoadFile( file )) return false;
     m_editors[0]->SetSelection(0,0);
+    return true;
 }
 
 

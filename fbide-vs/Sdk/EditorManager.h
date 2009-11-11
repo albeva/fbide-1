@@ -23,6 +23,7 @@ namespace fbi
 {
     // forward decl
     class Editor;
+    class StyleParser;
 
     /**
      * Manage generic editors
@@ -31,10 +32,13 @@ namespace fbi
     {
         public:
 
-        /**
-         * Create new editor
-         */
+        // Create new editor
+        // need to think ...
         virtual Editor * CreateEditor() = 0;
+
+        // get style info
+        // or should this be in uimanager perhaps ?
+        virtual StyleParser * GetStyle () = 0;
 
         // declare this class as a manager
         DECLARE_MANAGER(EditorManager)

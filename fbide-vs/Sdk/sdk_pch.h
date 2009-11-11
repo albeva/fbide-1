@@ -37,6 +37,7 @@
 #include <wx/splitter.h>
 #include <wx/stc/stc.h>
 #include <wx/wupdlock.h>
+#include <wx/tokenzr.h> 
 
 // c++ stl headers
 #include <unordered_map>

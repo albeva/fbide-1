@@ -77,7 +77,7 @@ struct TheTypeManager : TypeManager
         ExplodeString(extensions, arr, ";");
 
         // add the extensions
-        for (int i = 0; i < arr.Count(); i++)
+        for (size_t i = 0; i < arr.Count(); i++)
         {
             // Get the extension anc clean it
             wxString ext = arr[i].Lower().Trim();
@@ -174,7 +174,7 @@ struct TheTypeManager : TypeManager
 
         // choises.
         wxArrayString choices;
-        for (int i = 0; i < list.size(); i++) choices.Add(list[i]->desc);
+        for (size_t i = 0; i < list.size(); i++) choices.Add(list[i]->desc);
 
         // Allow user to select the document type to create
         // todo - add option to open with external program
@@ -272,7 +272,7 @@ struct TheTypeManager : TypeManager
         // NB! don't sort this. order is important as
         // index is used to match
         wxArrayString choices;
-        for (int i = 0; i < list.size(); i++) choices.Add(list[i]->desc);
+        for (size_t i = 0; i < list.size(); i++) choices.Add(list[i]->desc);
 
         // Allow user to select the document type to create
         auto & lang = GET_LANG();

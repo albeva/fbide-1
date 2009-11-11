@@ -51,6 +51,9 @@
     <ClInclude Include="Editor\StcEditor.h">
       <Filter>Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Editor\StyleInfo.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
     <ClInclude Include="Language.h">
       <Filter>Generic</Filter>
     </ClInclude>
@@ -126,6 +129,9 @@
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Editor\StcEditor.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\StyleInfo.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">

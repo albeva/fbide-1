@@ -24,6 +24,8 @@ namespace fbi
 
     // forward declarations
     class Editor;
+    class StyleParser;
+    class StyleInfo;
     
     /**
      * The editor
@@ -38,8 +40,22 @@ namespace fbi
         // on mouse right up ( show context menu for the editor )
         void OnMouseRight (wxMouseEvent & event);
 
+        // Setup the editor. Load general config
+        void Setup (StyleParser * styles);
+
+        // Set style
+        void SetStyle (int nr, const StyleInfo & styleInfo);
 
     private:
+        
+        // precalculate the line-number margin width
+        void CalcLineMarginWidth();
+        // precalculated number margin widths
+        int m_dynLNWidths[5];
+        // show line numbers
+        bool m_showLineNumbers;
+        // dynamically size the line-number margin
+        int m_dynamicLineNumberWidth;
         
         // the owner of this editor
         Editor *    m_owner;

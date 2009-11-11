@@ -22,6 +22,7 @@
 #include "EditorManager.h"
 #include "TypeManager.h"
 #include "Editor.h"
+#include "Editor/StyleInfo.h"
 
 using namespace fbi;
 
@@ -35,19 +36,30 @@ struct TheEditorManager : EditorManager
     // create
     TheEditorManager ()
     {
+        m_styleParser.LoadFile(GET_REG()["path.ide.data"].AsString() + "/default.css");
     }
 
 
     // destroy
     ~TheEditorManager () {}
     
-    /**
-     * Create new editor
-     */
+
+    // get new editor object
     virtual Editor * CreateEditor()
     {
-        return new Editor();
+        return nullptr;
+        // return new Editor();
     }
+
+
+    // get style
+    virtual StyleParser * GetStyle ()
+    {
+        return &m_styleParser;
+    }
+
+
+    StyleParser m_styleParser;
 };
 
 
