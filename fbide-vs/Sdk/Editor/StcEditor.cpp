@@ -33,9 +33,9 @@ using namespace fbi;
 // @temporary!
 enum
 {
-    m_marginLineNumbers = 0,
-    m_marginChange      = 1,
-    m_marginFolding     = 2
+    MarginLineNumbers   = 0,
+    MarginChangeBar     = 1,
+    MaginFoldBar        = 2
 };
 
 
@@ -145,16 +145,16 @@ void StcEditor::Setup (StyleParser * styles)
         bool dyn = m_dynamicLineNumberWidth = reg["editor.dynamicLineNumberWidth"].AsBool(true);
         CalcLineMarginWidth();
         // set margin width
-        SetMarginWidth (m_marginLineNumbers, 
+        SetMarginWidth (MarginLineNumbers, 
                         dyn
                         ? m_dynLNWidths[0]
                         : m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]
         );
 
-        SetMarginType(m_marginLineNumbers, wxSTC_MARGIN_NUMBER);
+        SetMarginType(MarginLineNumbers, wxSTC_MARGIN_NUMBER);
         m_showLineNumbers = true;
     }
-    else SetMarginWidth (m_marginLineNumbers, 0);
+    else SetMarginWidth (MarginLineNumbers, 0);
 
     for (int i = 1; i < 10; i++)
         SetMarginWidth(i, 0);
@@ -200,9 +200,9 @@ void StcEditor::Setup (StyleParser * styles)
 
         const StyleInfo & info = styles->GetStyle(".fold-margin");
 
-        SetMarginWidth  (m_marginFolding, info.width ? info.width : 12);
-        SetMarginType   (m_marginFolding, wxSTC_MARGIN_SYMBOL);
-        SetMarginMask   (m_marginFolding, wxSTC_MASK_FOLDERS);
+        SetMarginWidth  (MaginFoldBar, info.width ? info.width : 12);
+        SetMarginType   (MaginFoldBar, wxSTC_MARGIN_SYMBOL);
+        SetMarginMask   (MaginFoldBar, wxSTC_MASK_FOLDERS);
 
         const wxColor & outline = info.fg;
         const wxColor & fore = info.bg;
@@ -215,7 +215,7 @@ void StcEditor::Setup (StyleParser * styles)
         MarkerDefine(wxSTC_MARKNUM_FOLDERSUB,       wxSTC_MARK_VLINE,           fore, outline);
         MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL,      wxSTC_MARK_LCORNER,         fore, outline);
 
-        SetMarginSensitive (m_marginFolding, 1);
+        SetMarginSensitive (MaginFoldBar, 1);
         SetProperty ("fold",                "1");
         SetProperty ("fold.comment",        "1");
         SetProperty ("fold.compact",        "1");
@@ -291,7 +291,7 @@ void StcEditor::OnUpdateUi (wxStyledTextEvent & event)
                     m_dynLNWidths[2] : lastLine < 99999 ?
                         m_dynLNWidths[3] : m_dynLNWidths[4];
         // set width
-        SetMarginWidth (m_marginLineNumbers, w);
+        SetMarginWidth (MarginLineNumbers, w);
     }
 }
 
@@ -302,6 +302,6 @@ void StcEditor::OnZoom (wxStyledTextEvent & event)
     CalcLineMarginWidth();
     if (m_showLineNumbers && !m_dynamicLineNumberWidth)
     {
-        SetMarginWidth (m_marginLineNumbers, m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]);
+        SetMarginWidth (MarginLineNumbers, m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]);
     }
 }
