@@ -25,6 +25,8 @@
 #include "StcEditor.h"
 #include "StyleInfo.h"
 
+#include "syntax/FreeBasic.h"
+
 using namespace fbi;
 
 
@@ -70,8 +72,13 @@ StcEditor::StcEditor ( wxWindow * wnd, Editor * owner, int index, StcEditor * mi
     // load styles
     Setup(GET_EDITORMGR()->GetStyle());
 
-    // ensure it is resized.
-    SendSizeEvent();
+    m_highlighter = new FreeBasicSyntax(this);
+
+
+
+    wnd->Bind(wxEVT_STC_STYLENEEDED, [this](wxStyledTextEvent & event) {
+        
+    }, wxID_ANY);
 }
 
 
@@ -89,6 +96,7 @@ void StcEditor::Setup (StyleParser * styles)
 
     // set default highlight
     SetStyle(wxSTC_STYLE_DEFAULT, styles->GetStyle(".default"));
+    StyleClearAll();
 
     // Set Tab Width
     int tabWidth = reg["editor.tabWidth"].AsInt(4);
@@ -176,6 +184,7 @@ void StcEditor::Setup (StyleParser * styles)
             {
                 SetCaretLineVisible(true);
                 SetCaretLineBackground(info.bg);
+                // SetCaretLineBackAlpha(200);
             }
         }
     }

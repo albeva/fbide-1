@@ -26,6 +26,7 @@ namespace fbi
     class Editor;
     class StyleParser;
     class StyleInfo;
+    class FreeBasicSyntax;
     
     /**
      * The editor
@@ -69,6 +70,8 @@ namespace fbi
         int         m_index;
         // mirror the editor (for main null)
         StcEditor * m_mirror;
+        // highlighter
+        FreeBasicSyntax * m_highlighter;
 
         DECLARE_EVENT_TABLE()
     };

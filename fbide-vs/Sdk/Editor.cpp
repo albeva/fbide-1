@@ -54,7 +54,7 @@ Editor::Editor () : m_activeIndex(0)
            wxSP_3DSASH | wxSP_LIVE_UPDATE | wxCLIP_CHILDREN );
     
     // set min size
-    SetMinSize(30, 30, 30, 30);
+    SetMinSize(40, 40, 40, 40);
 
     // null the m_editors
     memset(m_editors, 0, sizeof(m_editors));

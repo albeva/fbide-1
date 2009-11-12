@@ -92,6 +92,7 @@
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="Editor\StcEditor.h" />
     <ClInclude Include="Editor\StyleInfo.h" />
+    <ClInclude Include="Editor\syntax\FreeBasic.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MultiDelegate.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="CmdManager.cpp" />
     <ClCompile Include="Editor\StcEditor.cpp" />
     <ClCompile Include="Editor\StyleInfo.cpp" />
+    <ClCompile Include="Editor\syntax\FreeBasic.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="MultiSplitter.cpp" />

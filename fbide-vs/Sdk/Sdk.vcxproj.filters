@@ -10,6 +10,9 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{b30f41b3-b114-42b5-9263-e9df21df9751}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Syntax">
+      <UniqueIdentifier>{5e2e58db-c831-48f0-a923-f6beda5cce95}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Generic">
       <UniqueIdentifier>{8728b23c-81c4-4be8-a1a9-c0f436995dbe}</UniqueIdentifier>
     </Filter>
@@ -53,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="Editor\StyleInfo.h">
       <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\syntax\FreeBasic.h">
+      <Filter>Editor\Syntax</Filter>
     </ClInclude>
     <ClInclude Include="Language.h">
       <Filter>Generic</Filter>
@@ -133,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="Editor\StyleInfo.cpp">
       <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\syntax\FreeBasic.cpp">
+      <Filter>Editor\Syntax</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">
       <Filter>Generic</Filter>
