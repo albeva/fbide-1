@@ -40,7 +40,9 @@ enum
 
 
 BEGIN_EVENT_TABLE(StcEditor, wxStyledTextCtrl)
-    EVT_RIGHT_UP(StcEditor::OnMouseRight)
+    EVT_RIGHT_UP    (       StcEditor::OnMouseRight)
+    EVT_STC_PAINTED (-1,    StcEditor::OnUpdateUi)
+    EVT_STC_ZOOM    (-1,    StcEditor::OnZoom)
 END_EVENT_TABLE()
 
 
@@ -67,12 +69,13 @@ StcEditor::StcEditor ( wxWindow * wnd, Editor * owner, int index, StcEditor * mi
 
     // load styles
     Setup(GET_EDITORMGR()->GetStyle());
+
+    // ensure it is resized.
+    SendSizeEvent();
 }
 
 
-/**
- * Show the context menu
- */
+// Show the context menu
 void StcEditor::OnMouseRight (wxMouseEvent & event)
 {
     m_owner->ShowContextMenu(m_index);
@@ -113,12 +116,9 @@ void StcEditor::Setup (StyleParser * styles)
 
     // Set EOL mode
     wxString eolModeType = reg["editor.eolMode"].AsString();
-    int eolMode = wxSTC_EOL_CRLF;
-    if (eolModeType == "CR")
-        eolMode = wxSTC_EOL_CR;
-    else if (eolModeType == "LF")
-        eolMode = wxSTC_EOL_LF;
-    SetEOLMode(eolMode);
+    if      (eolModeType == "CR") SetEOLMode(wxSTC_EOL_CR);
+    else if (eolModeType == "LF") SetEOLMode(wxSTC_EOL_LF);
+    else                          SetEOLMode(wxSTC_EOL_CRLF);
 
     // view EOL characters ?
     SetViewEOL(reg["editor.viewEOL"].AsBool());
@@ -156,13 +156,16 @@ void StcEditor::Setup (StyleParser * styles)
     }
     else SetMarginWidth (m_marginLineNumbers, 0);
 
+    for (int i = 1; i < 10; i++)
+        SetMarginWidth(i, 0);
+
 
     // caret
     if (styles && styles->PathExists(".caret"))
     {
         const StyleInfo & info = styles->GetStyle(".caret");
         SetCaretForeground(info.fg);
-        // SetCaretWidth(info.width ? info.width : 1);
+        SetCaretWidth(info.width ? info.width : 1);
 
         /**
          * @todo figure out why alpha doesn't work
@@ -269,4 +272,36 @@ void StcEditor::CalcLineMarginWidth ()
     int w = TextWidth (wxSTC_STYLE_LINENUMBER, "0");
     for (int i = 0; i < sizeof(m_dynLNWidths) / sizeof(int); i++)
         m_dynLNWidths[i] = w * (i + 3);
+}
+
+
+// Update the editor UI
+void StcEditor::OnUpdateUi (wxStyledTextEvent & event)
+{
+    // int line = m_parent->GetCurrentLine();
+    if (m_showLineNumbers && m_dynamicLineNumberWidth)
+    {
+        // get last visible line
+        int lastLine = GetFirstVisibleLine() + LinesOnScreen();
+
+        // detect width
+        int w = lastLine < 99 ?
+            m_dynLNWidths[0] : lastLine < 999 ?
+                m_dynLNWidths[1] : lastLine < 9999 ?
+                    m_dynLNWidths[2] : lastLine < 99999 ?
+                        m_dynLNWidths[3] : m_dynLNWidths[4];
+        // set width
+        SetMarginWidth (m_marginLineNumbers, w);
+    }
+}
+
+
+// Zoom in/out
+void StcEditor::OnZoom (wxStyledTextEvent & event)
+{
+    CalcLineMarginWidth();
+    if (m_showLineNumbers && !m_dynamicLineNumberWidth)
+    {
+        SetMarginWidth (m_marginLineNumbers, m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]);
+    }
 }

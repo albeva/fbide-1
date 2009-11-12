@@ -40,6 +40,12 @@ namespace fbi
         // on mouse right up ( show context menu for the editor )
         void OnMouseRight (wxMouseEvent & event);
 
+        // update the ui
+        void OnUpdateUi (wxStyledTextEvent & event);
+
+        // zoom
+        void OnZoom (wxStyledTextEvent & event);
+
         // Setup the editor. Load general config
         void Setup (StyleParser * styles);
 
@@ -63,7 +69,6 @@ namespace fbi
         int         m_index;
         // mirror the editor (for main null)
         StcEditor * m_mirror;
-
 
         DECLARE_EVENT_TABLE()
     };

@@ -60,10 +60,10 @@ Editor::Editor () : m_activeIndex(0)
     memset(m_editors, 0, sizeof(m_editors));
 
     // create first editor. Others are created with view is actally split
-    m_editors[0] = new StcEditor(this, this, 0, nullptr);
+    auto stc = m_editors[0] = new StcEditor(this, this, 0, nullptr);
     
     // show this in multisplitter
-    ShowTopLeft(m_editors[0]);
+    ShowTopLeft(stc);
 }
 
 
