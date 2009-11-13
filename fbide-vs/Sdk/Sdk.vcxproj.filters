@@ -60,6 +60,12 @@
     <ClInclude Include="Editor\syntax\FreeBasic.h">
       <Filter>Editor\Syntax</Filter>
     </ClInclude>
+    <ClInclude Include="Editor\Syntax\LexFreeBasic.hxx">
+      <Filter>Editor\Syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\Syntax\LineStates.h">
+      <Filter>Editor\Syntax</Filter>
+    </ClInclude>
     <ClInclude Include="Language.h">
       <Filter>Generic</Filter>
     </ClInclude>
@@ -141,6 +147,12 @@
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Editor\syntax\FreeBasic.cpp">
+      <Filter>Editor\Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Syntax\LexFreeBasic.cxx">
+      <Filter>Editor\Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Syntax\LineStates.cpp">
       <Filter>Editor\Syntax</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">

@@ -93,6 +93,8 @@
     <ClInclude Include="Editor\StcEditor.h" />
     <ClInclude Include="Editor\StyleInfo.h" />
     <ClInclude Include="Editor\syntax\FreeBasic.h" />
+    <ClInclude Include="Editor\Syntax\LexFreeBasic.hxx" />
+    <ClInclude Include="Editor\Syntax\LineStates.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MultiDelegate.h" />
@@ -122,6 +124,11 @@
     <ClCompile Include="Editor\StcEditor.cpp" />
     <ClCompile Include="Editor\StyleInfo.cpp" />
     <ClCompile Include="Editor\syntax\FreeBasic.cpp" />
+    <ClCompile Include="Editor\Syntax\LexFreeBasic.cxx">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WXWIN)\src\stc\scintilla\include;$(WXWIN)\src\stc\scintilla\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">IMPORT_SCINTILLA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="Editor\Syntax\LineStates.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="MultiSplitter.cpp" />
