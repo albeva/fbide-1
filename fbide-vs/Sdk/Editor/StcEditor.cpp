@@ -18,6 +18,9 @@
  * Copyright (C) The FBIde development team
  */
 #include "sdk_pch.h"
+
+#if 0
+
 #include "../Manager.h"
 #include "../Editor.h"
 #include "../Document.h"
@@ -314,3 +317,5 @@ void StcEditor::OnZoom (wxStyledTextEvent & event)
         SetMarginWidth (MarginLineNumbers, m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]);
     }
 }
+
+#endif

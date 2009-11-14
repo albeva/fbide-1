@@ -52,7 +52,7 @@ namespace fbi
             
             // the 4 editors. index 0 is the main
             // others are additional views
-            StcEditor * m_editors[4];
+            wxTextCtrl * m_editors[4];
 
             // selected editor index
             int m_activeIndex;

@@ -22,6 +22,7 @@
 namespace fbi
 {
 
+#if 0
     // forward declarations
     class Editor;
     class StyleParser;
@@ -75,5 +76,7 @@ namespace fbi
 
         DECLARE_EVENT_TABLE()
     };
+
+#endif
 
 }

@@ -36,10 +36,10 @@ const int ID_SplitView3     = ::wxNewId();
 
 // Route events
 BEGIN_EVENT_TABLE(Editor, MultiSplitWindow)
-    EVT_MENU(ID_SplitView1,     Editor::OnSplitView)
-    EVT_MENU(ID_SplitView2,     Editor::OnSplitView)
-    EVT_MENU(ID_SplitView3,     Editor::OnSplitView)
-    EVT_MENU(ID_SplitViewHide,  Editor::OnSplitView)
+    // EVT_MENU(ID_SplitView1,     Editor::OnSplitView)
+    // EVT_MENU(ID_SplitView2,     Editor::OnSplitView)
+    // EVT_MENU(ID_SplitView3,     Editor::OnSplitView)
+    // EVT_MENU(ID_SplitViewHide,  Editor::OnSplitView)
 END_EVENT_TABLE()
 
 
@@ -60,10 +60,10 @@ Editor::Editor () : m_activeIndex(0)
     memset(m_editors, 0, sizeof(m_editors));
 
     // create first editor. Others are created with view is actally split
-    auto stc = m_editors[0] = new StcEditor(this, this, 0, nullptr);
+    m_editors[0] = new wxTextCtrl(this, wxID_ANY); // new StcEditor(this, this, 0, nullptr);
     
     // show this in multisplitter
-    ShowTopLeft(stc);
+    ShowTopLeft(m_editors[0]);
 }
 
 
@@ -72,8 +72,8 @@ Editor::Editor () : m_activeIndex(0)
  */
 bool Editor::LoadDocFile (const wxString & file)
 {
-    if (!m_editors[0]->LoadFile( file )) return false;
-    m_editors[0]->SetSelection(0,0);
+    // if (!m_editors[0]->LoadFile( file )) return false;
+    // m_editors[0]->SetSelection(0,0);
     return true;
 }
 
@@ -83,6 +83,7 @@ bool Editor::LoadDocFile (const wxString & file)
  */
 void Editor::ShowContextMenu ( int index )
 {
+    /*
     wxMenu menu;
     wxMenu * split_menu = new wxMenu();
     menu.AppendSubMenu(split_menu, "Split view", "Split the editor into multiple views");
@@ -105,6 +106,7 @@ void Editor::ShowContextMenu ( int index )
     // show the menu
     m_activeIndex = index;
     PopupMenu(&menu);
+    */
 }
 
 
@@ -113,6 +115,7 @@ void Editor::ShowContextMenu ( int index )
  */
 void Editor::OnSplitView (wxCommandEvent & event)
 {
+    /*
     // vars
     int index = 0;
     bool show = event.IsChecked();
@@ -170,4 +173,5 @@ void Editor::OnSplitView (wxCommandEvent & event)
             m_editors[0]->SetFocus();
         }
     }
+    */
 }
