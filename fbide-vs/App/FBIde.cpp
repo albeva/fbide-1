@@ -45,7 +45,14 @@ class FBIdeApp : public wxApp
 
         // GET_SCRIPTMGR()->Execute(path + "/test.js");
         ui->LoadLayout(path + "/ide/layout.xml");
-        ui->GetFrame()->Show();
+        auto frame = ui->GetFrame();
+        frame->Show();
+
+        // set logger
+        auto * logger = new wxLogWindow(frame, "logs");
+        //logger->SetLogLevel(wxLOG_Info);
+        logger->Resume();
+        wxLog::SetActiveTarget ( logger );
         
         // success
         return true;

@@ -19,8 +19,6 @@
  */
 #include "sdk_pch.h"
 
-#if 0
-
 #include "../Manager.h"
 #include "../Editor.h"
 #include "../Document.h"
@@ -44,7 +42,7 @@ enum
 };
 
 
-BEGIN_EVENT_TABLE(StcEditor, wxStyledTextCtrl)
+BEGIN_EVENT_TABLE(StcEditor, wxScintillaCtrl)
     EVT_RIGHT_UP    (       StcEditor::OnMouseRight)
     EVT_STC_PAINTED (-1,    StcEditor::OnUpdateUi)
     EVT_STC_ZOOM    (-1,    StcEditor::OnZoom)
@@ -74,14 +72,9 @@ StcEditor::StcEditor ( wxWindow * wnd, Editor * owner, int index, StcEditor * mi
 
     // load styles
     Setup(GET_EDITORMGR()->GetStyle());
-
+    
+    // highlighter
     m_highlighter = new FreeBasicSyntax(this);
-
-
-
-    wnd->Bind(wxEVT_STC_STYLENEEDED, [this](wxStyledTextEvent & event) {
-        
-    }, wxID_ANY);
 }
 
 
@@ -98,7 +91,7 @@ void StcEditor::Setup (StyleParser * styles)
     auto & reg = GET_REG();
 
     // set default highlight
-    SetStyle(wxSTC_STYLE_DEFAULT, styles->GetStyle(".default"));
+    SetStyle(wxSCI_STYLE_DEFAULT, styles->GetStyle(".default"));
     StyleClearAll();
 
     // Set Tab Width
@@ -120,16 +113,16 @@ void StcEditor::Setup (StyleParser * styles)
 
     // Set edge column mode
     wxString edgeModeType = reg["editor.edgeMode"].AsString("line");
-    int edgeMode = wxSTC_EDGE_NONE;
-    if (edgeModeType == "line") edgeMode = wxSTC_EDGE_LINE;
-    else if (edgeModeType == "background") edgeMode = wxSTC_EDGE_BACKGROUND;
+    int edgeMode = wxSCI_EDGE_NONE;
+    if (edgeModeType == "line") edgeMode = wxSCI_EDGE_LINE;
+    else if (edgeModeType == "background") edgeMode = wxSCI_EDGE_BACKGROUND;
     SetEdgeMode (edgeMode);
 
     // Set EOL mode
     wxString eolModeType = reg["editor.eolMode"].AsString();
-    if      (eolModeType == "CR") SetEOLMode(wxSTC_EOL_CR);
-    else if (eolModeType == "LF") SetEOLMode(wxSTC_EOL_LF);
-    else                          SetEOLMode(wxSTC_EOL_CRLF);
+    if      (eolModeType == "CR") SetEOLMode(wxSCI_EOL_CR);
+    else if (eolModeType == "LF") SetEOLMode(wxSCI_EOL_LF);
+    else                          SetEOLMode(wxSCI_EOL_CRLF);
 
     // view EOL characters ?
     SetViewEOL(reg["editor.viewEOL"].AsBool());
@@ -140,7 +133,7 @@ void StcEditor::Setup (StyleParser * styles)
     // Show whitespaces ?
     SetViewWhiteSpace (
         reg["editor.viewWhiteSpace"].AsBool()
-        ? wxSTC_WS_VISIBLEALWAYS : wxSTC_WS_INVISIBLE
+        ? wxSCI_WS_VISIBLEALWAYS : wxSCI_WS_INVISIBLE
     );
 
     // show line numbers ?
@@ -149,7 +142,7 @@ void StcEditor::Setup (StyleParser * styles)
         // line numbers
         if (styles && styles->PathExists(".line-margin"))
         {
-            SetStyle(wxSTC_STYLE_LINENUMBER, styles->GetStyle(".line-margin"));
+            SetStyle(wxSCI_STYLE_LINENUMBER, styles->GetStyle(".line-margin"));
         }
 
         // calculate line widths
@@ -162,7 +155,7 @@ void StcEditor::Setup (StyleParser * styles)
                         : m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]
         );
 
-        SetMarginType(MarginLineNumbers, wxSTC_MARGIN_NUMBER);
+        SetMarginType(MarginLineNumbers, wxSCI_MARGIN_NUMBER);
         m_showLineNumbers = true;
     }
     else SetMarginWidth (MarginLineNumbers, 0);
@@ -213,19 +206,19 @@ void StcEditor::Setup (StyleParser * styles)
         const StyleInfo & info = styles->GetStyle(".fold-margin");
 
         SetMarginWidth  (MaginFoldBar, info.width ? info.width : 12);
-        SetMarginType   (MaginFoldBar, wxSTC_MARGIN_SYMBOL);
-        SetMarginMask   (MaginFoldBar, wxSTC_MASK_FOLDERS);
+        SetMarginType   (MaginFoldBar, wxSCI_MARGIN_SYMBOL);
+        SetMarginMask   (MaginFoldBar, wxSCI_MASK_FOLDERS);
 
         const wxColor & outline = info.fg;
         const wxColor & fore = info.bg;
-        SetFoldFlags(wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
-        MarkerDefine(wxSTC_MARKNUM_FOLDER,          wxSTC_MARK_BOXPLUS,         fore, outline);
-        MarkerDefine(wxSTC_MARKNUM_FOLDEREND,       wxSTC_MARK_BOXPLUSCONNECTED,fore, outline);
-        MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL,   wxSTC_MARK_TCORNER,         fore, outline);
-        MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN,      wxSTC_MARK_BOXMINUS,        fore, outline);
-        MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID,   wxSTC_MARK_BOXMINUSCONNECTED,fore, outline);
-        MarkerDefine(wxSTC_MARKNUM_FOLDERSUB,       wxSTC_MARK_VLINE,           fore, outline);
-        MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL,      wxSTC_MARK_LCORNER,         fore, outline);
+        SetFoldFlags(wxSCI_FOLDFLAG_LINEAFTER_CONTRACTED);
+        MarkerDefine(wxSCI_MARKNUM_FOLDER,          wxSCI_MARK_BOXPLUS,         fore, outline);
+        MarkerDefine(wxSCI_MARKNUM_FOLDEREND,       wxSCI_MARK_BOXPLUSCONNECTED,fore, outline);
+        MarkerDefine(wxSCI_MARKNUM_FOLDERMIDTAIL,   wxSCI_MARK_TCORNER,         fore, outline);
+        MarkerDefine(wxSCI_MARKNUM_FOLDEROPEN,      wxSCI_MARK_BOXMINUS,        fore, outline);
+        MarkerDefine(wxSCI_MARKNUM_FOLDEROPENMID,   wxSCI_MARK_BOXMINUSCONNECTED,fore, outline);
+        MarkerDefine(wxSCI_MARKNUM_FOLDERSUB,       wxSCI_MARK_VLINE,           fore, outline);
+        MarkerDefine(wxSCI_MARKNUM_FOLDERTAIL,      wxSCI_MARK_LCORNER,         fore, outline);
 
         SetMarginSensitive (MaginFoldBar, 1);
         SetProperty ("fold",                "1");
@@ -243,23 +236,23 @@ void StcEditor::Setup (StyleParser * styles)
         m_data->m_changeMargin = true;
 
         SetMarginWidth(MARGIN_CHANGE, 4);
-        SetMarginType(MARGIN_CHANGE,  wxSTC_MARGIN_SYMBOL);
+        SetMarginType(MARGIN_CHANGE,  wxSCI_MARGIN_SYMBOL);
         SetMarginWidth(MARGIN_CHANGE, 4);
         SetMarginMask(MARGIN_CHANGE, (1 << CEditorModMargin::MARKER_SAVED) | (1 << CEditorModMargin::MARKER_EDITED) );
 
         // edited marker
-        MarkerDefine(CEditorModMargin::MARKER_EDITED, wxSTC_MARK_FULLRECT);
+        MarkerDefine(CEditorModMargin::MARKER_EDITED, wxSCI_MARK_FULLRECT);
         MarkerSetBackground(CEditorModMargin::MARKER_EDITED, info.bg);
 
         // saved marker
-        MarkerDefine(CEditorModMargin::MARKER_SAVED, wxSTC_MARK_FULLRECT);
+        MarkerDefine(CEditorModMargin::MARKER_SAVED, wxSCI_MARK_FULLRECT);
         MarkerSetBackground(CEditorModMargin::MARKER_SAVED, info.fg);
     }
     */
 
     // process TAB key manually to allow
     // adding switching between tabs ????
-    // CmdKeyClear (wxSTC_KEY_TAB, 0);
+    // CmdKeyClear (wxSCI_KEY_TAB, 0);
 
 }
 
@@ -281,7 +274,7 @@ void StcEditor::SetStyle (int nr, const StyleInfo & style)
 // Calculate margin widths for dynamic line margin
 void StcEditor::CalcLineMarginWidth ()
 {
-    int w = TextWidth (wxSTC_STYLE_LINENUMBER, "0");
+    int w = TextWidth (wxSCI_STYLE_LINENUMBER, "0");
     for (int i = 0; i < sizeof(m_dynLNWidths) / sizeof(int); i++)
         m_dynLNWidths[i] = w * (i + 3);
 }
@@ -317,5 +310,3 @@ void StcEditor::OnZoom (wxStyledTextEvent & event)
         SetMarginWidth (MarginLineNumbers, m_dynLNWidths[sizeof(m_dynLNWidths) / sizeof(int) - 1]);
     }
 }
-
-#endif

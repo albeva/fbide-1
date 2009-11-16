@@ -19,6 +19,9 @@
  */
 #pragma once
 
+// in global namespace
+class CLineStates;
+
 namespace fbi
 {
 
@@ -36,7 +39,7 @@ namespace fbi
 
     private :
         StcEditor * m_stc;
-
+        CLineStates * m_lineStates;
     };
 
 }

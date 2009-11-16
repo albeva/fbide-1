@@ -48,7 +48,7 @@
       <Optimization>Disabled</Optimization>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_dll\mswud;$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_dll\mswud;$(WXWIN)\include;$(SolutionDir)\wxStc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WXMSW__;WXUSINGDLL;EXPORT_SDK;USING_V8_SHARED;;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>sdk_pch.h</PrecompiledHeaderFile>
@@ -58,8 +58,11 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw29ud.lib;$(OutDir)v8_g.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw29ud.lib;$(OutDir)v8_g.lib;$(SolutionDir)\Debug\wxScintillaCtrl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -93,7 +96,7 @@
     <ClInclude Include="Editor\StcEditor.h" />
     <ClInclude Include="Editor\StyleInfo.h" />
     <ClInclude Include="Editor\syntax\FreeBasic.h" />
-    <ClInclude Include="Editor\Syntax\LexFreeBasic.hxx" />
+    <ClInclude Include="Editor\Syntax\LexFreeBasic.h" />
     <ClInclude Include="Editor\Syntax\LineStates.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="Manager.h" />
@@ -124,7 +127,7 @@
     <ClCompile Include="Editor\StcEditor.cpp" />
     <ClCompile Include="Editor\StyleInfo.cpp" />
     <ClCompile Include="Editor\syntax\FreeBasic.cpp" />
-    <ClCompile Include="Editor\Syntax\LexFreeBasic.cxx">
+    <ClCompile Include="Editor\Syntax\LexFreeBasic.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WXWIN)\src\stc\scintilla\include;$(WXWIN)\src\stc\scintilla\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">IMPORT_SCINTILLA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

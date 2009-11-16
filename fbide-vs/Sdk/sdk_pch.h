@@ -32,10 +32,9 @@
 #include <wx/wfstream.h>
 #include <wx/dynlib.h>
 #include <wx/log.h>
-#include <wx/stc/stc.h>
 #include <wx/textfile.h>
 #include <wx/splitter.h>
-#include <wx/stc/stc.h>
+// #include <wx/stc/stc.h>
 #include <wx/wupdlock.h>
 #include <wx/tokenzr.h> 
 #include <wx/textctrl.h>

@@ -24,9 +24,11 @@
 
 namespace fbi
 {
+    
     // forward declarations
     class MultiSplitWindow;
     class StcEditor;
+    class wxScintillaCtrl;
 
 
     /**
@@ -52,7 +54,7 @@ namespace fbi
             
             // the 4 editors. index 0 is the main
             // others are additional views
-            wxTextCtrl * m_editors[4];
+            StcEditor * m_editors[4];
 
             // selected editor index
             int m_activeIndex;

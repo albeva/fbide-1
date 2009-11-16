@@ -19,10 +19,12 @@
  */
 #pragma once
 
+#include "../wxScintillaCtrl/stc.h"
+
 namespace fbi
 {
 
-#if 0
+
     // forward declarations
     class Editor;
     class StyleParser;
@@ -32,7 +34,7 @@ namespace fbi
     /**
      * The editor
      */
-    class SDK_DLL StcEditor : public wxStyledTextCtrl
+    class SDK_DLL StcEditor : public ::wxScintillaCtrl
     {
     public:
         
@@ -76,7 +78,5 @@ namespace fbi
 
         DECLARE_EVENT_TABLE()
     };
-
-#endif
 
 }
