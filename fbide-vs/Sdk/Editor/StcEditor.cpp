@@ -74,7 +74,7 @@ StcEditor::StcEditor ( wxWindow * wnd, Editor * owner, int index, StcEditor * mi
     Setup(GET_EDITORMGR()->GetStyle());
     
     // highlighter
-    m_highlighter = new FreeBasicSyntax(this);
+    // m_highlighter = new FreeBasicSyntax(this);
 }
 
 

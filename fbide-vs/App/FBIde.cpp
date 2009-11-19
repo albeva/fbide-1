@@ -41,7 +41,7 @@ class FBIdeApp : public wxApp
         GET_TYPEMGR();
         GET_EDITORMGR();
         GET_PLUGINMGR();
-        GET_SCRIPTMGR();        
+        GET_SCRIPTMGR();//->Execute(path + "/test.js");      
 
         // GET_SCRIPTMGR()->Execute(path + "/test.js");
         ui->LoadLayout(path + "/ide/layout.xml");

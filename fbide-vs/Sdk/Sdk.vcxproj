@@ -115,6 +115,8 @@
     <ClInclude Include="Ui\MenuHandler.h" />
     <ClInclude Include="Ui\ToolbarHandler.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="V8\v8-debug.h" />
+    <ClInclude Include="V8\v8.h" />
     <ClInclude Include="Variant.h" />
     <ClInclude Include="Version.h" />
   </ItemGroup>

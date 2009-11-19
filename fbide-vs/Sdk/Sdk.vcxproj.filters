@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CmdManager.cpp" />
+    <ClCompile Include="DocManager.cpp" />
+    <ClCompile Include="Document.cpp" />
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="EditorManager.cpp" />
+    <ClCompile Include="Editor\StcEditor.cpp" />
+    <ClCompile Include="Editor\StyleInfo.cpp" />
+    <ClCompile Include="Editor\syntax\FreeBasic.cpp" />
+    <ClCompile Include="Editor\Syntax\LexFreeBasic.cpp" />
+    <ClCompile Include="Editor\Syntax\LineStates.cpp" />
+    <ClCompile Include="Language.cpp" />
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="MultiSplitter.cpp" />
+    <ClCompile Include="PluginManager.cpp" />
+    <ClCompile Include="Registry.cpp" />
+    <ClCompile Include="ScriptManager.cpp" />
+    <ClCompile Include="Sdk.cpp" />
+    <ClCompile Include="sdk_pch.cpp" />
+    <ClCompile Include="TypeManager.cpp" />
+    <ClCompile Include="UiManager.cpp" />
+    <ClCompile Include="Ui\ClassicThemeProvider.cpp" />
+    <ClCompile Include="Ui\DocFrame.cpp" />
+    <ClCompile Include="Ui\MenuHandler.cpp" />
+    <ClCompile Include="Ui\ToolbarHandler.cpp" />
+    <ClCompile Include="Variant.cpp" />
+    <ClCompile Include="Version.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CmdManager.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="DocManager.h" />
+    <ClInclude Include="Document.h" />
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="EditorManager.h" />
+    <ClInclude Include="Editor\StcEditor.h" />
+    <ClInclude Include="Editor\StyleInfo.h" />
+    <ClInclude Include="Editor\syntax\FreeBasic.h" />
+    <ClInclude Include="Editor\Syntax\LexFreeBasic.h" />
+    <ClInclude Include="Editor\Syntax\LineStates.h" />
+    <ClInclude Include="Language.h" />
+    <ClInclude Include="Manager.h" />
+    <ClInclude Include="MultiDelegate.h" />
+    <ClInclude Include="MultiSplitter.h" />
+    <ClInclude Include="PluginManager.h" />
+    <ClInclude Include="Registry.h" />
+    <ClInclude Include="ScriptManager.h" />
+    <ClInclude Include="Sdk.h" />
+    <ClInclude Include="sdk_pch.h" />
+    <ClInclude Include="TypeManager.h" />
+    <ClInclude Include="UiManager.h" />
+    <ClInclude Include="Ui\ClassicThemeProvider.h" />
+    <ClInclude Include="Ui\DocFrame.h" />
+    <ClInclude Include="Ui\IArtProvider.h" />
+    <ClInclude Include="Ui\MenuHandler.h" />
+    <ClInclude Include="Ui\ToolbarHandler.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="V8\v8-debug.h" />
+    <ClInclude Include="V8\v8.h" />
+    <ClInclude Include="Variant.h" />
+    <ClInclude Include="Version.h" />
+  </ItemGroup>
+</Project>
